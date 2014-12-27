@@ -18,7 +18,12 @@
  * NOTE: If you change these, also change the error_reporting() code below
  *
  */
-	define('ENVIRONMENT', 'development');
+ 
+$app_mode = getenv('APP_MODE');
+if(!$app_mode) $app_mode = 'development';
+
+define('ENVIRONMENT', $app_mode);
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
