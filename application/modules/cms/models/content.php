@@ -177,7 +177,7 @@ class Content extends CI_Model
 	    if(!array_key_exists("label", $content_label))
 	    	throw new Exception("content_label::label must be specified");
 
-	    $content_label["content_id"] = $content["content_id";
+	    $content_label["content_id"] = $content["content_id"];
 	    $content_label["revision"] = 1;
 	    $content_label["date_created"] = now();
 	    $content_label["last_modified"] = now();
@@ -242,7 +242,7 @@ class Content extends CI_Model
 	    if(!array_key_exists("html", $content_html))
 	    	throw new Exception("content_html::html must be specified");
 
-	    $content_html["content_id"] = $content["content_id";
+	    $content_html["content_id"] = $content["content_id"];
 	    $content_html["revision"] = 1;
 	    $content_html["date_created"] = now();
 	    $content_html["last_modified"] = now();
@@ -310,7 +310,7 @@ class Content extends CI_Model
 	    if(!array_key_exists("headers", $content_list))
 	    	throw new Exception("content_list::headers must be specified");
 
-	    $content_list["content_id"] = $content["content_id";
+	    $content_list["content_id"] = $content["content_id"];
 	    $content_list["revision"] = 1;
 	    $content_list["date_created"] = now();
 	    $content_list["last_modified"] = now();
