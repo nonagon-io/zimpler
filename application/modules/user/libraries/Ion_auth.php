@@ -61,8 +61,8 @@ class Ion_auth
 	{
 		$this->load->config('user/ion_auth', TRUE);
 		$this->load->library(array('email'));
-		$this->lang->load('ion_auth');
-		$this->load->helper(array('cookie', 'language','url'));
+		$this->lang->load('user/ion_auth');
+		$this->load->helper(array('cookie', 'language', 'url'));
 
 		// Load the session, CI2 as a library, CI3 uses it as a driver
 		if (substr(CI_VERSION, 0, 1) == '2')
@@ -74,7 +74,7 @@ class Ion_auth
 			$this->load->driver('session');
 		}
 
-		$this->load->model('ion_auth_model');
+		$this->load->model('user/ion_auth_model');
 
 		$this->_cache_user_in_group =& $this->ion_auth_model->_cache_user_in_group;
 
