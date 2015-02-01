@@ -5,5 +5,10 @@ class Admin_Controller extends MY_Controller {
     function __construct()
     {
         parent::__construct();
+        
+        if(!$this->authenticate())
+        	redirect(base_url('/user/login'));
     }
+    
+    protected function authenticate() { return FALSE; }
 }

@@ -1,30 +1,31 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Admin extends CI_Controller {
+class Admin extends Admin_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -  
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in 
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
+    function __construct()
+    {
+	    $this->load->library('user/ion_auth');
+	    
+        parent::__construct();
+        
+        $user = $this->ion_auth->user()->row();
+        
+        $this->data['current_user'] = $user->id;
+        
+        $display_name = $user->first_name . ' ' . $user->last_name;
+        if(!trim($display_name)) $display_name = $user->username;
+        
+        $this->data['current_display_name'] = $display_name;
+    }
+
+	protected function authenticate()
+	{
+		return $this->ion_auth->is_admin();
+	}
+
 	public function index()
 	{
-		$this->load->model('cms/content');
-		$this->content->get('key');
-		
-		$this->load->view('main');
+		$this->data['sub_content'] = $this->load->view('subs/home', $this->data, TRUE);
+		$this->load->templated_view('admin_base', 'main', $this->data);
 	}
 }
-
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */

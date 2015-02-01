@@ -13,7 +13,7 @@ class MY_Controller extends MX_Controller {
 	        'meta_language' => 'en',
 	        'meta_keywords' => '',
 	        'meta_description' => '',
-	        'title' => 'Siam Travel Mate'
+	        'title' => 'Zimpler'
         );
     }
 }
