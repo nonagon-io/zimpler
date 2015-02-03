@@ -389,26 +389,6 @@ class Ion_auth_model extends CI_Model
 			));
 			$this->dbforge->add_key('id', TRUE);
 			$this->dbforge->create_table($tables['users']);
-	
-			// Dumping data for table 'users'
-			$data = array(
-				'id' => '1',
-				'ip_address' => 0x7f000001,
-				'username' => 'admin',
-				'password' => '$2y$08$QeSZb8MlZ8et8RaVAv0hSebgkjgRbpqzceLK8moOG5Sdd3/vhI752',
-				'salt' => 'dssoVk5ufxftEiVN$5*5O&cOyRPxmXLx0Gm9yC8Z',
-				'email' => $this->config->item('admin_email', 'ion_auth'),
-				'activation_code' => '',
-				'forgotten_password_code' => NULL,
-				'created_on' => now(),
-				'last_login' => now(),
-				'active' => '1',
-				'first_name' => 'System',
-				'last_name' => 'Admin',
-				'company' => 'Nonagon',
-				'phone' => '0865002020',
-			);
-			$this->db->insert($tables['users'], $data);
 		}
 
 	    if(!$this->db->table_exists($tables["users_groups"]))
@@ -434,21 +414,6 @@ class Ion_auth_model extends CI_Model
 			));
 			$this->dbforge->add_key('id', TRUE);
 			$this->dbforge->create_table($tables['users_groups']);
-	
-			// Dumping data for table 'users_groups'
-			$data = array(
-				array(
-					'id' => '1',
-					'user_id' => '1',
-					'group_id' => '1',
-				),
-				array(
-					'id' => '2',
-					'user_id' => '1',
-					'group_id' => '2',
-				)
-			);
-			$this->db->insert_batch($tables['users_groups'], $data);
 		}
 		
 	    if(!$this->db->table_exists($tables["login_attempts"]))

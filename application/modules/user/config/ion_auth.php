@@ -22,6 +22,8 @@
 *
 */
 
+$CI =& get_instance();
+
 /*
 | -------------------------------------------------------------------------
 | Tables.
@@ -85,10 +87,10 @@ $config['salt_prefix']    = version_compare(PHP_VERSION, '5.3.7', '<') ? '$2a$' 
  */
  
 // Site Title, example.com
-$config['site_title']                 = "Siam Travel Mate";			
+$config['site_title']                 = $CI->config->item('site_title');
 
 // Admin Email, admin@example.com
-$config['admin_email']                = "admin@siamtravelmate.com";
+$config['admin_email']                = "admin@zimpler.com";
 
 // Default group, use name
 $config['default_group']              = 'members';

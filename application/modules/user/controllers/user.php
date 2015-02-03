@@ -15,6 +15,7 @@ class User extends Public_Controller {
 			$this->config->item('error_end_delimiter', 'ion_auth'));
 
 		$this->lang->load('auth');
+		$this->load->model('user/user_model');
 	}
 
 	//redirect if needed, otherwise display the user list
@@ -45,11 +46,25 @@ class User extends Public_Controller {
 			$this->_render_page('user/index', $this->data);
 		}
 	}
+	
+	function startup()
+	{
+		$this->data['message'] = '';
+		$this->data['title'] = lang("startup_heading");
+		
+		$this->_render_page('user/startup');
+	}
 
 	// Login page
 	function login()
 	{
-		$this->data['title'] = lang("login_heading") . " | SiamTravelMate";
+		if($this->user_model->is_any_users_exists())
+		{
+			redirect('user/startup', 'refresh');
+			return;
+		}
+		
+		$this->data['title'] = lang("login_heading") . " | " . $this->config->item("site_title", 'ion_auth');
 		
 		//validate form input
 		$this->form_validation->set_rules('identity', 'Username', 'required');

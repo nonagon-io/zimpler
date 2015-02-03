@@ -9,19 +9,19 @@ module.exports = function(grunt) {
 			my_target: {
 				files: {
 					'js/vendor.min.js': [
-						'vendor/jquery-2.1.3/jquery.min.js', 
-						'vendor/uikit-2.16.2/js/uikit.min.js',
-						'vendor/uikit-2.16.2/js/components/form-select.min.js',
-						'vendor/angular-1.3.9/angular.min.js',
-						'vendor/angular-1.3.9/angular-animate.min.js',
-						'vendor/freezeh-0.0.1/freezeh.js',
-						'vendor/codemirror-4.12/lib/codemirror.js',
-						'vendor/codemirror-4.12/mode/markdown/markdown.js',
-						'vendor/codemirror-4.12/addon/mode/overlay.js',
-						'vendor/codemirror-4.12/mode/xml/xml.js',
-						'vendor/codemirror-4.12/mode/gfm/gfm.js',
-						'vendor/marked-0.3.2/lib/marked.js',
-						'vendor/uikit-2.16.2/js/components/htmleditor.min.js']
+						'vendor/jquery/dist/jquery.min.js', 
+						'vendor/uikit/js/uikit.min.js',
+						'vendor/uikit/js/components/form-select.min.js',
+						'vendor/angular/angular.min.js',
+						'vendor/angular-animate/angular-animate.min.js',
+						'vendor/freezeh/freezeh.js',
+						'vendor/codemirror/lib/codemirror.js',
+						'vendor/codemirror/mode/markdown/markdown.js',
+						'vendor/codemirror/addon/mode/overlay.js',
+						'vendor/codemirror/mode/xml/xml.js',
+						'vendor/codemirror/mode/gfm/gfm.js',
+						'vendor/marked/lib/marked.js',
+						'vendor/uikit/js/components/htmleditor.min.js']
 				}
 			}
 		},
@@ -30,11 +30,11 @@ module.exports = function(grunt) {
 			target: {
 				files: {
 					'assets/css/vendor.min.css': [
-						'vendor/uikit-2.16.2/css/uikit.almost-flat.min.css',
-						'vendor/uikit-2.16.2/css/components/form-select.almost-flat.min.css',
-						'vendor/uikit-2.16.2/css/components/form-advanced.almost-flat.min.css',
-						'vendor/uikit-2.16.2/css/components/htmleditor.almost-flat.min.css',
-						'vendor/codemirror-4.12/lib/codemirror.css']
+						'vendor/uikit/css/uikit.almost-flat.min.css',
+						'vendor/uikit/css/components/form-select.almost-flat.min.css',
+						'vendor/uikit/css/components/form-advanced.almost-flat.min.css',
+						'vendor/uikit/css/components/htmleditor.almost-flat.min.css',
+						'vendor/codemirror/lib/codemirror.css']
 				}
 			}
 		}

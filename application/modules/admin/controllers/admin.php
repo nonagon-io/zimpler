@@ -1,4 +1,29 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+/**
+ * Zimpler
+ *
+ * An open source CMS for PHP 5.1.6 or newer
+ *
+ * @package		Zimpler
+ * @author		Chonnarong Hanyawongse
+ * @copyright	Copyright (c) 2008 - 2015, Nonagon, Ltd.
+ * @license		http://zimpler.com/user_guide/license.html
+ * @link		http://zimpler.com
+ * @since		Version 0.1
+ * @filesource
+ */
+
+// ------------------------------------------------------------------------
+
+/**
+ * Zimpler Admin Controller Class
+ *
+ * @package		Zimpler
+ * @subpackage	Admin Module
+ * @category	Libraries
+ * @author		Chonnarong Hanyawongse
+ * @link		http://zimpler.com/user_guide/admin/admin_controllers.html
+ */
 
 class Admin extends Admin_Controller {
 

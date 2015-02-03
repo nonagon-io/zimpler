@@ -20,15 +20,39 @@
 // Errors
 $lang['error_csrf'] = 'This form post did not pass our security checks.';
 
+// Startup
+$lang['startup_heading']		= 'Welcome to Zimpler';
+$lang['startup_intro']			= 'As you are the first one that start this site so we ' .
+								  'are assuming that you are the system administrator. ' .
+								  'Please enter information below to complete the setup process.';
+								  
+$lang['startup_fname_label']                       = 'First Name';
+$lang['startup_fname_placeholder']                 = 'Your First Name';
+$lang['startup_lname_label']                       = 'Last Name';
+$lang['startup_lname_placeholder']                 = 'Your Last Name';
+$lang['startup_company_label']                     = 'Company Name';
+$lang['startup_company_placeholder']               = 'Company Name (Optional)';
+$lang['startup_email_label']                       = 'Email';
+$lang['startup_email_placeholder']                 = 'Your Email';
+$lang['startup_phone_label']                       = 'Phone';
+$lang['startup_phone_placeholder']                 = 'Phone Number (Optional)';
+$lang['startup_username_label']                    = 'Username';
+$lang['startup_username_placeholder']              = 'Username';
+$lang['startup_password_label']                    = 'Password';
+$lang['startup_password_placeholder']              = 'Password';
+$lang['startup_password_confirm_label']            = 'Confirm Password';
+$lang['startup_password_confirm_placeholder']      = 'Confirm Password';
+$lang['startup_submit_btn']                        = 'Get Started';
+
 // Login
-$lang['login_heading']         = 'Sign In';
-$lang['login_subheading']      = 'Please sign in with your email/username and password below.';
-$lang['login_identity_label']  = 'Username';
-$lang['login_password_label']  = 'Password';
-$lang['login_remember_label']  = 'Remember Me';
-$lang['login_submit_btn']      = 'Sign In';
-$lang['login_signup'] = 'Sign Up';
-$lang['login_forgot_password'] = 'Forgot your password?';
+$lang['login_heading']    		= 'Sign In';
+$lang['login_subheading']      	= 'Please sign in with your email/username and password below.';
+$lang['login_identity_label']  	= 'Username';
+$lang['login_password_label']  	= 'Password';
+$lang['login_remember_label']  	= 'Remember Me';
+$lang['login_submit_btn']      	= 'Sign In';
+$lang['login_signup']			= 'Sign Up';
+$lang['login_forgot_password'] 	= 'Forgot your password?';
 
 // Index
 $lang['index_heading']           = 'Users';
@@ -56,13 +80,13 @@ $lang['deactivate_validation_user_id_label'] = 'user ID';
 // Create User
 $lang['create_user_heading']                           = 'Create User';
 $lang['create_user_subheading']                        = 'Please enter the user\'s information below.';
-$lang['create_user_fname_label']                       = 'First Name:';
-$lang['create_user_lname_label']                       = 'Last Name:';
-$lang['create_user_company_label']                     = 'Company Name:';
-$lang['create_user_email_label']                       = 'Email:';
-$lang['create_user_phone_label']                       = 'Phone:';
-$lang['create_user_password_label']                    = 'Password:';
-$lang['create_user_password_confirm_label']            = 'Confirm Password:';
+$lang['create_user_fname_label']                       = 'First Name';
+$lang['create_user_lname_label']                       = 'Last Name';
+$lang['create_user_company_label']                     = 'Company Name';
+$lang['create_user_email_label']                       = 'Email';
+$lang['create_user_phone_label']                       = 'Phone';
+$lang['create_user_password_label']                    = 'Password';
+$lang['create_user_password_confirm_label']            = 'Confirm Password';
 $lang['create_user_submit_btn']                        = 'Create User';
 $lang['create_user_validation_fname_label']            = 'First Name';
 $lang['create_user_validation_lname_label']            = 'Last Name';
@@ -77,13 +101,13 @@ $lang['create_user_validation_password_confirm_label'] = 'Password Confirmation'
 // Edit User
 $lang['edit_user_heading']                           = 'Edit User';
 $lang['edit_user_subheading']                        = 'Please enter the user\'s information below.';
-$lang['edit_user_fname_label']                       = 'First Name:';
-$lang['edit_user_lname_label']                       = 'Last Name:';
-$lang['edit_user_company_label']                     = 'Company Name:';
-$lang['edit_user_email_label']                       = 'Email:';
-$lang['edit_user_phone_label']                       = 'Phone:';
-$lang['edit_user_password_label']                    = 'Password: (if changing password)';
-$lang['edit_user_password_confirm_label']            = 'Confirm Password: (if changing password)';
+$lang['edit_user_fname_label']                       = 'First Name';
+$lang['edit_user_lname_label']                       = 'Last Name';
+$lang['edit_user_company_label']                     = 'Company Name';
+$lang['edit_user_email_label']                       = 'Email';
+$lang['edit_user_phone_label']                       = 'Phone';
+$lang['edit_user_password_label']                    = 'Password (if changing password)';
+$lang['edit_user_password_confirm_label']            = 'Confirm Password (if changing password)';
 $lang['edit_user_groups_heading']                    = 'Member of groups';
 $lang['edit_user_submit_btn']                        = 'Save User';
 $lang['edit_user_validation_fname_label']            = 'First Name';
