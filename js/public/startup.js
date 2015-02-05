@@ -10,7 +10,7 @@ angular.module('startup', ['ngIntlTel', 'validation.match'])
 		
 		if($scope.startupForm.$invalid) {
 			
-			//$event.preventDefault();
+			$event.preventDefault();
 		}
 	}
 });
