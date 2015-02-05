@@ -47,14 +47,6 @@ class User extends Public_Controller {
 		}
 	}
 	
-	function startup()
-	{
-		$this->data['message'] = '';
-		$this->data['title'] = lang("startup_heading");
-		
-		$this->_render_page('user/startup');
-	}
-
 	// Login page
 	function login()
 	{

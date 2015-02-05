@@ -1,5 +1,12 @@
 body {
 
-	background: url(../images/bg.png);
+	background: url('../images/bg.png');
 	background-position: center center;
+}
+
+.iti-flag {
+	
+	width: 16px;
+	height: 11px;
+	background: url("../images/flags.png");
 }

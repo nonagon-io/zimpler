@@ -14,6 +14,7 @@
 	?>"/>
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/vendor.min.css')?>"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/common.css')?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/admin.css')?>"/>
 	
 	<?php

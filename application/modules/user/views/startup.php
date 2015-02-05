@@ -26,7 +26,11 @@
 						<input type="text" id="firstName" name="firstName" class="uk-width-1-1" 
 							   maxlength="50" required="" ng-model="firstName"
 							   ng-class="{'uk-form-danger': startupForm.firstName.$error.required && startupForm.$submitted}"
+							   ng-init="firstName = '<?= $firstName ?>'"
 							   placeholder="<?= lang('startup_fname_placeholder') ?>" />
+						<i class="uk-icon-exclamation-circle uk-text-danger" 
+						   ng-if="startupForm.firstName.$error.required && startupForm.$submitted"
+						   title="<?= lang('required_error_fname') ?>" data-uk-tooltip="{pos:'right'}"></i>
 					</div>
 				</div>
 				<div class="uk-form-row">
@@ -35,7 +39,11 @@
 						<input type="text" id="lastName" name="lastName" class="uk-width-1-1" 
 							   maxlength="50" required="" ng-model="lastName"
 							   ng-class="{'uk-form-danger': startupForm.lastName.$error.required && startupForm.$submitted}"
+							   ng-init="lastName = '<?= $lastName ?>'"
 							   placeholder="<?= lang('startup_lname_placeholder') ?>" />
+						<i class="uk-icon-exclamation-circle uk-text-danger" 
+						   ng-if="startupForm.lastName.$error.required && startupForm.$submitted"
+						   title="<?= lang('required_error_lname') ?>" data-uk-tooltip="{pos:'right'}"></i>
 					</div>
 				</div>
 				<div class="uk-form-row">
@@ -43,6 +51,7 @@
 					<div class="uk-form-controls">
 						<input type="text" id="company" name="company" class="uk-width-1-1" 
 							   maxlength="100" ng-model="company"
+							   ng-init="company = '<?= $company ?>'"
 							   placeholder="<?= lang('startup_company_placeholder') ?>" />
 					</div>
 				</div>
@@ -54,43 +63,68 @@
 							   ng-class="{'uk-form-danger': 
 							   				(startupForm.email.$error.required || 
 							   				 startupForm.email.$error.email) && startupForm.$submitted}"
+							   ng-init="email = '<?= $email ?>'"
 							   placeholder="<?= lang('startup_email_placeholder') ?>" />
+						<i class="uk-icon-exclamation-circle uk-text-danger" 
+						   ng-if="startupForm.email.$error.required && startupForm.$submitted"
+						   title="<?= lang('required_error_email') ?>" data-uk-tooltip="{pos:'right'}"></i>
+						<i class="uk-icon-exclamation-circle uk-text-danger" 
+						   ng-if="startupForm.email.$error.email && startupForm.$submitted"
+						   title="<?= lang('invalid_error_email') ?>" data-uk-tooltip="{pos:'right'}"></i>
 					</div>
 				</div>
 				<div class="uk-form-row">
 					<label class="uk-form-label" for="phone"><?= lang('startup_phone_label') ?></label>
 					<div class="uk-form-controls">
-						<input type="text" id="phone" name="phone" class="uk-width-1-1" 
-							   maxlength="20"
-							   ng-class="{'uk-form-danger': startupForm.phone.$error.format && startupForm.$submitted}"
-							   placeholder="<?= lang('startup_phone_placeholder') ?>" />
+						<intl-tel id="phone" name="phone" class="uk-width-1-1"
+								  ng-model="phone"
+								  utils="<?php echo base_url('js/lib/libphonenumber.js') ?>" 
+								  ng-class="{'uk-form-danger': startupForm.phone.$error.phone && startupForm.$submitted}" 
+								  ng-init="phone = '<?= $phone ?>'"
+								  value="<?= $phone ?>"
+								  placeholder="<?= lang('startup_phone_placeholder') ?>"></intl-tel>
+						<i class="uk-icon-exclamation-circle uk-text-danger" 
+						   ng-if="startupForm.phone.$error.phone && startupForm.$submitted"
+						   title="<?= lang('invalid_error_phone') ?>" data-uk-tooltip="{pos:'right'}"></i>
 					</div>
 				</div>
 				<div class="uk-form-row">
 					<label class="uk-form-label" for="username"><?= lang('startup_username_label') ?></label>
 					<div class="uk-form-controls">
 						<input type="text" id="username" name="username" class="uk-width-1-1" 
-							   maxlength="20" required=""
+							   maxlength="20" required="" ng-model="username"
 							   ng-class="{'uk-form-danger': startupForm.username.$error.required && startupForm.$submitted}"
+							   ng-init="username = '<?= $username ?>'"
 							   placeholder="<?= lang('startup_username_placeholder') ?>" />
+						<i class="uk-icon-exclamation-circle uk-text-danger" 
+						   ng-if="startupForm.username.$error.required && startupForm.$submitted"
+						   title="<?= lang('required_error_username') ?>" data-uk-tooltip="{pos:'right'}"></i>
 					</div>
 				</div>
 				<div class="uk-form-row">
 					<label class="uk-form-label" for="password"><?= lang('startup_password_label') ?></label>
 					<div class="uk-form-controls">
 						<input type="password" id="password" name="password" class="uk-width-1-1" 
-							   maxlength="20" required=""
+							   maxlength="20" required="" ng-model="password"
 							   ng-class="{'uk-form-danger': startupForm.password.$error.required && startupForm.$submitted}"
+							   ng-init="password = '<?= $password ?>'"
 							   placeholder="<?= lang('startup_password_placeholder') ?>" />
+						<i class="uk-icon-exclamation-circle uk-text-danger" 
+						   ng-if="startupForm.password.$error.required && startupForm.$submitted"
+						   title="<?= lang('required_error_password') ?>" data-uk-tooltip="{pos:'right'}"></i>
 					</div>
 				</div>
 				<div class="uk-form-row">
 					<label class="uk-form-label" for="passwordConfirm"><?= lang('startup_password_confirm_label') ?></label>
 					<div class="uk-form-controls">
 						<input type="password" id="passwordConfirm" name="passwordConfirm" class="uk-width-1-1" 
-							   maxlength="20" required=""
-							   ng-class="{'uk-form-danger': startupForm.password.$error.required && startupForm.$submitted}"
+							   maxlength="20" ng-model="passwordConfirm" match="password"
+							   ng-class="{'uk-form-danger': startupForm.passwordConfirm.$error.match && startupForm.$submitted}"
+							   ng-init="passwordConfirm = '<?= $passwordConfirm ?>'"
 							   placeholder="<?= lang('startup_password_confirm_placeholder') ?>" />
+						<i class="uk-icon-exclamation-circle uk-text-danger" 
+						   ng-if="startupForm.passwordConfirm.$error.match && startupForm.$submitted"
+						   title="<?= lang('match_error_password') ?>" data-uk-tooltip="{pos:'right'}"></i>
 					</div>
 				</div>
 			</div>

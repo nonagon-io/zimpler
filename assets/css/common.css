@@ -1,0 +1,11 @@
+.uk-form-controls {
+	
+	position: relative;
+}
+
+.uk-form-controls i {
+	
+	position: absolute;
+	right: -20px;
+	top: 8px;
+}

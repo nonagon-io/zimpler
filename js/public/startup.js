@@ -1,4 +1,4 @@
-angular.module('startup', [])
+angular.module('startup', ['ngIntlTel', 'validation.match'])
  
 .controller('StartupController', function($scope, $locale) {
 	
@@ -8,7 +8,9 @@ angular.module('startup', [])
 		
 		$scope.startupForm.$submitted = true;
 		
-		if($scope.startupForm.$invalid)
-			$event.preventDefault();
+		if($scope.startupForm.$invalid) {
+			
+			//$event.preventDefault();
+		}
 	}
 });

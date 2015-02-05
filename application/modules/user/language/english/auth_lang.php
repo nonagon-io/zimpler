@@ -91,6 +91,7 @@ $lang['create_user_submit_btn']                        = 'Create User';
 $lang['create_user_validation_fname_label']            = 'First Name';
 $lang['create_user_validation_lname_label']            = 'Last Name';
 $lang['create_user_validation_email_label']            = 'Email Address';
+$lang['create_user_validation_username_label']         = 'Username';
 $lang['create_user_validation_phone1_label']           = 'First Part of Phone';
 $lang['create_user_validation_phone2_label']           = 'Second Part of Phone';
 $lang['create_user_validation_phone3_label']           = 'Third Part of Phone';
@@ -169,3 +170,13 @@ $lang['reset_password_new_password_confirm_label']            = 'Confirm New Pas
 $lang['reset_password_submit_btn']                            = 'Change';
 $lang['reset_password_validation_new_password_label']         = 'New Password';
 $lang['reset_password_validation_new_password_confirm_label'] = 'Confirm New Password';
+
+// Field Error
+$lang['required_error_fname']			= 'First name must be specified';
+$lang['required_error_lname']			= 'Last name must be specified';
+$lang['required_error_email']			= 'Email must be specified';
+$lang['invalid_error_email']			= 'Invalid email address format';
+$lang['invalid_error_phone']			= 'Invalid phone number format';
+$lang['required_error_username']		= 'Username must be specified';
+$lang['required_error_password']		= 'Password must be specified';
+$lang['match_error_password']			= 'Confirm password does not match';
