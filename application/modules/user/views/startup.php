@@ -106,12 +106,18 @@
 					<div class="uk-form-controls">
 						<input type="password" id="password" name="password" class="uk-width-1-1" 
 							   maxlength="20" required="" ng-model="password"
-							   ng-class="{'uk-form-danger': startupForm.password.$error.required && startupForm.$submitted}"
+							   ng-class="{'uk-form-danger': (
+							   		startupForm.password.$error.required ||
+							   		startupForm.password.$error.minlength) && startupForm.$submitted}"
 							   ng-init="password = '<?= $password ?>'"
+							   ng-minlength="8"
 							   placeholder="<?= lang('startup_password_placeholder') ?>" />
 						<i class="uk-icon-exclamation-circle uk-text-danger" 
 						   ng-if="startupForm.password.$error.required && startupForm.$submitted"
 						   title="<?= lang('required_error_password') ?>" data-uk-tooltip="{pos:'right'}"></i>
+						<i class="uk-icon-exclamation-circle uk-text-danger" 
+						   ng-if="startupForm.password.$error.minlength && startupForm.$submitted"
+						   title="<?= lang('min_error_password') ?>" data-uk-tooltip="{pos:'right'}"></i>
 					</div>
 				</div>
 				<div class="uk-form-row">
@@ -130,7 +136,7 @@
 			</div>
 			
 			<?php if($message) : ?>
-			<div id="infoMessage" class="uk-alert uk-alert-warning"><?php echo $message;?></div>
+			<div ng-init="startupForm.$submitted = true"></div>
 			<?php endif ?>
 			
 			<button type="submit" class="uk-button uk-button-success uk-width-1-3 uk-margin-large-top">
