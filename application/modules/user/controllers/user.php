@@ -56,6 +56,18 @@ class User extends Public_Controller {
 			return;
 		}
 		
+		if($this->ion_auth->logged_in())
+		{
+			if($this->ion_auth->is_admin())
+			{
+				redirect('/admin', 'refresh');
+			}
+			else
+			{
+				redirect('/', 'refresh');
+			}
+		}
+		
 		$this->data['title'] = lang("login_heading") . " | " . $this->config->item("site_title", 'ion_auth');
 		
 		//validate form input
