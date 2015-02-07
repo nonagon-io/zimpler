@@ -50,7 +50,7 @@ class User extends Public_Controller {
 	// Login page
 	function login()
 	{
-		if($this->user_model->is_any_users_exists())
+		if(!$this->user_model->is_any_users_exists())
 		{
 			redirect('user/startup', 'refresh');
 			return;
@@ -96,17 +96,9 @@ class User extends Public_Controller {
 		{
 			//the user is not logging in so display the login page
 			//set the flash data error message if there is one
-			$this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
-
-			$this->data['identity'] = array('name' => 'identity',
-				'id' => 'identity',
-				'type' => 'text',
-				'value' => $this->form_validation->set_value('identity'),
-			);
-			$this->data['password'] = array('name' => 'password',
-				'id' => 'password',
-				'type' => 'password',
-			);
+			$this->data['message'] = $this->session->flashdata('message');
+			$this->data['identity'] = $this->form_validation->set_value('identity');
+			$this->data['password'] = $this->form_validation->set_value('password');
 
 			$this->_render_page('user/login', $this->data);
 		}

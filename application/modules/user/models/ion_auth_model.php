@@ -1068,28 +1068,33 @@ class Ion_auth_model extends CI_Model
 	 **/
 	public function register($username, $password, $email, $additional_data = array(), $groups = array())
 	{
+		$tables = $this->config->item('tables', 'ion_auth');
 		$this->trigger_events('pre_register');
 
 		$manual_activation = $this->config->item('manual_activation', 'ion_auth');
 
-		if ($this->identity_column == 'email' && $this->email_check($email))
+		if ($this->email_check($email))
 		{
 			$this->set_error('account_creation_duplicate_email');
 			return FALSE;
 		}
-		elseif ($this->identity_column == 'username' && $this->username_check($username))
+		
+		if ($this->username_check($username))
 		{
 			$this->set_error('account_creation_duplicate_username');
 			return FALSE;
 		}
-		elseif ( !$this->config->item('default_group', 'ion_auth') && empty($groups) )
+		
+		if ( !$this->config->item('default_group', 'ion_auth') && empty($groups) )
 		{
 			$this->set_error('account_creation_missing_default_group');
 			return FALSE;
 		}
 
 		//check if the default set in config exists in database
-		$query = $this->db->get_where('groups',array('name' => $this->config->item('default_group', 'ion_auth')),1)->row();
+		$query = $this->db->get_where($tables['groups'],
+			array('name' => $this->config->item('default_group', 'ion_auth')),1)->row();
+			
 		if( !isset($query->id) && empty($groups) ) 
 		{
 			$this->set_error('account_creation_invalid_default_group');
@@ -1181,11 +1186,11 @@ class Ion_auth_model extends CI_Model
 		$this->trigger_events('extra_where');
 
 		$query = $this->db->select($this->identity_column . ', username, email, id, password, active, last_login')
-		                  ->where($this->identity_column, $identity)
+		                  ->where("(email = '" . $identity . "' or username = '" . $identity . "')")
 		                  ->limit(1)
 		    			  ->order_by('id', 'desc')
 		                  ->get($this->tables['users']);
-
+		                  
 		if($this->is_time_locked_out($identity))
 		{
 			//Hash something anyway, just to take up time
@@ -1196,13 +1201,13 @@ class Ion_auth_model extends CI_Model
 
 			return FALSE;
 		}
-
+		
 		if ($query->num_rows() === 1)
 		{
 			$user = $query->row();
 
 			$password = $this->hash_password_db($user->id, $password);
-
+			
 			if ($password === TRUE)
 			{
 				if ($user->active == 0)

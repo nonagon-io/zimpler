@@ -1,3 +1,8 @@
+html {
+	
+	background: transparent;
+}
+
 .n-login-front {
 	
 	position: absolute; 
@@ -16,4 +21,16 @@
 	padding-top: 30px;
 	
 	box-shadow: 0px 15px 15px -15px black
+}
+
+.n-login-general button[type="submit"] {
+	
+	width: 150px;
+}
+
+.uk-form-controls i {
+	
+	position: absolute;
+	right: -30px;
+	top: 10px;
 }

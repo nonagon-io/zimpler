@@ -19,7 +19,7 @@
 				<?php echo lang('startup_intro') ?></p>
 			</p>
 			
-			<div class="n-login-general uk-text-left uk-width-1-2 uk-container-center">
+			<div class="uk-text-left uk-width-1-2 uk-container-center">
 				<div class="uk-form-row">
 					<label class="uk-form-label" for="firstName"><?= lang('startup_fname_label') ?></label>
 					<div class="uk-form-controls">

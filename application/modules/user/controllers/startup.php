@@ -20,6 +20,12 @@ class Startup extends Public_Controller {
 
 	function index()
 	{
+		if($this->user_model->is_any_users_exists())
+		{
+			show_404();
+			return;
+		}
+
 		$tables = $this->config->item('tables','ion_auth');
 		
 		$this->data['title'] = lang("startup_heading");
@@ -54,11 +60,9 @@ class Startup extends Public_Controller {
 
 		if ($this->form_validation->run() == true)
 		{
-			$username = strtolower($this->input->post('first_name')) . ' ' . 
-						strtolower($this->input->post('last_name'));
-						
-			$email    = strtolower($this->input->post('email'));
+			$username = strtolower($this->input->post('username'));
 			$password = $this->input->post('password');
+			$email    = strtolower($this->input->post('email'));
 
 			$additional_data = array(
 				'first_name' => $this->input->post('firstName'),
