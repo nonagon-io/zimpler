@@ -1,6 +1,13 @@
 <section class="n-content" ng-app="login" ng-controller="LoginController">
 	<div class="n-login-front uk-form">
 		<div class="uk-panel uk-panel-box uk-container-center uk-width-large-1-2 uk-width-medium-2-3 uk-width-1-1 uk-text-center">
+			
+			<?php if($startup_message) : ?>
+			<div class="uk-alert uk-alert-success">
+				<?= $startup_message ?>
+			</div>
+			<?php endif ?>
+
 			<?php 
 				$attributes = array('name' => 'loginForm', 'novalidate' => '', 'ng-submit' => 'submit($event)');
 				echo form_open("user/login", $attributes);
@@ -20,21 +27,21 @@
 							   ng-class="{'uk-form-danger': loginForm.identity.$error.required && loginForm.$submitted}"
 							   ng-init="identity = '<?= $identity ?>'" required />
 							   
-						<i class="uk-icon-exclamation-circle uk-icon-small uk-text-danger" 
-						   ng-if="loginForm.identity.$error.required && loginForm.$submitted"
+						<i class="uk-icon-exclamation-circle uk-icon-small uk-text-danger ng-hide" 
+						   ng-show="loginForm.identity.$error.required && loginForm.$submitted"
 						   title="<?= lang('required_error_username') ?>" data-uk-tooltip="{pos:'right'}"></i>
 					</div>
 				</div>
 				<div class="uk-margin-small-top">
 					<div class="uk-form-controls">
-						<input type="text" class="uk-form-large uk-width-1-1"
+						<input type="password" class="uk-form-large uk-width-1-1"
 							   name="password" ng-model="password"
 							   placeholder="<?= lang('login_password_label') ?>"
 							   ng-class="{'uk-form-danger': loginForm.password.$error.required && loginForm.$submitted}"
 							   ng-init="password = '<?= $password ?>'" required />
 
-						<i class="uk-icon-exclamation-circle uk-icon-small uk-text-danger" 
-						   ng-if="loginForm.password.$error.required && loginForm.$submitted"
+						<i class="uk-icon-exclamation-circle uk-icon-small uk-text-danger ng-hide" 
+						   ng-show="loginForm.password.$error.required && loginForm.$submitted"
 						   title="<?= lang('required_error_password') ?>" data-uk-tooltip="{pos:'right'}"></i>
 					</div>
 				</div>
@@ -73,7 +80,7 @@
 	<div ng-init="loginForm.$submitted = true"></div>
 	<?php endif ?>
 	
-	<?php if(isset($message) && $message) : ?>
+	<?php if(isset($message) && $message && !$startup_message) : ?>
 	<div ng-init="notify('<?= strip_tags($message) ?>', 'warning')"></div>
 	<?php endif ?>
 </section>

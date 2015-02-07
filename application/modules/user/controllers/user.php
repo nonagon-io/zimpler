@@ -97,6 +97,8 @@ class User extends Public_Controller {
 			//the user is not logging in so display the login page
 			//set the flash data error message if there is one
 			$this->data['message'] = $this->session->flashdata('message');
+			$this->data['startup_message'] = $this->session->flashdata('startup_message');
+			
 			$this->data['identity'] = $this->form_validation->set_value('identity');
 			$this->data['password'] = $this->form_validation->set_value('password');
 

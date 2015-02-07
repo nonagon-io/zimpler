@@ -25,6 +25,8 @@ $lang['startup_heading']		= 'Welcome to Zimpler';
 $lang['startup_intro']			= 'As you are the first one that start this site so we ' .
 								  'are assuming that you are the system administrator. ' .
 								  'Please enter information below to complete the setup process.';
+$lang['startup_success']		= 'Your system administrator account has been created. ' .
+								  'Please use the credential you have specified to sign in and start using Zimpler.';
 								  
 $lang['startup_fname_label']                       = 'First Name';
 $lang['startup_fname_placeholder']                 = 'Your First Name';

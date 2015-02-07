@@ -73,9 +73,11 @@ class Startup extends Public_Controller {
 		}
 		
 		if ($this->form_validation->run() == true && $this->ion_auth->
-			register($username, $password, $email, $additional_data))
+			register($username, $password, $email, $additional_data, 
+			array(1, 2)))
 		{
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
+			$this->session->set_flashdata('startup_message', lang("startup_success"));
 			
 			redirect("user/login", 'refresh');
 		}
