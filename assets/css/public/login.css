@@ -3,6 +3,12 @@ html {
 	background: transparent;
 }
 
+body {
+
+	background: url('../images/bg.png');
+	background-position: center center;
+}
+
 .n-login-front {
 	
 	position: absolute; 

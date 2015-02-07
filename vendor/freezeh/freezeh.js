@@ -1,5 +1,7 @@
 $(function() {
-	$.fn.freezeHeader = function() {		
+	$.fn.freezeHeader = function() {
+		
+		if(!this.offset()) return;
 		
 		var header = 
 			$("<table class='" + this.attr("class") + "'><thead>" + 
