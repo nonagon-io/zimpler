@@ -1,14 +1,9 @@
 <?php
-
+	
 function active_if_page($page)
 {
 	$url = uri_string();
-	$path_array = explode("/", $url);
-
-	if(count($path_array) == 1)
-		return;
-	
-	if(strcasecmp($path_array[1], $page) == 0)
+	if(strcasecmp($url, $page) == 0)
 		echo(" class='uk-active'");
 }
 
@@ -23,7 +18,7 @@ function active_if_page_or_null($page)
 		return;
 	}
 	
-	if(strcasecmp($path_array[1], $page) == 0 || $path_array[1] == "")
+	if(strcasecmp($url, $page) == 0 || $path_array[1] == "")
 		echo(" class='uk-active'");
 }
 
@@ -61,6 +56,14 @@ function page_title()
 	                	Home
 	                </a>
 	            </li>
+	            <?php foreach($menu_items as $item) : ?>
+	            <li <?php active_if_page($item['path']) ?>>
+	                <a href="<?= $item['link'] ?>">
+	                	<i class="uk-icon-<?= $item['icon'] ?> uk-icon-small"></i>
+	                	<?= $item['name'] ?>
+	                </a>
+	            </li>
+	            <?php endforeach ?>
 	        </ul>
 		</div>
 	</div>
