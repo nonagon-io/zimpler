@@ -61,6 +61,7 @@ class Admin extends Admin_Controller {
 		else
 		{
 			$path = sprintf('%s/%s_admin/%s', $sub_module, $sub_module, $section);
+			
 			$this->data['sub_content'] = Modules::run($path);
 			$this->load->templated_view('admin_base', 'main', $this->data);
 		}

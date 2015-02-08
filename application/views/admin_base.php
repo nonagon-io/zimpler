@@ -41,15 +41,15 @@
 			$page_accum .= $page;
 			
 			$page_path = base_url('assets/css/admin/' . $page_accum . '.css');
-			$real_path = realpath($page_path);
+			$real_path = 'assets/css/admin/' . $page_accum . '.css';
 			
-			if(file_exists($real_path))
+			if(file_exists(FCPATH.$real_path))
 				array_push($css_include_list, $page_path);
 
 			$page_path = base_url('js/app/admin/' . $page_accum . '.js');
-			$real_path = realpath($page_path);
+			$real_path = 'js/app/admin/' . $page_accum . '.js';
 
-			if(file_exists($real_path))
+			if(file_exists(FCPATH.$real_path))
 				array_push($js_include_list, $page_path);
 			
 			$page_accum .= '/';

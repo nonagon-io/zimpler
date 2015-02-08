@@ -33,6 +33,12 @@ function page_title()
 		return;
 	}
 	
+	if(count($path_array) == 2)
+	{
+		echo lang(sprintf("%s_menu", $path_array[1]));
+		return;
+	}
+	
 	echo lang(sprintf("%s_menu_%s", $path_array[1], $path_array[2]));
 }
 	

@@ -90,6 +90,11 @@ body {
 	overflow-x: hidden;
 }
 
+.n-view-host .n-body .n-content {
+	
+	background: url(../images/bg.png);
+}
+
 .n-view-host .n-body .n-list {
 	
 	position: absolute;
@@ -334,7 +339,6 @@ body {
 	
 	opacity: 1;
 }
-
 
 .n-selected {
 	
