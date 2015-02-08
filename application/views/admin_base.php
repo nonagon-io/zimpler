@@ -18,21 +18,47 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/admin.css')?>"/>
 	
 	<?php
+		
 		$pages = explode('/', uri_string());
 		
 		if(count($pages) > 1) // Admin start from /admin root so path is starting from 1.
 		{
-			$page = $pages[count($pages) - 1];
+			$pages = array_slice($pages, 1);
+			$page = join('/', $pages);
 		}
 		else
 		{
 			$page = null;
 		}
+		
+		$css_include_list = array();
+		$js_include_list = array();
+		
+		$page_accum = "";
+		
+		foreach($pages as $page)
+		{
+			$page_accum .= $page;
+			
+			$page_path = base_url('assets/css/admin/' . $page_accum . '.css');
+			$real_path = realpath($page_path);
+			
+			if(file_exists($real_path))
+				array_push($css_include_list, $page_path);
+
+			$page_path = base_url('js/app/admin/' . $page_accum . '.js');
+			$real_path = realpath($page_path);
+
+			if(file_exists($real_path))
+				array_push($js_include_list, $page_path);
+			
+			$page_accum .= '/';
+		}
 	?>
 	
-	<?php if($page) : ?>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/admin/' . $page . '.css')?>"/>
-	<?php endif ?>
+	<?php foreach($css_include_list as $item) : ?>
+	<link rel="stylesheet" type="text/css" href="<?php echo $item?>"/>
+	<?php endforeach ?>
 	
 	<base href="<?php echo current_url() ?>/" />
 </head>
@@ -48,10 +74,9 @@
 	
 	<script type="text/javascript" src="<?php echo base_url('js/app/modal.js')?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('js/app/admin.js')?>"></script>
-	<script type="text/javascript" src="<?php echo base_url('js/app/admin/cms.js')?>"></script>
 	
-	<?php if($page) : ?>
-	<script type="text/javascript" src="<?php echo base_url('js/app/admin/' . $page . '.js')?>"></script>
-	<?php endif ?>
+	<?php foreach($js_include_list as $item) : ?>
+	<script type="text/javascript" src="<?php echo $item?>"></script>
+	<?php endforeach ?>
 </body>
 </html>

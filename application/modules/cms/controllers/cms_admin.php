@@ -9,7 +9,7 @@ class Cms_admin extends MX_Controller {
 
 	function general()
 	{
-		echo "This is general admin";
+		$this->load->view("general");
 	}
 
 	function navigations()
