@@ -9,3 +9,22 @@
 	right: -20px;
 	top: 8px;
 }
+
+.n-code-block {
+	
+	padding: 10px;
+	background: #fafafa;
+	font: 12px / 18px Consolas,monospace,serif;
+	color: #444;
+	-moz-tab-size: 4;
+	tab-size: 4;
+	overflow: auto;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+}
+
+.n-code-block code {
+
+	background: transparent;
+	border: none;	
+}

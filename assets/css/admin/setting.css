@@ -2,3 +2,9 @@
 	
 	padding: 10px;
 }
+
+.n-setting-details {
+	
+	background: #ddd;
+	box-shadow: inset 1px 1px 9px black;
+}
