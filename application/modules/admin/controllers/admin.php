@@ -42,6 +42,8 @@ class Admin extends Admin_Controller {
         
         $this->data['current_display_name'] = $display_name;
         $this->data['menu_items'] = $this->read_module_menu_items();
+        
+        $this->lang->load('general');
     }
 
 	protected function authenticate()

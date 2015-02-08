@@ -17,6 +17,9 @@ class Admin_Controller extends MY_Controller {
 	    $this->load->helper("file");
 	    $dirs = get_dir_file_info(APPPATH.'modules', TRUE);
 	    
+	    // Default admin menu language.
+	    $this->lang->load('menu');
+	    
 	    $menu_items = array();
 	    
 	    foreach($dirs as $dir)

@@ -28,9 +28,12 @@ function page_title()
 	$path_array = explode("/", $url);
 	
 	if(count($path_array) == 1)
+	{
+		echo lang("admin_menu_home");
 		return;
+	}
 	
-	echo $path_array[1];
+	echo lang(sprintf("%s_menu_%s", $path_array[1], $path_array[2]));
 }
 	
 ?>
@@ -43,17 +46,17 @@ function page_title()
 			    	<img src="<?= base_url('assets/images/logo.png') ?>" width="50px" />
 		    	</div>
             	<div class="n-current-login uk-text-center">
-                	Welcome <?= $current_display_name ?>
+                	<?= lang("admin_welcome") ?> <?= $current_display_name ?>
             	</div>
             	<div class="n-menu-header uk-text-center">
-                	Main Menu
+                	<?= lang("admin_main_menu") ?>
             	</div>
 		    </div>
 	        <ul class="n-items uk-nav uk-nav-offcanvas">
 	            <li <?php active_if_page_or_null('index') ?>>
 	                <a href="<?= base_url('admin/') ?>">
 	                	<i class="uk-icon-home uk-icon-small"></i>
-	                	Home
+	                	<?= lang("admin_menu_home") ?>
 	                </a>
 	            </li>
 	            <?php foreach($menu_items as $item) : ?>

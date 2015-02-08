@@ -12,7 +12,7 @@ $module_menu_items = array(
 	array(
 		'icon' => 'sitemap',
 		'path' => 'admin/cms/navigations',
-		'name' => lang('cms_menu_nav'),
+		'name' => lang('cms_menu_navigations'),
 		'link' => base_url('admin/cms/navigations')
 	),
 	
