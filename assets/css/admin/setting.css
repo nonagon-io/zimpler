@@ -1,6 +1,24 @@
 .n-content {
 	
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
 	padding: 10px;
+	
+	overflow: auto;
+	border-bottom: 1px solid #ccc;
+	
+    -webkit-transition: bottom 0.3s ease-in-out;
+    -moz-transition: bottom 0.3s ease-in-out;
+    -o-transition: bottom 0.3s ease-in-out;
+    transition: bottom 0.3s ease-in-out;
+}
+
+.n-content.n-semi-collapse {
+	
+	bottom: 51px;
 }
 
 .n-setting-details {

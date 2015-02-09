@@ -141,6 +141,53 @@ body {
 	margin: 9px 10px 10px 10px;
 }
 
+.n-footer {
+	
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	height: 50px;
+	
+	background: #efefef;
+	border-top: 1px solid #fefefe;
+	
+    -webkit-transition: height 0.3s ease-in-out;
+    -moz-transition: height 0.3s ease-in-out;
+    -o-transition: height 0.3s ease-in-out;
+    transition: height 0.3s ease-in-out;
+}
+
+.n-footer.ng-hide {
+
+	height: 0px;
+	display: block !important;
+}
+
+.n-footer .n-scroll-for-more {
+	
+	position: absolute;
+	top: -18px;
+	width: 100px;
+	height: 18px;
+	left: 50%;
+	
+	margin-left: -50px;
+	
+	text-align: center;
+	font-size: 12px;
+	font-family: FontAwesome;
+	border-radius: 5px 5px 0 0;
+	
+	background: rgba(0,0,0,0.3);
+	color: white;
+}
+
+.n-footer .n-scroll-for-more:after {
+	
+	content: "\f078"
+}
+
 .n-table thead th {
 	
 	background: #feffff;
@@ -255,30 +302,6 @@ body {
 	
 	border-top: 1px solid #ccc;
 	border-bottom: 1px solid #efefef;
-}
-
-.n-properties-panel > .n-footer .n-scroll-for-more {
-	
-	position: absolute;
-	top: -18px;
-	width: 100px;
-	height: 18px;
-	left: 50%;
-	
-	margin-left: -50px;
-	
-	text-align: center;
-	font-size: 12px;
-	font-family: FontAwesome;
-	border-radius: 5px 5px 0 0;
-	
-	background: rgba(0,0,0,0.3);
-	color: white;
-}
-
-.n-properties-panel > .n-footer .n-scroll-for-more:after {
-	
-	content: "\f078"
 }
 
 .n-properties-panel > .n-footer button {

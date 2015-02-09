@@ -205,7 +205,11 @@ angular.module("admin", ['generic-modal', 'ngAnimate'])
 
 .controller('AdminController', function($scope, $rootScope, $locale) {
 	
+	var mainContentBody = $(".n-body .n-content");
 	var propertiesBody = $(".n-properties-panel .n-body");
+
+	$scope.mainContentBodyScrollTop = 0;
+	$scope.mainContentBodyScrollMaxReached = false;
 	
 	$rootScope.isPropertiesPanelOpen = false;
 	
@@ -236,6 +240,17 @@ angular.module("admin", ['generic-modal', 'ngAnimate'])
 			
 			$scope.propertyPanelScrollTop = propertiesBody.scrollTop();
 			$scope.propertyPanelScrollMaxReached = scrollBottom >= propertiesBody.prop("scrollHeight");
+		});
+	});
+	
+	$(".n-body .n-content").on("scroll", function() {
+		
+		$scope.$apply(function() {
+			
+			var scrollBottom = mainContentBody.scrollTop() + mainContentBody.outerHeight();
+			
+			$scope.mainContentBodyScrollTop = mainContentBody.scrollTop();
+			$scope.mainContentBodyScrollMaxReached = scrollBottom >= mainContentBody.prop("scrollHeight");
 		});
 	});
 	

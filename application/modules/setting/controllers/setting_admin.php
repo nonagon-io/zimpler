@@ -10,23 +10,25 @@ class Setting_admin extends MX_Controller {
 
 	function general()
 	{
-		if($this->input->server("AWS-ACCESS-KEY-ID") && $this->input->server("AWS-SECRET-ACCESS-KEY"))
-		{
-			$access_key = $this->input->server("AWS-ACCESS-KEY-ID");
+		$access_key = $this->input->server("AWS_ACCESS_KEY_ID");
+		if($access_key)
 			$access_key = "********************".substr($access_key, count($access_key) - 5);
-			
-			$secret = $this->input->server("AWS-SECRET-ACCESS-KEY");
+		
+		$secret = $this->input->server("AWS_SECRET_ACCESS_KEY");
+		if($secret)
 			$secret = "********************".substr($secret, count($secret) - 5);
-		}
-		else
-		{
-			$access_key = null;
-			$secret = null;
-		}
+		
+		$email_username = $this->input->server("EMAIL_USERNAME");
+			
+		$email_password = $this->input->server("EMAIL_PASSWORD");
+		if($email_password)
+			$email_password = "****************";
 		
 		$this->data = array(
 			"aws_access_key_id"	=> $access_key,
-			"aws_secret_access_key" => $secret
+			"aws_secret_access_key" => $secret,
+			"email_username" => $email_username,
+			"email_password" => $email_password
 		);
 		
 		$this->load->view("setting", $this->data);

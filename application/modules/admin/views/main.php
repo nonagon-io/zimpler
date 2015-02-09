@@ -78,7 +78,7 @@ function page_title()
 	</div>
 	<div class="uk-width-2-3 uk-width-medium-3-4 uk-width-large-4-5 uk-height-1-1" style="padding-left: 0px">
 		<div class="n-view-host uk-height-1-1">
-			<div class="n-title">
+			<div class="n-title" ng-class="{'n-drop-shadow': mainContentBodyScrollTop > 0}">
 				<div class="uk-grid">
 					<div class="uk-width-1-2">
 						<h2 style="text-transform: capitalize">
@@ -94,6 +94,13 @@ function page_title()
 			</div>
 			<div class="n-body">
 				<?php echo $sub_content ?>
+			</div>
+			<div class="n-footer ng-hide" ng-show="mainForm.$dirty">
+				<div class="n-scroll-for-more ng-hide" 
+					 title="Scroll down for more" 
+					 data-uk-tooltip=""
+					 ng-show="!mainContentBodyScrollMaxReached"></div>
+				<div class="n-top-border"></div>
 			</div>
 		</div>
 	</div>
