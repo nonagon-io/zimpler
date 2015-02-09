@@ -156,12 +156,34 @@ body {
     -moz-transition: height 0.3s ease-in-out;
     -o-transition: height 0.3s ease-in-out;
     transition: height 0.3s ease-in-out;
+    
+    display: block;
 }
 
 .n-footer.ng-hide {
 
 	height: 0px;
 	display: block !important;
+}
+
+.n-footer.ng-hide-remove .n-commands {
+	
+	display: block !important;
+}
+
+.n-footer.ng-hide-add .n-commands {
+	
+	display: block !important;
+}
+
+.n-footer .n-commands {
+	
+	margin: 8px 10px 0 0;
+}
+
+.n-footer.ng-hide .n-commands {
+
+	display: none !important;
 }
 
 .n-footer .n-scroll-for-more {
@@ -376,6 +398,15 @@ body {
 .uk-htmleditor-preview {
 	
 	min-height: 500px !important;
+}
+
+.n-abs-fit {
+	
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
 }
 
 .gmnoprint img {

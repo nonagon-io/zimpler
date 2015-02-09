@@ -1,5 +1,5 @@
-<div class="n-content" ng-class="{'n-semi-collapse': mainForm.$dirty}">
-	<form name="mainForm" class="uk-form" novalidate="">
+<form name="mainForm" class="uk-form n-abs-fit" novalidate="">
+	<div class="n-content" ng-class="{'n-semi-collapse': mainForm.$dirty}">
 		<div class="uk-panel uk-panel-box">
 			<div class="uk-panel-title">
 				<?= lang("setting_content_approval_title") ?>
@@ -161,7 +161,7 @@
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
 					<input type="radio" name="emailOption" id="emailOptionSendMail" value="sendmail"
 						   ng-model="emailOption" />
-					<label for="emailOptionSendMail">SendMail</label>
+					<label for="emailOptionSendMail"><?= lang("setting_email_send_mail") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
 					<?= lang("setting_email_send_mail_desc") ?>
@@ -183,7 +183,7 @@
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
 					<input type="radio" name="emailOption" id="emailOptionSMTP" value="smtp"
 						   ng-model="emailOption" />
-					<label for="emailOptionSMTP">SMTP</label>
+					<label for="emailOptionSMTP"><?= lang("setting_email_smtp") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
 					<?= lang("setting_email_smtp_desc") ?>
@@ -254,17 +254,39 @@
 			<hr/>
 			<div class="uk-margin-small-top uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
-					<input type="radio" name="emailOption" id="emailOptionExternal" value="gae"
+					<input type="radio" name="emailOption" id="emailOptionGAE" value="gae"
 						   ng-model="emailOption" />
-					<label for="emailOptionExternal"><?= lang("setting_email_external") ?></label>
+					<label for="emailOptionGAE"><?= lang("setting_email_gae") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
-					<?= lang("setting_email_external_desc") ?>
+					<?= lang("setting_email_gae_desc") ?>
 				</div>
 			</div>
 		</div>
-	</form>
-</div>
+	</div>
+	<div class="n-footer ng-hide" ng-show="mainForm.$dirty">
+		<div class="n-scroll-for-more ng-hide" 
+			 title="Scroll down for more" 
+			 data-uk-tooltip=""
+			 ng-show="!mainContentBodyScrollMaxReached"></div>
+		<div class="n-top-border"></div>
+		<div class="n-commands uk-grid">
+			<div class="uk-width-2-3">
+				&nbsp;
+			</div>
+			<div class="uk-width-1-3 uk-text-right">
+				<button type="button" class="uk-button uk-button-success" 
+						style="width: 100px" ng-click="save()">
+					Save
+				</button>
+				<button type="button" class="uk-button" style="width: 100px"
+						ng-click="mainForm.$setPristine(); mainForm.$setUntouched();">
+					Cancel
+				</button>
+			</div>
+		</div>
+	</div>
+</form>
 
 <div id="aws-key-instruction" class="uk-modal">
     <div class="uk-modal-dialog">

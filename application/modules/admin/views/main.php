@@ -95,13 +95,6 @@ function page_title()
 			<div class="n-body">
 				<?php echo $sub_content ?>
 			</div>
-			<div class="n-footer ng-hide" ng-show="mainForm.$dirty">
-				<div class="n-scroll-for-more ng-hide" 
-					 title="Scroll down for more" 
-					 data-uk-tooltip=""
-					 ng-show="!mainContentBodyScrollMaxReached"></div>
-				<div class="n-top-border"></div>
-			</div>
 		</div>
 	</div>
 	<?php $this->load->view("modal") ?>

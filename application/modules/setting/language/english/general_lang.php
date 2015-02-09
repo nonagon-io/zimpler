@@ -65,7 +65,7 @@ $lang['setting_file_upload_database_desc'] =
 	
 $lang['setting_file_upload_s3_desc'] =
 	'If hosting on PaaS, this option is recommended. However, there is a cost if your site '.
-	'generate a lot of traffic to the storage. Checkout S3 pricing here: '.
+	'generates a lot of traffic to the storage. Checkout S3 pricing here: '.
 	'<a href="http://aws.amazon.com/s3/pricing/" target="_blank">aws.amazon.com/s3/pricing</a>';
 	
 $lang['setting_file_upload_fs_root'] = 'Root Path';
@@ -101,7 +101,9 @@ $lang['setting_aws_instruction_title'] =
 $lang['setting_email_title'] = 'Email Sending';
 $lang['setting_email_disabled'] = 'Disable Email Sending';
 $lang['setting_email_build_in'] = 'Using Build-in Email';
-$lang['setting_email_external'] = 'Using GAE API';
+$lang['setting_email_send_mail'] = 'Using SendMail';
+$lang['setting_email_smtp'] = 'Using SMTP';
+$lang['setting_email_gae'] = 'Using GAE API';
 
 $lang['setting_email_disabled_desc'] = 
 	'No email sending feature on this site.';
@@ -120,7 +122,7 @@ $lang['setting_email_smtp_desc'] =
 	'Connect to SMTP server to send email. All information about SMTP server '.
 	'including the credential are required.';
 	
-$lang['setting_email_external_desc'] = 
+$lang['setting_email_gae_desc'] = 
 	'Only use this option if hosing on Google App Engine.';
 	
 $lang['setting_email_warning'] =
