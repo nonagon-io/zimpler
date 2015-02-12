@@ -53,6 +53,13 @@ class Admin extends Admin_Controller {
 
 	public function index($sub_module = null, $section = null)
 	{
+		$this->load->model("setting/setting_model");
+		if(!$this->setting_model->is_any_entry() && $sub_module != "setting")
+		{
+			redirect(base_url("admin/setting/general"));
+			return;
+		}
+		
 		if($sub_module == null)
 		{
 			$this->data['sub_content'] = $this->load->view('subs/home', $this->data, TRUE);

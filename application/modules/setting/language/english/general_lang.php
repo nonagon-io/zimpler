@@ -1,5 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 	
+$lang['setting_instruction'] = 
+	'Please review your configuration and made any changes as your want. '.
+	'Remember, you can come back to change it at anytime.';
+
 $lang['setting_general_security_intro'] =
     'Due to the security concerns, Zimpler will just force you to always use environment variable '.
     'to store any secret data instead of database or configuration file.';
@@ -43,47 +47,45 @@ $lang['setting_content_approval_disabled_desc'] =
 $lang['setting_content_approval_enabled_desc'] = 
 	'Content created by lower level users will need to be approved by content supervisor in order to publish.';
 
-$lang['setting_file_upload_title'] = 'File Manager';
-$lang['setting_file_upload_disabled'] = 'Disable File Manager';
-$lang['setting_file_upload_file_system'] = 'Using File System';
-$lang['setting_file_upload_database'] = 'Using Database';
-$lang['setting_file_upload_s3'] = 'Using Amazon S3';
-$lang['setting_file_upload_gcloud'] = 'Using Google Cloud';
+$lang['setting_file_manager_title'] = 'File Manager';
+$lang['setting_file_manager_disabled'] = 'Disable File Manager';
+$lang['setting_file_manager_file_system'] = 'Using File System';
+$lang['setting_file_manager_database'] = 'Using Database';
+$lang['setting_file_manager_s3'] = 'Using Amazon S3';
+$lang['setting_file_manager_gcloud'] = 'Using Google Cloud';
 
-$lang['setting_file_upload_file_disabled_desc'] =
-	'File upload is not allowed for anyone. All resources will need to be manually '.
-	'uploaded. If hosting on PaaS such as Heroku, make sure you have all required '.
-	'resources bundled with the source code.';
+$lang['setting_file_manager_file_disabled_desc'] =
+	'Choose this option if lower level users do not need to upload or manage resource files.';
 
-$lang['setting_file_upload_file_system_desc'] =
+$lang['setting_file_manager_file_system_desc'] =
 	'This option is recommended on your own host or event a share hosting. But do not use this option if hosting on PaaS '.
 	'because the uploaded files usually being wiped out when a new version published. ';
 	
-$lang['setting_file_upload_database_desc'] =
+$lang['setting_file_manager_database_desc'] =
 	'This option is not recommended due to the performance penalty. '.
-	'But some web-hosting or in some environment might force you to use the database. '.
+	'But some web-hosting or in some environment might require you to use the database anyway. '.
 	'So use this option if you really need to.';
 	
-$lang['setting_file_upload_s3_desc'] =
+$lang['setting_file_manager_s3_desc'] =
 	'If hosting on PaaS, this option is recommended. However, there is a cost if your site '.
 	'generates a lot of traffic to the storage. Checkout S3 pricing here: '.
 	'<a href="http://aws.amazon.com/s3/pricing/" target="_blank">aws.amazon.com/s3/pricing</a>';
 	
-$lang['setting_file_upload_gcloud_desc'] =
+$lang['setting_file_manager_gcloud_desc'] =
 	'If hosing on Google App Engine, use this option. You have to enable Google Cloud Storage API, '.
 	'and create a bucket in order to use. See more details here: '.
 	'<a href="https://cloud.google.com/storage/" target="_blank">cloud.google.com/storage</a>';
 	
-$lang['setting_file_upload_fs_root'] = 'Root Path';
-$lang['setting_file_upload_fs_root_placeholder'] = 
+$lang['setting_file_manager_fs_root'] = 'Root Path';
+$lang['setting_file_manager_fs_root_placeholder'] = 
 	'Enter path which will store uploaded resources relative to your web root directory (e.g. /files)';
-$lang['setting_file_upload_fs_root_require_error'] = 'Root Path is required';
+$lang['setting_file_manager_fs_root_require_error'] = 'Root Path is required';
 	
-$lang['setting_file_upload_db_table'] = 'Table Name';
-$lang['setting_file_upload_db_table_placeholder'] = 
+$lang['setting_file_manager_db_table'] = 'Table Name';
+$lang['setting_file_manager_db_table_placeholder'] = 
 	'Enter database table to store the image. Validation will fail if table already exists but incompatible.';
-$lang['setting_file_upload_db_table_require_error'] = 'Table Name is required';
-$lang['setting_file_upload_db_table_pattern_error'] = 'Invalid Table Name';
+$lang['setting_file_manager_db_table_require_error'] = 'Table Name is required';
+$lang['setting_file_manager_db_table_pattern_error'] = 'Invalid Table Name';
 	
 $lang['setting_aws_warning'] =
 	'For security reason, AWS Access Key ID and AWS Secret Access Key must be setup '.

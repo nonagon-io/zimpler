@@ -1,6 +1,12 @@
 <form name="mainForm" class="uk-form n-abs-fit" novalidate="">
 	<div class="n-content" ng-class="{'n-semi-collapse': mainForm.$dirty}">
-		<div class="uk-panel uk-panel-box">
+		<?php if($setting_instruction) : ?>
+		<div class="uk-alert uk-alert-primary uk-margin-bottom uk-text-center">
+			<?= $setting_instruction ?>
+		</div>
+		<?php endif ?>
+
+		<div class="uk-panel uk-panel-box" ng-init="approvalOption = '<?= $approval_option ?>'">
 			<div class="uk-panel-title">
 				<?= lang("setting_content_approval_title") ?>
 				<hr/>
@@ -8,7 +14,7 @@
 			<div class="uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
 					<input type="radio" name="approvalOption" id="approvalOptionDisable" 
-						   ng-model="approvalOption" value="disable" checked="">
+						   ng-model="approvalOption" value="disable">
 					<label for="approvalOptionDisable"><?= lang("setting_content_approval_disabled") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
@@ -28,93 +34,93 @@
 			</div>
 		</div>
 		
-		<div class="uk-panel uk-panel-box uk-margin-top">
+		<div class="uk-panel uk-panel-box uk-margin-top" ng-init="fileManagerOption = '<?= $file_manager_option ?>'">
 			<div class="uk-panel-title">
-				<?= lang("setting_file_upload_title") ?>
+				<?= lang("setting_file_manager_title") ?>
 				<hr/>
 			</div>
 			<div class="uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
-					<input type="radio" name="uploadOption" id="uploadOptionDisable" 
-						   ng-model="uploadOption" value="disable" checked="" />
-					<label for="uploadOptionDisable"><?= lang("setting_file_upload_disabled") ?></label>
+					<input type="radio" name="fileManagerOption" id="fileManagerOptionDisable" 
+						   ng-model="fileManagerOption" value="disable" checked="" />
+					<label for="fileManagerOptionDisable"><?= lang("setting_file_manager_disabled") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
-					<?= lang("setting_file_upload_file_disabled_desc") ?>
+					<?= lang("setting_file_manager_file_disabled_desc") ?>
 				</div>
 			</div>
 			<hr/>
 			<div class="uk-margin-small-top uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
-					<input type="radio" name="uploadOption" id="uploadOptionFileSystem" value="file" 
-						   ng-model="uploadOption" />
-					<label for="uploadOptionFileSystem"><?= lang("setting_file_upload_file_system") ?></label>
+					<input type="radio" name="fileManagerOption" id="fileManagerOptionFileSystem" value="file" 
+						   ng-model="fileManagerOption" />
+					<label for="fileManagerOptionFileSystem"><?= lang("setting_file_manager_file_system") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
-					<?= lang("setting_file_upload_file_system_desc") ?>
+					<?= lang("setting_file_manager_file_system_desc") ?>
 				</div>
 			</div>
 			<div class="uk-margin-top uk-panel uk-panel-box n-setting-details ng-hide"
-				 ng-show="uploadOption == 'file'">
-				<label class="uk-form-label" for="uploadFilePath">
-					<?= lang("setting_file_upload_fs_root") ?>
+				 ng-show="fileManagerOption == 'file'">
+				<label class="uk-form-label" for="filePath">
+					<?= lang("setting_file_manager_fs_root") ?>
 					<i class="uk-icon-times-circle uk-text-danger" 
-					   title="<?= lang("setting_file_upload_fs_root_require_error") ?>"
+					   title="<?= lang("setting_file_manager_fs_root_require_error") ?>"
 					   data-uk-tooltip="{pos:'right'}"
-					   ng-show="mainForm.uploadFilePath.$error.required && mainForm.$submitted"></i>
+					   ng-show="mainForm.filePath.$error.required && mainForm.$submitted"></i>
 				</label>
-				<input type="text" class="uk-width-1-1 uk-margin-small-top" id="uploadFilePath" 
-					   name="uploadFilePath" ng-model="uploadFilePath"
-					   ng-class="{'uk-form-danger': mainForm.uploadFilePath.$error.required && mainForm.$submitted }"
-					   placeholder="<?= lang("setting_file_upload_fs_root_placeholder") ?>"
-					   maxlength="255" ng-required="uploadOption == 'file'" />
+				<input type="text" class="uk-width-1-1 uk-margin-small-top" id="filePath" 
+					   name="filePath" ng-model="filePath"
+					   ng-class="{'uk-form-danger': mainForm.filePath.$error.required && mainForm.$submitted }"
+					   placeholder="<?= lang("setting_file_manager_fs_root_placeholder") ?>"
+					   maxlength="255" ng-required="fileManagerOption == 'file'" />
 			</div>
 			<hr/>
 			<div class="uk-margin-small-top uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
-					<input type="radio" name="uploadOption" id="uploadOptionDatabase" value="db" 
-						   ng-model="uploadOption" />
-					<label for="uploadOptionDatabase"><?= lang("setting_file_upload_database") ?></label>
+					<input type="radio" name="fileManagerOption" id="fileManagerOptionDatabase" value="db" 
+						   ng-model="fileManagerOption" />
+					<label for="fileManagerOptionDatabase"><?= lang("setting_file_manager_database") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
-					<?= lang("setting_file_upload_database_desc") ?>
+					<?= lang("setting_file_manager_database_desc") ?>
 				</div>
 			</div>
 			<div class="uk-margin-top uk-panel uk-panel-box n-setting-details ng-hide"
-				 ng-show="uploadOption == 'db'">
-				<label class="uk-form-label" for="uploadDbTable">
-					<?= lang("setting_file_upload_db_table") ?>
+				 ng-show="fileManagerOption == 'db'">
+				<label class="uk-form-label" for="dbTableName">
+					<?= lang("setting_file_manager_db_table") ?>
 					<i class="uk-icon-times-circle uk-text-danger" 
-					   title="<?= lang("setting_file_upload_db_table_require_error") ?>"
+					   title="<?= lang("setting_file_manager_db_table_require_error") ?>"
 					   data-uk-tooltip="{pos:'right'}"
-					   ng-show="mainForm.uploadDbTable.$error.required && mainForm.$submitted"></i>
+					   ng-show="mainForm.dbTableName.$error.required && mainForm.$submitted"></i>
 					<i class="uk-icon-times-circle uk-text-danger" 
-					   title="<?= lang("setting_file_upload_db_table_pattern_error") ?>"
+					   title="<?= lang("setting_file_manager_db_table_pattern_error") ?>"
 					   data-uk-tooltip="{pos:'right'}"
-					   ng-show="mainForm.uploadDbTable.$error.pattern && mainForm.$submitted"></i>
+					   ng-show="mainForm.dbTableName.$error.pattern && mainForm.$submitted"></i>
 				</label>
-				<input type="text" class="uk-width-1-1 uk-margin-small-top" id="uploadDbTable" 
-					   name="uploadDbTable" ng-model="uploadDbTable"
+				<input type="text" class="uk-width-1-1 uk-margin-small-top" id="dbTableName" 
+					   name="dbTableName" ng-model="dbTableName"
 					   ng-class="{'uk-form-danger': (
-					   		mainForm.uploadDbTable.$error.required ||
-					   		mainForm.uploadDbTable.$error.pattern) && mainForm.$submitted }"
-					   placeholder="<?= lang("setting_file_upload_db_table_placeholder") ?>"
-					   pattern="{{uploadOption == 'db' ? '[a-zA-Z0-9][\\w#@]{0,127}$' : ''}}"
-					   maxlength="20" ng-required="uploadOption == 'db'" />
+					   		mainForm.dbTableName.$error.required ||
+					   		mainForm.dbTableName.$error.pattern) && mainForm.$submitted }"
+					   placeholder="<?= lang("setting_file_manager_db_table_placeholder") ?>"
+					   pattern="{{fileManagerOption == 'db' ? '[a-zA-Z0-9][\\w#@]{0,127}$' : ''}}"
+					   maxlength="20" ng-required="fileManagerOption == 'db'" />
 			</div>
 			<hr/>
 			<div class="uk-margin-small-top uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
-					<input type="radio" name="uploadOption" id="uploadOptionS3" value="s3" 
-						   ng-model="uploadOption" />
-					<label for="uploadOptionS3"><?= lang("setting_file_upload_s3") ?></label>
+					<input type="radio" name="fileManagerOption" id="fileManagerOptionS3" value="s3" 
+						   ng-model="fileManagerOption" />
+					<label for="fileManagerOptionS3"><?= lang("setting_file_manager_s3") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
-					<?= lang("setting_file_upload_s3_desc") ?>
+					<?= lang("setting_file_manager_s3_desc") ?>
 				</div>
 			</div>
 			<div class="uk-margin-top uk-panel uk-panel-box n-setting-details ng-hide"
-				 ng-show="uploadOption == 's3'">
+				 ng-show="fileManagerOption == 's3'">
 				<?php if(!($aws_access_key_id && $aws_secret_access_key)) : ?>
 				<div class="uk-alert uk-alert-warning">
 					<?= lang("setting_aws_warning") ?>
@@ -124,96 +130,96 @@
 					<?= lang("setting_aws_success") ?>
 				</div>
 				<?php endif ?>
-				<div>
-					<label class="uk-form-label uk-text-primary" for="uploadS3Key">
+				<div ng-init="S3Key = '<?= $aws_access_key_id ?>'">
+					<label class="uk-form-label uk-text-primary" for="S3Key">
 						AWS Access Key ID
 						<i class="uk-icon-times-circle uk-text-danger" 
 						   title="<?= lang("setting_aws_access_key_id_require_error") ?>"
 						   data-uk-tooltip="{pos:'right'}"
-						   ng-show="mainForm.uploadS3Key.$error.required && mainForm.$submitted"></i>
+						   ng-show="mainForm.S3Key.$error.required && mainForm.$submitted"></i>
 					</label>
-					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="uploadS3Key" 
-						   name="uploadS3Key" ng-model="uploadS3Key"
-						   ng-class="{'uk-form-danger': mainForm.uploadS3Key.$error.required && mainForm.$submitted }"
+					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="S3Key" 
+						   name="S3Key" ng-model="S3Key"
+						   ng-class="{'uk-form-danger': mainForm.S3Key.$error.required && mainForm.$submitted }"
 						   placeholder="<?= lang("setting_aws_access_key_id_placeholder") ?>" maxlength="200"
-						   value="<?= $aws_access_key_id ?>" readonly 
-						   ng-required="uploadOption == 's3'" />
+						   readonly 
+						   ng-required="fileManagerOption == 's3'" />
 				</div>
-				<div class="uk-margin-small-top">
-					<label class="uk-form-label uk-text-primary" for="uploadS3Secret">
+				<div class="uk-margin-small-top" ng-init="S3Secret = '<?= $aws_secret_access_key ?>'">
+					<label class="uk-form-label uk-text-primary" for="S3Secret">
 						AWS Secret Access Key
 						<i class="uk-icon-times-circle uk-text-danger" 
 						   title="<?= lang("setting_aws_secret_access_key_require_error") ?>"
 						   data-uk-tooltip="{pos:'right'}"
-						   ng-show="mainForm.uploadS3Secret.$error.required && mainForm.$submitted"></i>
+						   ng-show="mainForm.S3Secret.$error.required && mainForm.$submitted"></i>
 					</label>
-					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="uploadS3Secret" 
-						   name="uploadS3Secret" ng-model="uploadS3Secret"
-						   ng-class="{'uk-form-danger': mainForm.uploadS3Secret.$error.required && mainForm.$submitted }"
+					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="S3Secret" 
+						   name="S3Secret" ng-model="S3Secret"
+						   ng-class="{'uk-form-danger': mainForm.S3Secret.$error.required && mainForm.$submitted }"
 						   placeholder="<?= lang("setting_aws_secret_access_key_placeholder") ?>" maxlength="200"
-						   value="<?= $aws_secret_access_key ?>" readonly 
-						   ng-required="uploadOption == 's3'" />
+						   readonly 
+						   ng-required="fileManagerOption == 's3'" />
 				</div>
-				<div class="uk-margin-small-top">
-					<label class="uk-form-label" for="uploadS3Bucket">
+				<div class="uk-margin-small-top" ng-init="S3Bucket = '<?= $s3_bucket ?>'">
+					<label class="uk-form-label" for="S3Bucket">
 						Bucket
 						<i class="uk-icon-times-circle uk-text-danger" 
 						   title="<?= lang("setting_aws_bucket_require_error") ?>"
 						   data-uk-tooltip="{pos:'right'}"
-						   ng-show="mainForm.uploadS3Bucket.$error.required && mainForm.$submitted"></i>
+						   ng-show="mainForm.S3Bucket.$error.required && mainForm.$submitted"></i>
 						<i class="uk-icon-times-circle uk-text-danger" 
 						   title="<?= lang("setting_aws_bucket_pattern_error") ?>"
 						   data-uk-tooltip="{pos:'right'}"
-						   ng-show="mainForm.uploadS3Bucket.$error.pattern && mainForm.$submitted"></i>
+						   ng-show="mainForm.S3Bucket.$error.pattern && mainForm.$submitted"></i>
 					</label>
-					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="uploadS3Bucket" 
-						   name="uploadS3Bucket" ng-model="uploadS3Bucket"
+					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="S3Bucket" 
+						   name="S3Bucket" ng-model="S3Bucket"
 						   ng-class="{'uk-form-danger': (
-						   		mainForm.uploadS3Bucket.$error.required ||
-						   		mainForm.uploadS3Bucket.$error.pattern) && mainForm.$submitted }"
+						   		mainForm.S3Bucket.$error.required ||
+						   		mainForm.S3Bucket.$error.pattern) && mainForm.$submitted }"
 						   placeholder="<?= lang("setting_aws_bucket_placeholder") ?>"
-						   pattern="{{uploadOption == 's3' ? '^[a-z0-9](-*[a-z0-9]){2,62}$' : ''}}"
-						   maxlength="63" ng-required="uploadOption == 's3'" />
+						   pattern="{{fileManagerOption == 's3' ? '^[a-z0-9](-*[a-z0-9]){2,62}$' : ''}}"
+						   maxlength="63" ng-required="fileManagerOption == 's3'" />
 				</div>
 			</div>
 			<hr/>
 			<div class="uk-margin-small-top uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
-					<input type="radio" name="uploadOption" id="uploadOptionGCloud" value="gcloud" 
-						   ng-model="uploadOption" />
-					<label for="uploadOptionGCloud"><?= lang("setting_file_upload_gcloud") ?></label>
+					<input type="radio" name="fileManagerOption" id="fileManagerOptionGCloud" value="gcloud" 
+						   ng-model="fileManagerOption" />
+					<label for="fileManagerOptionGCloud"><?= lang("setting_file_manager_gcloud") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
-					<?= lang("setting_file_upload_gcloud_desc") ?>
+					<?= lang("setting_file_manager_gcloud_desc") ?>
 				</div>
 			</div>
 			<div class="uk-margin-top uk-panel uk-panel-box n-setting-details ng-hide"
-				 ng-show="uploadOption == 'gcloud'">
-				<div class="uk-margin-small-top">
-					<label class="uk-form-label" for="uploadGcloudBucket">
+				 ng-show="fileManagerOption == 'gcloud'">
+				<div class="uk-margin-small-top" ng-init="GcloudBucket = '<?= $gcloud_bucket ?>'">
+					<label class="uk-form-label" for="GcloudBucket">
 						Bucket
 						<i class="uk-icon-times-circle uk-text-danger" 
 						   title="<?= lang("setting_gcloud_bucket_require_error") ?>"
 						   data-uk-tooltip="{pos:'right'}"
-						   ng-show="mainForm.uploadGcloudBucket.$error.required && mainForm.$submitted"></i>
+						   ng-show="mainForm.GcloudBucket.$error.required && mainForm.$submitted"></i>
 						<i class="uk-icon-times-circle uk-text-danger" 
 						   title="<?= lang("setting_gcloud_bucket_pattern_error") ?>"
 						   data-uk-tooltip="{pos:'right'}"
-						   ng-show="mainForm.uploadGcloudBucket.$error.pattern && mainForm.$submitted"></i>
+						   ng-show="mainForm.GcloudBucket.$error.pattern && mainForm.$submitted"></i>
 					</label>
-					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="uploadS3Bucket" 
-						   name="uploadGcloudBucket" ng-model="uploadGcloudBucket"
+					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="GcloudBucket" 
+						   name="GcloudBucket" ng-model="GcloudBucket"
 						   ng-class="{'uk-form-danger': (
-						   		mainForm.uploadGcloudBucket.$error.required ||
-						   		mainForm.uploadGcloudBucket.$error.pattern) && mainForm.$submitted }"
+						   		mainForm.GcloudBucket.$error.required ||
+						   		mainForm.GcloudBucket.$error.pattern) && mainForm.$submitted }"
 						   placeholder="<?= lang("setting_gcloud_bucket_placeholder") ?>"
-						   pattern="{{uploadOption == 'gcloud' ? '^[0-9a-z]((-*|\.{0,1})[a-z0-9]){2,62}' : ''}}"
-						   maxlength="30" ng-required="uploadOption == 'gcloud'" />
+						   pattern="{{fileManagerOption == 'gcloud' ? '^[0-9a-z]((-*|\.{0,1})[a-z0-9]){2,62}' : ''}}"
+						   maxlength="30" ng-required="fileManagerOption == 'gcloud'" />
 				</div>
 			</div>
 		</div>
 		
-		<div class="uk-panel uk-panel-box uk-margin-top">
+		<div class="uk-panel uk-panel-box uk-margin-top" ng-init="emailOption = '<?= $email_option ?>'">
 			<div class="uk-panel-title">
 				<?= lang("setting_email_title") ?>
 				<hr/>
@@ -252,18 +258,18 @@
 			</div>
 			<div class="uk-margin-top uk-panel uk-panel-box n-setting-details ng-hide"
 				 ng-show="emailOption == 'sendmail'">
-				<div>
-					<label class="uk-form-label" for="emailSendMailPath">
+				<div ng-init="sendMailPath = '<?= $sendmail_path ?>'">
+					<label class="uk-form-label" for="sendMailPath">
 						SendMail Path
 						<i class="uk-icon-times-circle uk-text-danger" 
 						   title="<?= lang("setting_email_send_mail_path_require_error") ?>"
 						   data-uk-tooltip="{pos:'right'}"
-						   ng-show="mainForm.emailSendMailPath.$error.required && mainForm.$submitted"></i>
+						   ng-show="mainForm.sendMailPath.$error.required && mainForm.$submitted"></i>
 					</label>
-					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="emailSendMailPath" 
-						   name="emailSendMailPath" ng-model="emailSendMailPath"
+					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="sendMailPath" 
+						   name="sendMailPath" ng-model="sendMailPath"
 						   placeholder="<?= lang("setting_email_send_mail_path_placeholder") ?>" maxlength="500"
-						   ng-class="{'uk-form-danger': mainForm.emailSendMailPath.$error.required && mainForm.$submitted }"
+						   ng-class="{'uk-form-danger': mainForm.sendMailPath.$error.required && mainForm.$submitted }"
 						   ng-required="emailOption == 'sendmail'" />
 				</div>
 			</div>
@@ -280,7 +286,7 @@
 			</div>
 			<div class="uk-margin-top uk-panel uk-panel-box n-setting-details ng-hide"
 				 ng-show="emailOption == 'smtp'">
-				<?php if(!($email_username && $email_password)) : ?>
+				<?php if(!($smtp_username && $smtp_password)) : ?>
 				<div class="uk-alert uk-alert-warning">
 					<?= lang("setting_email_warning") ?>
 				</div>
@@ -289,77 +295,97 @@
 					<?= lang("setting_email_success") ?>
 				</div>
 				<?php endif ?>
-				<div>
-					<label class="uk-form-label" for="emailSmtpUsername">
+				<div ng-init="smtpUsername = '<?= $smtp_username ?>'">
+					<label class="uk-form-label" for="smtpUsername">
 						Username
 						<i class="uk-icon-times-circle uk-text-danger" 
 						   title="<?= lang("setting_email_smtp_username_require_error") ?>"
 						   data-uk-tooltip="{pos:'right'}"
-						   ng-show="mainForm.emailSmtpUsername.$error.required && mainForm.$submitted"></i>
+						   ng-show="mainForm.smtpUsername.$error.required && mainForm.$submitted"></i>
 					</label>
-					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="emailSmtpUsername" 
-						   name="emailSmtpUsername" ng-model="emailSmtpUsername"
+					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="smtpUsername" 
+						   name="smtpUsername" ng-model="smtpUsername"
 						   placeholder="<?= lang("setting_email_smtp_username_placeholder") ?>" maxlength="200"
-						   ng-class="{'uk-form-danger': mainForm.emailSmtpUsername.$error.required }"
-						   ng-value="<?= $email_username ?>" readonly 
+						   ng-class="{'uk-form-danger': mainForm.smtpUsername.$error.required }"
+						   readonly 
 						   ng-required="emailOption == 'smtp'" />
 				</div>
-				<div class="uk-margin-small-top">
-					<label class="uk-form-label" for="emailSmtpPassword">
+				<div class="uk-margin-small-top" ng-init="smtpPassword = '<?= $smtp_password ?>'">
+					<label class="uk-form-label" for="smtpPassword">
 						Password
 						<i class="uk-icon-times-circle uk-text-danger" 
 						   title="<?= lang("setting_email_smtp_password_require_error") ?>"
 						   data-uk-tooltip="{pos:'right'}"
-						   ng-show="mainForm.emailSmtpPassword.$error.required && mainForm.$submitted"></i>
+						   ng-show="mainForm.smtpPassword.$error.required && mainForm.$submitted"></i>
 					</label>
-					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="emailSmtpPassword" 
-						   name="emailSmtpPassword" ng-model="emailSmtpPassword"
+					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="smtpPassword" 
+						   name="smtpPassword" ng-model="smtpPassword"
 						   placeholder="<?= lang("setting_email_smtp_password_placeholder") ?>" maxlength="200"
-						   ng-class="{'uk-form-danger': mainForm.emailSmtpPassword.$error.required }"
-						   ng-value="<?= $email_password ?>" readonly 
+						   ng-class="{'uk-form-danger': mainForm.smtpPassword.$error.required }"
+						   readonly 
 						   ng-required="emailOption == 'smtp'" />
 				</div>
-				<div class="uk-margin-small-top">
-					<label class="uk-form-label" for="emailSmtpServer">
+				<div class="uk-margin-small-top" ng-init="smtpServer = '<?= $smtp_server ?>'">
+					<label class="uk-form-label" for="smtpServer">
 						Server
 						<i class="uk-icon-times-circle uk-text-danger" 
-						   title="<?= lang("setting_email_smtp_server_required_error") ?>"
+						   title="<?= lang("setting_email_smtp_server_require_error") ?>"
 						   data-uk-tooltip="{pos:'right'}"
-						   ng-show="mainForm.emailSmtpServer.$error.required && mainForm.$submitted"></i>
+						   ng-show="mainForm.smtpServer.$error.required && mainForm.$submitted"></i>
 						<i class="uk-icon-times-circle uk-text-danger" 
 						   title="<?= lang("setting_email_smtp_server_pattern_error") ?>"
 						   data-uk-tooltip="{pos:'right'}"
-						   ng-show="mainForm.emailSmtpServer.$error.pattern && mainForm.$submitted"></i>
+						   ng-show="mainForm.smtpServer.$error.pattern && mainForm.$submitted"></i>
 					</label>
-					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="emailSmtpServer" 
-						   name="emailSmtpServer" ng-model="emailSmtpServer"
+					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="smtpServer" 
+						   name="smtpServer" ng-model="smtpServer"
 						   ng-class="{'uk-form-danger':
-						   		(mainForm.emailSmtpServer.$error.required ||
-						   		 mainForm.emailSmtpServer.$error.pattern) && mainForm.$submitted}"
+						   		(mainForm.smtpServer.$error.required ||
+						   		 mainForm.smtpServer.$error.pattern) && mainForm.$submitted}"
 						   placeholder="<?= lang("setting_email_smtp_server_placeholder") ?>" 
 						   maxlength="100" 
 						   pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$"
 						   required />
 				</div>
-				<div class="uk-margin-small-top">
-					<label class="uk-form-label" for="emailSmtpPort">Port</label>
-					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="emailSmtpPort" 
-						   name="emailSmtpPort" ng-model="emailSmtpPort"
+				<div class="uk-margin-small-top" ng-init="smtpPort = '<?= $smtp_port ?>'">
+					<label class="uk-form-label" for="smtpPort">
+						Port
+						<i class="uk-icon-times-circle uk-text-danger" 
+						   title="<?= lang("setting_email_smtp_port_require_error") ?>"
+						   data-uk-tooltip="{pos:'right'}"
+						   ng-show="mainForm.smtpPort.$error.required && mainForm.$submitted"></i>
+						<i class="uk-icon-times-circle uk-text-danger" 
+						   title="<?= lang("setting_email_smtp_port_pattern_error") ?>"
+						   data-uk-tooltip="{pos:'right'}"
+						   ng-show="mainForm.smtpPort.$error.pattern && mainForm.$submitted"></i>
+					</label>
+					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="smtpPort" 
+						   name="smtpPort" ng-model="smtpPort"
 						   ng-class="{'uk-form-danger': 
-						   		(mainForm.emailSmtpPort.$error.required ||
-						   		 mainForm.emailSmtpPort.$error.pattern) && mainForm.$submitted}"
+						   		(mainForm.smtpPort.$error.required ||
+						   		 mainForm.smtpPort.$error.pattern) && mainForm.$submitted}"
 						   placeholder="<?= lang("setting_email_smtp_port_placeholder") ?>" 
 						   maxlength="5" 
 						   pattern="^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$" 
 						   required />
 				</div>
-				<div class="uk-margin-small-top">
-					<label class="uk-form-label" for="emailSmtpTimeout">Timeout</label>
-					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="emailSmtpTimeout" 
-						   name="emailSmtpTimeout" ng-model="emailSmtpTimeout"
+				<div class="uk-margin-small-top" ng-init="smtpTimeout = '<?= $smtp_timeout ?>'">
+					<label class="uk-form-label" for="smtpTimeout">
+						Timeout
+						<i class="uk-icon-times-circle uk-text-danger" 
+						   title="<?= lang("setting_email_smtp_timeout_require_error") ?>"
+						   data-uk-tooltip="{pos:'right'}"
+						   ng-show="mainForm.smtpTimeout.$error.required && mainForm.$submitted"></i>
+						<i class="uk-icon-times-circle uk-text-danger" 
+						   title="<?= lang("setting_email_smtp_timeout_pattern_error") ?>"
+						   data-uk-tooltip="{pos:'right'}"
+						   ng-show="mainForm.smtpTimeout.$error.pattern && mainForm.$submitted"></i>
+					</label>
+					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="smtpTimeout" 
+						   name="smtpTimeout" ng-model="smtpTimeout"
 						   ng-class="{'uk-form-danger': 
-						   		(mainForm.emailSmtpTimeout.$error.required ||
-						   		 mainForm.emailSmtpTimeout.$error.pattern) && mainForm.$submitted}"
+						   		(mainForm.smtpTimeout.$error.required ||
+						   		 mainForm.smtpTimeout.$error.pattern) && mainForm.$submitted}"
 						   placeholder="<?= lang("setting_email_smtp_timeout_placeholder") ?>" 
 						   maxlength="3" 
 						   pattern="^([0-9]{1,2}|[12][0-9]{2}|300)$" 
