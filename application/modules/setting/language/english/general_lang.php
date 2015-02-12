@@ -48,6 +48,7 @@ $lang['setting_file_upload_disabled'] = 'Disable File Manager';
 $lang['setting_file_upload_file_system'] = 'Using File System';
 $lang['setting_file_upload_database'] = 'Using Database';
 $lang['setting_file_upload_s3'] = 'Using Amazon S3';
+$lang['setting_file_upload_gcloud'] = 'Using Google Cloud';
 
 $lang['setting_file_upload_file_disabled_desc'] =
 	'File upload is not allowed for anyone. All resources will need to be manually '.
@@ -68,13 +69,21 @@ $lang['setting_file_upload_s3_desc'] =
 	'generates a lot of traffic to the storage. Checkout S3 pricing here: '.
 	'<a href="http://aws.amazon.com/s3/pricing/" target="_blank">aws.amazon.com/s3/pricing</a>';
 	
+$lang['setting_file_upload_gcloud_desc'] =
+	'If hosing on Google App Engine, use this option. You have to enable Google Cloud Storage API, '.
+	'and create a bucket in order to use. See more details here: '.
+	'<a href="https://cloud.google.com/storage/" target="_blank">cloud.google.com/storage</a>';
+	
 $lang['setting_file_upload_fs_root'] = 'Root Path';
 $lang['setting_file_upload_fs_root_placeholder'] = 
 	'Enter path which will store uploaded resources relative to your web root directory (e.g. /files)';
+$lang['setting_file_upload_fs_root_require_error'] = 'Root Path is required';
 	
 $lang['setting_file_upload_db_table'] = 'Table Name';
 $lang['setting_file_upload_db_table_placeholder'] = 
 	'Enter database table to store the image. Validation will fail if table already exists but incompatible.';
+$lang['setting_file_upload_db_table_require_error'] = 'Table Name is required';
+$lang['setting_file_upload_db_table_pattern_error'] = 'Invalid Table Name';
 	
 $lang['setting_aws_warning'] =
 	'For security reason, AWS Access Key ID and AWS Secret Access Key must be setup '.
@@ -88,12 +97,25 @@ $lang['setting_aws_success'] =
 	
 $lang['setting_aws_access_key_id_placeholder'] =
 	'AWS Access Key ID from your AWS account';
+	
+$lang['setting_aws_access_key_id_require_error'] = 'AWS Access Key ID is required';
 
 $lang['setting_aws_secret_access_key_placeholder'] =
 	'AWS Secret Access Key from your AWS account';
+
+$lang['setting_aws_secret_access_key_require_error'] = 'AWS Secret Access Key is required';
 	
 $lang['setting_aws_bucket_placeholder'] =
 	'Bucket Name (will be created if not exists)';
+	
+$lang['setting_aws_bucket_require_error'] = 'Bucket Name is required';
+$lang['setting_aws_bucket_pattern_error'] = 'Invalid Bucket Name';
+
+$lang['setting_gcloud_bucket_placeholder'] =
+	'Bucket Name (will be created if not exists)';
+	
+$lang['setting_gcloud_bucket_require_error'] = 'Bucket Name is required';
+$lang['setting_gcloud_bucket_pattern_error'] = 'Invalid Bucket Name';
 
 $lang['setting_aws_instruction_title'] =
 	'Setup environment variables for AWS';
@@ -117,6 +139,8 @@ $lang['setting_email_send_mail_desc'] =
 	
 $lang['setting_email_send_mail_path_placeholder'] =
 	'Sendmail path (e.g. /usr/sbin/sendmail)';
+	
+$lang['setting_email_send_mail_path_require_error'] = 'SendMail Path is required';
 
 $lang['setting_email_smtp_desc'] = 	
 	'Connect to SMTP server to send email. All information about SMTP server '.
@@ -136,10 +160,22 @@ $lang['setting_email_success'] =
 	'following the instruction <a href="#email-key-instruction" data-uk-modal="">here</a>.';
 	
 $lang['setting_email_smtp_username_placeholder'] = 'SMTP Username';
+$lang['setting_email_smtp_username_require_error'] = 'Username is required';
+
 $lang['setting_email_smtp_password_placeholder'] = 'SMTP Password';
+$lang['setting_email_smtp_password_require_error'] = 'Password is required';
+
 $lang['setting_email_smtp_server_placeholder'] = 'SMTP Server domain name or ip address';
+$lang['setting_email_smtp_server_require_error'] = 'SMTP Server is required';
+$lang['setting_email_smtp_server_pattern_error'] = 'Invalid SMTP Server';
+
 $lang['setting_email_smtp_port_placeholder'] = 'SMTP Port number (0-65535)';
+$lang['setting_email_smtp_port_require_error'] = 'SMTP Port is required';
+$lang['setting_email_smtp_port_pattern_error'] = 'Invalid SMTP Port number';
+
 $lang['setting_email_smtp_timeout_placeholder'] = 'SMTP Timeout in seconds (0-300)';
+$lang['setting_email_smtp_timeout_require_error'] = 'SMTP Timeout is required';
+$lang['setting_email_smtp_timeout_pattern_error'] = 'Invalid SMTP Timeout value';
 
 $lang['setting_email_instruction_title'] =
 	'Setup environment variables for email sending';

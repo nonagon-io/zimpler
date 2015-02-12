@@ -1,6 +1,6 @@
 body {
 	
-	background: url(../images/bg.png);
+	background: url('../images/bg.png');
 }
 
 .n-current-login {
@@ -189,7 +189,7 @@ body {
 .n-footer .n-scroll-for-more {
 	
 	position: absolute;
-	top: -18px;
+	top: -19px;
 	width: 100px;
 	height: 18px;
 	left: 50%;
