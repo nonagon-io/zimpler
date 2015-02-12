@@ -20,7 +20,6 @@ class Setting_model extends CI_Model
 	    
 	    // setting table.
 	    
-	    $this->dbforge->drop_table("setting");
 	    $this->dbforge->add_field("setting_id		int				NOT NULL	AUTO_INCREMENT");
 	    $this->dbforge->add_field("setting_key 		varchar(50)		NOT NULL");
 	    $this->dbforge->add_field("setting_value 	varchar(255)	NOT NULL");
