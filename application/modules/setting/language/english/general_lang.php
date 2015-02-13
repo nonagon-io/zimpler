@@ -3,6 +3,9 @@
 $lang['setting_instruction'] = 
 	'Please review your configuration and made any changes as your want. '.
 	'Remember, you can come back to change it at anytime.';
+	
+$lang['setting_save_success_message'] =
+	'The setting has been saved.';
 
 $lang['setting_general_security_intro'] =
     'Due to the security concerns, Zimpler will just force you to always use environment variable '.

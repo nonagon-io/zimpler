@@ -40,7 +40,7 @@ angular.module("admin", ['generic-modal', 'ngAnimate'])
 	return function($scope, method, url, data) {
 		
 		$scope.connectionError = false;
-		
+			
 		if(method == "POST" || method == "PUT" || method == "DELETE") {
 			
 			if(!data) data = {};
@@ -51,7 +51,7 @@ angular.module("admin", ['generic-modal', 'ngAnimate'])
 			return $http({ 
 				
 				method: method,
-				url: $scope.baseUrl + url, 
+				url: ($scope.baseUrl ? $scope.baseUrl : "") + url, 
 				data: $.param(data),
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			});
@@ -100,7 +100,7 @@ angular.module("admin", ['generic-modal', 'ngAnimate'])
 	};
 }])
 
-.factory('submitProperties', ['$q', 'httpEx', function($q, httpEx) {
+.factory('submitForm', ['$q', 'httpEx', function($q, httpEx) {
 	
 	function defaultPromise(promise) {
 		
@@ -125,11 +125,11 @@ angular.module("admin", ['generic-modal', 'ngAnimate'])
 		return promise;
 	}
 	
-	return function($scope, url) {
+	return function($scope, formName, url) {
 		
 		var defer = $q.defer();
 		
-		if(!$scope.propertiesForm.$valid) {
+		if(!$scope[formName].$valid) {
 			return defaultPromise(defer.promise);
 		}
 		
@@ -143,7 +143,7 @@ angular.module("admin", ['generic-modal', 'ngAnimate'])
 	};
 }])
 
-.factory('checkPropertiesDirty', ['$q', 'modal', function($q, modal) {
+.factory('checkFormDirty', ['$q', 'modal', function($q, modal) {
 	
 	function confirmPromise(promise) {
 		
@@ -168,11 +168,11 @@ angular.module("admin", ['generic-modal', 'ngAnimate'])
 		return promise;
 	}
 
-	return function($scope) {
+	return function($scope, formName) {
 		
 		var defer = $q.defer();
 		
-		if($scope.propertiesForm.$dirty) {
+		if($scope[formName].$dirty) {
 			
 			modal.show(
 				"If you continue all changes you have been made will be lost.<br/>" +

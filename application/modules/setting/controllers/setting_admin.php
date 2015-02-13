@@ -114,12 +114,12 @@ class Setting_admin extends MX_Controller {
 			}
 			else if($file_manager == "s3")
 			{
-				$bucket = $this->input->post("s3bucket");
+				$bucket = $this->input->post("S3Bucket");
 				$this->setting_model->set("file_manager::s3::bucket", $bucket);
 			}
 			else if($file_manager == "gcloud")
 			{
-				$bucket = $this->input->post("gcloudbucket");
+				$bucket = $this->input->post("GcloudBucket");
 				$this->setting_model->set("file_manager::gcloud::bucket", $bucket);
 			}
 			

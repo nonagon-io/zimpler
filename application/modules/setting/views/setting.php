@@ -1,4 +1,6 @@
-<form name="mainForm" class="uk-form n-abs-fit" novalidate="" ng-modules="setting-general" ng-controller="SettingController">
+<form name="mainForm" class="uk-form n-abs-fit" novalidate="" ng-submit="save()" 
+	  ng-modules="setting-general" ng-controller="SettingController" n-focus-on-error
+	  ng-init="successMessage = '<?= lang("setting_save_success_message") ?>';">
 	<div class="n-content" ng-class="{'n-semi-collapse': mainForm.$dirty}">
 		<?php if($setting_instruction) : ?>
 		<div class="uk-alert uk-alert-primary uk-margin-bottom uk-text-center">
@@ -6,7 +8,7 @@
 		</div>
 		<?php endif ?>
 
-		<div class="uk-panel uk-panel-box" ng-init="approvalOption = '<?= $approval_option ?>'">
+		<div class="uk-panel uk-panel-box" ng-init="editingData.approvalOption = '<?= $approval_option ?>'">
 			<div class="uk-panel-title">
 				<?= lang("setting_content_approval_title") ?>
 				<hr/>
@@ -14,7 +16,7 @@
 			<div class="uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
 					<input type="radio" name="approvalOption" id="approvalOptionDisable" 
-						   ng-model="approvalOption" value="disable">
+						   ng-model="editingData.approvalOption" value="disable">
 					<label for="approvalOptionDisable"><?= lang("setting_content_approval_disabled") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
@@ -25,7 +27,7 @@
 			<div class="uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
 					<input type="radio" name="approvalOption" id="approvalOptionEnable" 
-						   ng-model="approvalOption" value="enable">
+						   ng-model="editingData.approvalOption" value="enable">
 					<label for="approvalOptionEnable"><?= lang("setting_content_approval_enabled") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
@@ -34,7 +36,7 @@
 			</div>
 		</div>
 		
-		<div class="uk-panel uk-panel-box uk-margin-top" ng-init="fileManagerOption = '<?= $file_manager_option ?>'">
+		<div class="uk-panel uk-panel-box uk-margin-top" ng-init="editingData.fileManagerOption = '<?= $file_manager_option ?>'">
 			<div class="uk-panel-title">
 				<?= lang("setting_file_manager_title") ?>
 				<hr/>
@@ -42,7 +44,7 @@
 			<div class="uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
 					<input type="radio" name="fileManagerOption" id="fileManagerOptionDisable" 
-						   ng-model="fileManagerOption" value="disable" checked="" />
+						   ng-model="editingData.fileManagerOption" value="disable" />
 					<label for="fileManagerOptionDisable"><?= lang("setting_file_manager_disabled") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
@@ -53,7 +55,7 @@
 			<div class="uk-margin-small-top uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
 					<input type="radio" name="fileManagerOption" id="fileManagerOptionFileSystem" value="file" 
-						   ng-model="fileManagerOption" />
+						   ng-model="editingData.fileManagerOption" />
 					<label for="fileManagerOptionFileSystem"><?= lang("setting_file_manager_file_system") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
@@ -61,25 +63,27 @@
 				</div>
 			</div>
 			<div class="uk-margin-top uk-panel uk-panel-box n-setting-details ng-hide"
-				 ng-show="fileManagerOption == 'file'">
-				<label class="uk-form-label" for="filePath">
-					<?= lang("setting_file_manager_fs_root") ?>
-					<i class="uk-icon-times-circle uk-text-danger" 
-					   title="<?= lang("setting_file_manager_fs_root_require_error") ?>"
-					   data-uk-tooltip="{pos:'right'}"
-					   ng-show="mainForm.filePath.$error.required && mainForm.$submitted"></i>
-				</label>
-				<input type="text" class="uk-width-1-1 uk-margin-small-top" id="filePath" 
-					   name="filePath" ng-model="filePath"
-					   ng-class="{'uk-form-danger': mainForm.filePath.$error.required && mainForm.$submitted }"
-					   placeholder="<?= lang("setting_file_manager_fs_root_placeholder") ?>"
-					   maxlength="255" ng-required="fileManagerOption == 'file'" />
+				 ng-show="editingData.fileManagerOption == 'file'">
+				<div ng-init="editingData.filePath = '<?= $file_path ?>'">
+					<label class="uk-form-label" for="filePath">
+						<?= lang("setting_file_manager_fs_root") ?>
+						<i class="uk-icon-times-circle uk-text-danger" 
+						   title="<?= lang("setting_file_manager_fs_root_require_error") ?>"
+						   data-uk-tooltip="{pos:'right'}"
+						   ng-show="mainForm.filePath.$error.required && mainForm.$submitted"></i>
+					</label>
+					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="filePath" 
+						   name="filePath" ng-model="editingData.filePath"
+						   ng-class="{'uk-form-danger': mainForm.filePath.$error.required && mainForm.$submitted }"
+						   placeholder="<?= lang("setting_file_manager_fs_root_placeholder") ?>"
+						   maxlength="255" ng-required="editingData.fileManagerOption == 'file'" />
+				</div>
 			</div>
 			<hr/>
 			<div class="uk-margin-small-top uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
 					<input type="radio" name="fileManagerOption" id="fileManagerOptionDatabase" value="db" 
-						   ng-model="fileManagerOption" />
+						   ng-model="editingData.fileManagerOption" />
 					<label for="fileManagerOptionDatabase"><?= lang("setting_file_manager_database") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
@@ -87,7 +91,7 @@
 				</div>
 			</div>
 			<div class="uk-margin-top uk-panel uk-panel-box n-setting-details ng-hide"
-				 ng-show="fileManagerOption == 'db'">
+				 ng-show="editingData.fileManagerOption == 'db'">
 				<label class="uk-form-label" for="dbTableName">
 					<?= lang("setting_file_manager_db_table") ?>
 					<i class="uk-icon-times-circle uk-text-danger" 
@@ -100,19 +104,19 @@
 					   ng-show="mainForm.dbTableName.$error.pattern && mainForm.$submitted"></i>
 				</label>
 				<input type="text" class="uk-width-1-1 uk-margin-small-top" id="dbTableName" 
-					   name="dbTableName" ng-model="dbTableName"
+					   name="dbTableName" ng-model="editingData.dbTableName"
 					   ng-class="{'uk-form-danger': (
 					   		mainForm.dbTableName.$error.required ||
 					   		mainForm.dbTableName.$error.pattern) && mainForm.$submitted }"
 					   placeholder="<?= lang("setting_file_manager_db_table_placeholder") ?>"
 					   pattern="{{fileManagerOption == 'db' ? '[a-zA-Z0-9][\\w#@]{0,127}$' : ''}}"
-					   maxlength="20" ng-required="fileManagerOption == 'db'" />
+					   maxlength="20" ng-required="editingData.fileManagerOption == 'db'" />
 			</div>
 			<hr/>
 			<div class="uk-margin-small-top uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
 					<input type="radio" name="fileManagerOption" id="fileManagerOptionS3" value="s3" 
-						   ng-model="fileManagerOption" />
+						   ng-model="editingData.fileManagerOption" />
 					<label for="fileManagerOptionS3"><?= lang("setting_file_manager_s3") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
@@ -120,7 +124,7 @@
 				</div>
 			</div>
 			<div class="uk-margin-top uk-panel uk-panel-box n-setting-details ng-hide"
-				 ng-show="fileManagerOption == 's3'">
+				 ng-show="editingData.fileManagerOption == 's3'">
 				<?php if(!($aws_access_key_id && $aws_secret_access_key)) : ?>
 				<div class="uk-alert uk-alert-warning">
 					<?= lang("setting_aws_warning") ?>
@@ -130,7 +134,7 @@
 					<?= lang("setting_aws_success") ?>
 				</div>
 				<?php endif ?>
-				<div ng-init="S3Key = '<?= $aws_access_key_id ?>'">
+				<div ng-init="editingData.S3Key = '<?= $aws_access_key_id ?>'">
 					<label class="uk-form-label uk-text-primary" for="S3Key">
 						AWS Access Key ID
 						<i class="uk-icon-times-circle uk-text-danger" 
@@ -139,13 +143,13 @@
 						   ng-show="mainForm.S3Key.$error.required && mainForm.$submitted"></i>
 					</label>
 					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="S3Key" 
-						   name="S3Key" ng-model="S3Key"
+						   name="S3Key" ng-model="editingData.S3Key"
 						   ng-class="{'uk-form-danger': mainForm.S3Key.$error.required && mainForm.$submitted }"
 						   placeholder="<?= lang("setting_aws_access_key_id_placeholder") ?>" maxlength="200"
 						   readonly 
-						   ng-required="fileManagerOption == 's3'" />
+						   ng-required="editingData.fileManagerOption == 's3'" />
 				</div>
-				<div class="uk-margin-small-top" ng-init="S3Secret = '<?= $aws_secret_access_key ?>'">
+				<div class="uk-margin-small-top" ng-init="editingData.S3Secret = '<?= $aws_secret_access_key ?>'">
 					<label class="uk-form-label uk-text-primary" for="S3Secret">
 						AWS Secret Access Key
 						<i class="uk-icon-times-circle uk-text-danger" 
@@ -154,13 +158,13 @@
 						   ng-show="mainForm.S3Secret.$error.required && mainForm.$submitted"></i>
 					</label>
 					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="S3Secret" 
-						   name="S3Secret" ng-model="S3Secret"
+						   name="S3Secret" ng-model="editingData.S3Secret"
 						   ng-class="{'uk-form-danger': mainForm.S3Secret.$error.required && mainForm.$submitted }"
 						   placeholder="<?= lang("setting_aws_secret_access_key_placeholder") ?>" maxlength="200"
 						   readonly 
-						   ng-required="fileManagerOption == 's3'" />
+						   ng-required="editingData.fileManagerOption == 's3'" />
 				</div>
-				<div class="uk-margin-small-top" ng-init="S3Bucket = '<?= $s3_bucket ?>'">
+				<div class="uk-margin-small-top" ng-init="editingData.S3Bucket = '<?= $s3_bucket ?>'">
 					<label class="uk-form-label" for="S3Bucket">
 						Bucket
 						<i class="uk-icon-times-circle uk-text-danger" 
@@ -173,20 +177,20 @@
 						   ng-show="mainForm.S3Bucket.$error.pattern && mainForm.$submitted"></i>
 					</label>
 					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="S3Bucket" 
-						   name="S3Bucket" ng-model="S3Bucket"
+						   name="S3Bucket" ng-model="editingData.S3Bucket"
 						   ng-class="{'uk-form-danger': (
 						   		mainForm.S3Bucket.$error.required ||
 						   		mainForm.S3Bucket.$error.pattern) && mainForm.$submitted }"
 						   placeholder="<?= lang("setting_aws_bucket_placeholder") ?>"
 						   pattern="{{fileManagerOption == 's3' ? '^[a-z0-9](-*[a-z0-9]){2,62}$' : ''}}"
-						   maxlength="63" ng-required="fileManagerOption == 's3'" />
+						   maxlength="63" ng-required="editingData.fileManagerOption == 's3'" />
 				</div>
 			</div>
 			<hr/>
 			<div class="uk-margin-small-top uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
 					<input type="radio" name="fileManagerOption" id="fileManagerOptionGCloud" value="gcloud" 
-						   ng-model="fileManagerOption" />
+						   ng-model="editingData.fileManagerOption" />
 					<label for="fileManagerOptionGCloud"><?= lang("setting_file_manager_gcloud") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
@@ -194,8 +198,8 @@
 				</div>
 			</div>
 			<div class="uk-margin-top uk-panel uk-panel-box n-setting-details ng-hide"
-				 ng-show="fileManagerOption == 'gcloud'">
-				<div class="uk-margin-small-top" ng-init="GcloudBucket = '<?= $gcloud_bucket ?>'">
+				 ng-show="editingData.fileManagerOption == 'gcloud'">
+				<div class="uk-margin-small-top" ng-init="editingData.GcloudBucket = '<?= $gcloud_bucket ?>'">
 					<label class="uk-form-label" for="GcloudBucket">
 						Bucket
 						<i class="uk-icon-times-circle uk-text-danger" 
@@ -208,26 +212,26 @@
 						   ng-show="mainForm.GcloudBucket.$error.pattern && mainForm.$submitted"></i>
 					</label>
 					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="GcloudBucket" 
-						   name="GcloudBucket" ng-model="GcloudBucket"
+						   name="GcloudBucket" ng-model="editingData.GcloudBucket"
 						   ng-class="{'uk-form-danger': (
 						   		mainForm.GcloudBucket.$error.required ||
 						   		mainForm.GcloudBucket.$error.pattern) && mainForm.$submitted }"
 						   placeholder="<?= lang("setting_gcloud_bucket_placeholder") ?>"
 						   pattern="{{fileManagerOption == 'gcloud' ? '^[0-9a-z]((-*|\.{0,1})[a-z0-9]){2,62}' : ''}}"
-						   maxlength="30" ng-required="fileManagerOption == 'gcloud'" />
+						   maxlength="30" ng-required="editingData.fileManagerOption == 'gcloud'" />
 				</div>
 			</div>
 		</div>
 		
-		<div class="uk-panel uk-panel-box uk-margin-top" ng-init="emailOption = '<?= $email_option ?>'">
+		<div class="uk-panel uk-panel-box uk-margin-top" ng-init="editingData.emailOption = '<?= $email_option ?>'">
 			<div class="uk-panel-title">
 				<?= lang("setting_email_title") ?>
 				<hr/>
 			</div>
 			<div class="uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
-					<input type="radio" name="emailOption" id="emailOptionDisable" value="disable" checked=""
-						   ng-model="emailOption" />
+					<input type="radio" name="emailOption" id="emailOptionDisable" value="disable"
+						   ng-model="editingData.emailOption" />
 					<label for="emailOptionDisable"><?= lang("setting_email_disabled") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
@@ -237,8 +241,8 @@
 			<hr/>
 			<div class="uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
-					<input type="radio" name="emailOption" id="emailOptionBuildIn" value="mail" checked=""
-						   ng-model="emailOption" />
+					<input type="radio" name="emailOption" id="emailOptionBuildIn" value="mail"
+						   ng-model="editingData.emailOption" />
 					<label for="emailOptionBuildIn"><?= lang("setting_email_build_in") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
@@ -249,7 +253,7 @@
 			<div class="uk-margin-small-top uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
 					<input type="radio" name="emailOption" id="emailOptionSendMail" value="sendmail"
-						   ng-model="emailOption" />
+						   ng-model="editingData.emailOption" />
 					<label for="emailOptionSendMail"><?= lang("setting_email_send_mail") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
@@ -257,8 +261,8 @@
 				</div>
 			</div>
 			<div class="uk-margin-top uk-panel uk-panel-box n-setting-details ng-hide"
-				 ng-show="emailOption == 'sendmail'">
-				<div ng-init="sendMailPath = '<?= $sendmail_path ?>'">
+				 ng-show="editingData.emailOption == 'sendmail'">
+				<div ng-init="editingData.sendMailPath = '<?= $sendmail_path ?>'">
 					<label class="uk-form-label" for="sendMailPath">
 						SendMail Path
 						<i class="uk-icon-times-circle uk-text-danger" 
@@ -267,17 +271,17 @@
 						   ng-show="mainForm.sendMailPath.$error.required && mainForm.$submitted"></i>
 					</label>
 					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="sendMailPath" 
-						   name="sendMailPath" ng-model="sendMailPath"
+						   name="sendMailPath" ng-model="editingData.sendMailPath"
 						   placeholder="<?= lang("setting_email_send_mail_path_placeholder") ?>" maxlength="500"
 						   ng-class="{'uk-form-danger': mainForm.sendMailPath.$error.required && mainForm.$submitted }"
-						   ng-required="emailOption == 'sendmail'" />
+						   ng-required="editingData.emailOption == 'sendmail'" />
 				</div>
 			</div>
 			<hr/>
 			<div class="uk-margin-small-top uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
 					<input type="radio" name="emailOption" id="emailOptionSMTP" value="smtp"
-						   ng-model="emailOption" />
+						   ng-model="editingData.emailOption" />
 					<label for="emailOptionSMTP"><?= lang("setting_email_smtp") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
@@ -285,7 +289,7 @@
 				</div>
 			</div>
 			<div class="uk-margin-top uk-panel uk-panel-box n-setting-details ng-hide"
-				 ng-show="emailOption == 'smtp'">
+				 ng-show="editingData.emailOption == 'smtp'">
 				<?php if(!($smtp_username && $smtp_password)) : ?>
 				<div class="uk-alert uk-alert-warning">
 					<?= lang("setting_email_warning") ?>
@@ -295,7 +299,7 @@
 					<?= lang("setting_email_success") ?>
 				</div>
 				<?php endif ?>
-				<div ng-init="smtpUsername = '<?= $smtp_username ?>'">
+				<div ng-init="editingData.smtpUsername = '<?= $smtp_username ?>'">
 					<label class="uk-form-label" for="smtpUsername">
 						Username
 						<i class="uk-icon-times-circle uk-text-danger" 
@@ -304,13 +308,13 @@
 						   ng-show="mainForm.smtpUsername.$error.required && mainForm.$submitted"></i>
 					</label>
 					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="smtpUsername" 
-						   name="smtpUsername" ng-model="smtpUsername"
+						   name="smtpUsername" ng-model="editingData.smtpUsername"
 						   placeholder="<?= lang("setting_email_smtp_username_placeholder") ?>" maxlength="200"
 						   ng-class="{'uk-form-danger': mainForm.smtpUsername.$error.required }"
 						   readonly 
-						   ng-required="emailOption == 'smtp'" />
+						   ng-required="editingData.emailOption == 'smtp'" />
 				</div>
-				<div class="uk-margin-small-top" ng-init="smtpPassword = '<?= $smtp_password ?>'">
+				<div class="uk-margin-small-top" ng-init="editingData.smtpPassword = '<?= $smtp_password ?>'">
 					<label class="uk-form-label" for="smtpPassword">
 						Password
 						<i class="uk-icon-times-circle uk-text-danger" 
@@ -319,13 +323,13 @@
 						   ng-show="mainForm.smtpPassword.$error.required && mainForm.$submitted"></i>
 					</label>
 					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="smtpPassword" 
-						   name="smtpPassword" ng-model="smtpPassword"
+						   name="smtpPassword" ng-model="editingData.smtpPassword"
 						   placeholder="<?= lang("setting_email_smtp_password_placeholder") ?>" maxlength="200"
 						   ng-class="{'uk-form-danger': mainForm.smtpPassword.$error.required }"
 						   readonly 
-						   ng-required="emailOption == 'smtp'" />
+						   ng-required="editingData.emailOption == 'smtp'" />
 				</div>
-				<div class="uk-margin-small-top" ng-init="smtpServer = '<?= $smtp_server ?>'">
+				<div class="uk-margin-small-top" ng-init="editingData.smtpServer = '<?= $smtp_server ?>'">
 					<label class="uk-form-label" for="smtpServer">
 						Server
 						<i class="uk-icon-times-circle uk-text-danger" 
@@ -338,16 +342,16 @@
 						   ng-show="mainForm.smtpServer.$error.pattern && mainForm.$submitted"></i>
 					</label>
 					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="smtpServer" 
-						   name="smtpServer" ng-model="smtpServer"
+						   name="smtpServer" ng-model="editingData.smtpServer"
 						   ng-class="{'uk-form-danger':
 						   		(mainForm.smtpServer.$error.required ||
 						   		 mainForm.smtpServer.$error.pattern) && mainForm.$submitted}"
 						   placeholder="<?= lang("setting_email_smtp_server_placeholder") ?>" 
 						   maxlength="100" 
 						   pattern="^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$|^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$"
-						   required />
+						   ng-required="editingData.emailOption == 'smtp'" />
 				</div>
-				<div class="uk-margin-small-top" ng-init="smtpPort = '<?= $smtp_port ?>'">
+				<div class="uk-margin-small-top" ng-init="editingData.smtpPort = '<?= $smtp_port ?>'">
 					<label class="uk-form-label" for="smtpPort">
 						Port
 						<i class="uk-icon-times-circle uk-text-danger" 
@@ -360,7 +364,7 @@
 						   ng-show="mainForm.smtpPort.$error.pattern && mainForm.$submitted"></i>
 					</label>
 					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="smtpPort" 
-						   name="smtpPort" ng-model="smtpPort"
+						   name="smtpPort" ng-model="editingData.smtpPort"
 						   ng-class="{'uk-form-danger': 
 						   		(mainForm.smtpPort.$error.required ||
 						   		 mainForm.smtpPort.$error.pattern) && mainForm.$submitted}"
@@ -369,7 +373,7 @@
 						   pattern="^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$" 
 						   required />
 				</div>
-				<div class="uk-margin-small-top" ng-init="smtpTimeout = '<?= $smtp_timeout ?>'">
+				<div class="uk-margin-small-top" ng-init="editingData.smtpTimeout = '<?= $smtp_timeout ?>'">
 					<label class="uk-form-label" for="smtpTimeout">
 						Timeout
 						<i class="uk-icon-times-circle uk-text-danger" 
@@ -382,7 +386,7 @@
 						   ng-show="mainForm.smtpTimeout.$error.pattern && mainForm.$submitted"></i>
 					</label>
 					<input type="text" class="uk-width-1-1 uk-margin-small-top" id="smtpTimeout" 
-						   name="smtpTimeout" ng-model="smtpTimeout"
+						   name="smtpTimeout" ng-model="editingData.smtpTimeout"
 						   ng-class="{'uk-form-danger': 
 						   		(mainForm.smtpTimeout.$error.required ||
 						   		 mainForm.smtpTimeout.$error.pattern) && mainForm.$submitted}"
@@ -396,7 +400,7 @@
 			<div class="uk-margin-small-top uk-grid">
 				<div class="uk-width-1-1 uk-width-medium-1-3 uk-width-large-1-4">
 					<input type="radio" name="emailOption" id="emailOptionGAE" value="gae"
-						   ng-model="emailOption" />
+						   ng-model="editingData.emailOption" />
 					<label for="emailOptionGAE"><?= lang("setting_email_gae") ?></label>
 				</div>
 				<div class="uk-hidden-small uk-width-1-1 uk-width-medium-2-3 uk-width-large-3-4 uk-text-muted">
@@ -416,12 +420,11 @@
 				&nbsp;
 			</div>
 			<div class="uk-width-1-3 uk-text-right">
-				<button type="submit" class="uk-button uk-button-success" 
-						style="width: 100px">
+				<button type="submit" class="uk-button uk-button-success" style="width: 100px">
 					Save
 				</button>
 				<button type="button" class="uk-button" style="width: 100px"
-						ng-click="mainForm.$setPristine(); mainForm.$setUntouched();">
+						ng-click="cancel()">
 					Cancel
 				</button>
 			</div>
