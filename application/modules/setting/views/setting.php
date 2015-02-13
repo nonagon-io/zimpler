@@ -1,4 +1,4 @@
-<form name="mainForm" class="uk-form n-abs-fit" novalidate="">
+<form name="mainForm" class="uk-form n-abs-fit" novalidate="" ng-modules="setting-general" ng-controller="SettingController">
 	<div class="n-content" ng-class="{'n-semi-collapse': mainForm.$dirty}">
 		<?php if($setting_instruction) : ?>
 		<div class="uk-alert uk-alert-primary uk-margin-bottom uk-text-center">

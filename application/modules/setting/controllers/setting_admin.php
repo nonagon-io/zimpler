@@ -36,7 +36,9 @@ class Setting_admin extends MX_Controller {
 
 	function general()
 	{
-		if($this->input->server('REQUEST_METHOD') == 'GET')
+		$method = $this->input->server('REQUEST_METHOD');
+		
+		if($method == 'GET')
 		{
 			$access_key = $this->input->server("AWS_ACCESS_KEY_ID");
 			if($access_key)
@@ -93,7 +95,7 @@ class Setting_admin extends MX_Controller {
 			$this->load->view("setting", $this->data);
 		}
 		
-		else if($this->input->server('REQUEST_METHOD') == 'POST')
+		else if($method == 'POST' || $method == 'PUT')
 		{
 			$this->setting_model->set("content_approval", $this->input->post("approvalOption"));
 			

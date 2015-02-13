@@ -9,26 +9,27 @@ module.exports = function(grunt) {
 			my_target: {
 				files: {
 					'js/vendor.min.js': [
-						'vendor/jquery/dist/jquery.min.js', 
-						'vendor/uikit/js/uikit.min.js',
-						'vendor/uikit/js/components/form-select.min.js',
-						'vendor/intl-tel-input/build/js/intlTelInput.min.js',
-						'vendor/angular/angular.min.js',
-						'vendor/angular-animate/angular-animate.min.js',
-						'vendor/angular-intl-tel/angular-intl-tel.js',
-						'vendor/angular-validation-match/dist/angular-input-match.min.js',
-						'vendor/freezeh/freezeh.js',
-						'vendor/codemirror/lib/codemirror.js',
-						'vendor/codemirror/mode/markdown/markdown.js',
-						'vendor/codemirror/addon/mode/overlay.js',
-						'vendor/codemirror/mode/xml/xml.js',
-						'vendor/codemirror/mode/gfm/gfm.js',
-						'vendor/marked/lib/marked.js',
-						'vendor/uikit/js/components/htmleditor.min.js',
-						'vendor/uikit/js/components/notify.min.js'],
+						'bower_components/jquery/dist/jquery.min.js', 
+						'bower_components/uikit/js/uikit.min.js',
+						'bower_components/uikit/js/components/form-select.min.js',
+						'bower_components/intl-tel-input/build/js/intlTelInput.min.js',
+						'bower_components/angular/angular.min.js',
+						'bower_components/angular-animate/angular-animate.min.js',
+						'bower_components/angular-intl-tel/angular-intl-tel.js',
+						'bower_components/angular-validation-match/dist/angular-input-match.min.js',
+						'bower_components/angular-modularizer/angular-modularizer.js',
+						'bower_components/freezeh/freezeh.js',
+						'bower_components/codemirror/lib/codemirror.js',
+						'bower_components/codemirror/mode/markdown/markdown.js',
+						'bower_components/codemirror/addon/mode/overlay.js',
+						'bower_components/codemirror/mode/xml/xml.js',
+						'bower_components/codemirror/mode/gfm/gfm.js',
+						'bower_components/marked/lib/marked.js',
+						'bower_components/uikit/js/components/htmleditor.min.js',
+						'bower_components/uikit/js/components/notify.min.js'],
 						
 					'js/lib/libphonenumber.js': [
-						'vendor/intl-tel-input/lib/libphonenumber/build/utils.js']
+						'bower_components/intl-tel-input/lib/libphonenumber/build/utils.js']
 				}
 			}
 		},
@@ -37,13 +38,13 @@ module.exports = function(grunt) {
 			target: {
 				files: {
 					'assets/css/vendor.min.css': [
-						'vendor/uikit/css/uikit.almost-flat.min.css',
-						'vendor/uikit/css/components/form-select.almost-flat.min.css',
-						'vendor/uikit/css/components/form-advanced.almost-flat.min.css',
-						'vendor/uikit/css/components/htmleditor.almost-flat.min.css',
-						'vendor/uikit/css/components/notify.almost-flat.min.css',
-						'vendor/intl-tel-input/build/css/intlTelInput.css',
-						'vendor/codemirror/lib/codemirror.css']
+						'bower_components/uikit/css/uikit.almost-flat.min.css',
+						'bower_components/uikit/css/components/form-select.almost-flat.min.css',
+						'bower_components/uikit/css/components/form-advanced.almost-flat.min.css',
+						'bower_components/uikit/css/components/htmleditor.almost-flat.min.css',
+						'bower_components/uikit/css/components/notify.almost-flat.min.css',
+						'bower_components/intl-tel-input/build/css/intlTelInput.css',
+						'bower_components/codemirror/lib/codemirror.css']
 				}
 			}
 		}

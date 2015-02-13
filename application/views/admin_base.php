@@ -62,7 +62,7 @@
 	
 	<base href="<?php echo current_url() ?>/" />
 </head>
-<body class="uk-height-1-1">
+<body class="uk-height-1-1" ng-app="root">
 	
 	<?php $this->load->view("admin/header") ?>
 
@@ -71,12 +71,15 @@
 	<?php $this->load->view("admin/footer") ?>
 	
 	<script type="text/javascript" src="<?php echo base_url('js/vendor.min.js')?>"></script>
-	
 	<script type="text/javascript" src="<?php echo base_url('js/app/modal.js')?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('js/app/admin.js')?>"></script>
 	
 	<?php foreach($js_include_list as $item) : ?>
 	<script type="text/javascript" src="<?php echo $item?>"></script>
 	<?php endforeach ?>
+	
+	<script type="text/javascript">
+		angular.modularize("root");
+	</script>
 </body>
 </html>

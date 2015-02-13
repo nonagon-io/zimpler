@@ -44,7 +44,7 @@ function page_title()
 	
 ?>
 
-<div class="uk-grid uk-grid-preserve uk-grid-small uk-height-1-1" ng-app="admin" ng-Controller="AdminController">
+<div class="uk-grid uk-grid-preserve uk-grid-small uk-height-1-1" ng-controller="AdminController">
 	<div class="uk-width-1-3 uk-width-medium-1-4 uk-width-large-1-5 uk-height-1-1">
 		<div class="uk-panel uk-height-1-1 n-menu-panel" data-uk-sticky="">
 		    <div class="n-common">

@@ -19,12 +19,14 @@ class Setting_model extends CI_Model
 	    */
 	    
 	    // setting table.
-	    
-	    $this->dbforge->add_field("setting_id		int				NOT NULL	AUTO_INCREMENT");
-	    $this->dbforge->add_field("setting_key 		varchar(50)		NOT NULL");
-	    $this->dbforge->add_field("setting_value 	varchar(255)	NOT NULL");
-	    $this->dbforge->add_key("setting_id", TRUE);
-		$this->dbforge->create_table("setting", TRUE);
+	    if(!$this->db->table_exists("setting"))
+	    {
+		    $this->dbforge->add_field("setting_id		int				NOT NULL	AUTO_INCREMENT");
+		    $this->dbforge->add_field("setting_key 		varchar(50)		NOT NULL");
+		    $this->dbforge->add_field("setting_value 	varchar(255)	NOT NULL");
+		    $this->dbforge->add_key("setting_id", TRUE);
+			$this->dbforge->create_table("setting", TRUE);
+		}
     }
     
     public function is_any_entry()
