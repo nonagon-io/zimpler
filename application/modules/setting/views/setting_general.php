@@ -1,7 +1,8 @@
 <form name="mainForm" class="uk-form n-abs-fit" novalidate="" ng-submit="save()" 
-	  ng-modules="setting-general" ng-controller="SettingController" n-focus-on-error
-	  ng-init="successMessage = '<?= lang("setting_save_success_message") ?>';">
-	<div class="n-content" ng-class="{'n-semi-collapse': mainForm.$dirty}">
+	  ng-modules="setting-general" ng-controller="SettingGeneralController" n-focus-on-error
+	  ng-init="successMessage = '<?= lang("setting_save_success_message") ?>';"
+	  n-dirty-check="">
+	<div class="n-content n-single-page" ng-class="{'n-semi-collapse': mainForm.$dirty}">
 		<?php if($setting_instruction) : ?>
 		<div class="uk-alert uk-alert-primary uk-margin-bottom uk-text-center">
 			<?= $setting_instruction ?>

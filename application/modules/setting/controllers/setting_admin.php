@@ -30,7 +30,7 @@ class Setting_admin extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		$this->lang->load('setting/general');
+		$this->lang->load('setting/admin_general');
 		$this->load->model("setting/setting_model");
 	}
 
@@ -92,7 +92,7 @@ class Setting_admin extends MX_Controller {
 			$this->data["smtp_port"] = $this->setting_model->get("email::smtp::port");
 			$this->data["smtp_timeout"] = $this->setting_model->get("email::smtp::timeout");
 			
-			$this->load->view("setting", $this->data);
+			$this->load->view("setting_general", $this->data);
 		}
 		
 		else if($method == 'POST' || $method == 'PUT')

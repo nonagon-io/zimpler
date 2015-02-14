@@ -1,6 +1,6 @@
 angular.module("setting-general", ['common', 'generic-modal', 'admin', 'ngAnimate'])
 
-.controller("SettingController", ['$scope', 'submitForm', 'checkFormDirty', function($scope, submitForm, checkFormDirty) {
+.controller("SettingGeneralController", ['$scope', 'submitForm', 'checkFormDirty', function($scope, submitForm, checkFormDirty) {
 	
 	$scope.editingData = {};
 	
@@ -15,7 +15,7 @@ angular.module("setting-general", ['common', 'generic-modal', 'admin', 'ngAnimat
 				$scope.mainForm.$setUntouched();
 				
 				UIkit.notify("<i class='uk-icon-check'></i> " + 
-					$scope.successMessage, { status: "success", timeout: 1000 });
+					$scope.successMessage, { status: "success", timeout: 1000, pos: "top-right" });
 			});
 	}
 	

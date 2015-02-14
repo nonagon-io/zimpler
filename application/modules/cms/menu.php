@@ -4,9 +4,9 @@ $module_menu_items = array(
 
 	array(
 		'icon' => 'dot-circle-o',
-		'path' => 'admin/cms/general',
-		'name' => lang('cms_menu_general'),
-		'link' => base_url('admin/cms/general')
+		'path' => 'admin/cms/siteinfo',
+		'name' => lang('cms_menu_siteinfo'),
+		'link' => base_url('admin/cms/siteinfo')
 	),
 
 	array(

@@ -390,6 +390,35 @@ body {
 	background: #fff8f0;
 }
 
+.n-content.n-single-page {
+	
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	padding: 10px;
+	
+	overflow: auto;
+	border-bottom: 1px solid #ccc;
+	
+    -webkit-transition: bottom 0.3s ease-in-out;
+    -moz-transition: bottom 0.3s ease-in-out;
+    -o-transition: bottom 0.3s ease-in-out;
+    transition: bottom 0.3s ease-in-out;
+}
+
+.n-content.n-semi-collapse {
+	
+	bottom: 51px;
+}
+
+.n-setting-details {
+	
+	background: #ddd;
+	box-shadow: inset 1px 1px 9px black;
+}
+
 .uk-table-striped tbody tr:nth-of-type(odd).n-selected {
 	
 	background: #f7e8d4;
