@@ -1,10 +1,14 @@
 angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate'])
 
-.controller("CmsSiteInfoController", ['$scope', 'submitForm', 'checkFormDirty', function($scope, submitForm, checkFormDirty) {
+.controller("CmsSiteInfoController", ['$scope', '$window', 'submitForm', 'checkFormDirty', 
+	function($scope, $window, submitForm, checkFormDirty) {
 	
 	$scope.editingData = {};
 	
 	$scope.save = function() {
+		
+		var culture = $("#cultureSelection").val();
+		$scope.editingData.culture = culture;
 		
 		submitForm($scope, "mainForm", "").
 			success(function(data, status, headers, config) {
@@ -33,5 +37,10 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 	$scope.$on('init', function(event, args) {
 		
 		$scope.originalData = angular.copy($scope.editingData);
+	});
+	
+	$("#cultureSelection").on("change", function() {
+		
+		$window.location.href = $scope.baseUrl + "?culture=" + $(this).val();
 	});
 }]);

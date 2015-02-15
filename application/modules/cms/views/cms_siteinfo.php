@@ -1,7 +1,14 @@
 <form name="mainForm" class="uk-form n-abs-fit" novalidate="" ng-submit="save()" 
 	  ng-modules="cms-general" ng-controller="CmsSiteInfoController" n-focus-on-error
-	  ng-init="successMessage = '<?= lang("cms_save_success_message") ?>';"
+	  ng-init="successMessage = '<?= lang("cms_save_success_message") ?>'; baseUrl = '<?= base_url("/admin/cms/siteinfo"); ?>'"
 	  n-dirty-check="">
+	<div class="n-culture-header" 
+		 ng-class="{'n-drop-shadow': mainContentBodyScrollTop > 0}">
+		<select id="cultureSelection" name="culture">
+			<option value="en-us" <?= $culture == 'en-us' ? 'selected' : '' ?>>English</option>
+			<option value="th-th" <?= $culture == 'th-th' ? 'selected' : '' ?>>Thai</option>
+		</select>
+	</div>
 	<div class="n-content n-single-page" ng-class="{'n-semi-collapse': mainForm.$dirty}">
 		<div class="uk-panel uk-panel-box">
 			<div class="uk-panel-title">

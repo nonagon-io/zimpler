@@ -419,6 +419,33 @@ body {
 	box-shadow: inset 1px 1px 9px black;
 }
 
+.n-culture-header {
+	
+	position: absolute;
+	top: -1px;
+	left: 0px;
+	right: 0px;
+	height: 30px;
+	
+	border-top: 1px solid #f5f5f5;
+	border-bottom: 1px solid #ccc;
+	background: #efefef;
+	
+	z-index: 100;
+	
+	padding: 10px;
+}
+
+.n-culture-header + .n-content {
+	
+	top: 51px;
+}
+
+.n-culture-header.n-drop-shadow {
+	
+	box-shadow: 0px 10px 50px -20px black;
+}
+
 .uk-table-striped tbody tr:nth-of-type(odd).n-selected {
 	
 	background: #f7e8d4;

@@ -50,7 +50,8 @@ class Siteinfo_model extends CI_Model
     
     public function set($site_info_key, $site_info_value, $culture = "en-us")
     {
-		$data = $this->db->get_where("site_info", array("site_info_key" => $site_info_key))->row();
+		$data = $this->db->get_where("site_info", 
+			array("site_info_key" => $site_info_key, "culture" => $culture))->row();
 		
 		if(!$data)
 		{
@@ -64,6 +65,7 @@ class Siteinfo_model extends CI_Model
 		{
 			$this->db->set("site_info_value", $site_info_value);
 			$this->db->where("site_info_key", $site_info_key);
+			$this->db->where("culture", $culture);
 			$this->db->update("site_info");
 		}
     }
