@@ -62,7 +62,7 @@ body {
 	width: 100%;
 }
 
-.n-view-host .n-title {
+.n-view-host > .n-title {
 	
 	position: absolute;
 	top: 0px;
@@ -419,7 +419,7 @@ body {
 	box-shadow: inset 1px 1px 9px black;
 }
 
-.n-culture-header {
+.n-options-header {
 	
 	position: absolute;
 	top: -1px;
@@ -436,7 +436,7 @@ body {
 	padding: 10px;
 }
 
-.n-culture-header + .n-content {
+.n-options-header + .n-content {
 	
 	top: 51px;
 }

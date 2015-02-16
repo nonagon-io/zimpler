@@ -1,9 +1,11 @@
 angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate'])
 
-.controller("CmsSiteInfoController", ['$scope', '$window', 'submitForm', 'checkFormDirty', 
+.controller("CmsNavigationController", ['$scope', '$window', 'submitForm', 'checkFormDirty', 
 	function($scope, $window, submitForm, checkFormDirty) {
 	
 	$scope.editingData = {};
+	
+	$scope.levels = [];
 	
 	$scope.save = function() {
 		
@@ -45,4 +47,12 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 		$window.location.href = $scope.baseUrl + "?culture=" + $(this).val();
 		$("#cultureSelection").val(selectedCulture);
 	});
+	
+	var columnLeft = 0;
+	$(".n-columns-view").children().each(function(i, elem) {
+		
+		$(elem).css("left", columnLeft + "px");
+		columnLeft += $(elem).outerWidth();
+	});
+	
 }]);

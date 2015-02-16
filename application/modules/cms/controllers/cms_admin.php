@@ -56,7 +56,6 @@ class Cms_admin extends MX_Controller {
 			}
 			
 			$this->data = array();
-			
 			$this->data["culture"] = $culture;
 			$this->data["site_title_main"] = $this->siteinfo_model->get("site_title::main", $culture);
 			$this->data["site_title_sub"] = $this->siteinfo_model->get("site_title::sub", $culture);
@@ -87,7 +86,17 @@ class Cms_admin extends MX_Controller {
 
 	function navigations()
 	{
-		echo "This is navigations admin";
+		$method = $this->input->server('REQUEST_METHOD');
+		
+		if($method == 'GET')
+		{
+			$culture = $this->input->get("culture");
+			if(!$culture) $culture = "en-us";
+
+			$this->data = array();
+			$this->data["culture"] = $culture;
+			$this->load->view("cms_navigation", $this->data);
+		}
 	}
 
 	function pages()
