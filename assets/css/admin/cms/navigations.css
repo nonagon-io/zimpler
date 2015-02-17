@@ -43,13 +43,12 @@
 	left: 0px;
 	right: 0px;
 	
-	background: rgba(0,0,0,0.05);
+	background: #dedede;
 	font-size: 14px;
 	padding: 5px 5px 5px 10px;
-	height: auto;
 	height: 30px;
 	
-	border-bottom: none;
+	border-bottom: 1px solid #cccccc;
 	
 	z-index: 1;
 }
@@ -78,13 +77,45 @@
 .n-columns-view .n-column .n-items .n-item {
 
 	background: #eeeeee;
-	height: 40px;
+	height: 30px;
 
 	border-top: 1px solid #f9f9f9;
 	border-bottom: 1px solid #cccccc;
+	
+	padding: 10px 10px 0 10px;
+	
+	cursor: hand;
+}
+
+.n-columns-view .n-column .n-items .n-item.uk-active {
+	
+	color: #fff;
+	background: #35B3EE;
+	border-top: 1px solid #35B3EE;
+	border-bottom: 1px solid #35B3EE;
+}
+
+.n-columns-view .n-column .n-items .n-item:not(.uk-active).n-drilling-down {
+	
+	color: #fff;
+	background: #555;
+	border-top: 1px solid #555;
+	border-bottom: 1px solid #555; 
 }
 
 .n-columns-view .n-column .n-items .n-item:first-child {
 
+	border-top: 1px solid #cdcdcd;
+}
+
+.n-columns-view .n-column .n-items .n-item:not(.uk-active):not(.n-drilling-down):hover {
+
+	background: #d8d8d8;
+	border-top: 1px solid #dedede; 
+}
+
+.n-columns-view .n-column .n-items .n-item:not(.uk-active):not(.n-drilling-down):first-child:hover {
+
+	background: #d8d8d8;
 	border-top: 1px solid #cdcdcd;
 }

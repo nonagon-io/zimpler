@@ -31,8 +31,27 @@
 					</div>
 				</div>
 				<ul class="n-items">
-					<li class="n-item" ng-repeat="item in level.items">
-						{{item.name}}
+					<li class="n-item" ng-repeat="item in level.items" 
+						ng-class="{'uk-active': item == editingData, 'n-drilling-down': item.expanded}"
+						ng-click="edit(item)">
+						<div class="uk-grid uk-grid-preserve uk-grid-small">
+							<div class="uk-width-1-10">
+								<i class="uk-icon-bars"></i>
+							</div>
+							<div class="uk-width-7-10">
+								{{item.name}}
+							</div>
+							<div class="uk-width-2-10 uk-text-right">
+								<button type="button" class="uk-button" style="margin: -5px -5px 0 0"
+										ng-click="expand(level, item, $event)" ng-show="!item.expanded">
+									<i class="uk-icon-plus-square-o"></i>
+								</button>
+								<button type="button" class="uk-button ng-hide" style="margin: -5px -5px 0 0"
+										ng-click="collapse(level, item, $event)" ng-show="item.expanded">
+									<i class="uk-icon-minus-square-o"></i>
+								</button>
+							</div>
+						</div>
 					</li>
 				</ul>
 			</div>
