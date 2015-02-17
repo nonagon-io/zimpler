@@ -5,7 +5,15 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 	
 	$scope.editingData = {};
 	
-	$scope.levels = [];
+	$scope.levels = [{ 
+		number: 1,
+		items: []
+	}];
+	
+	$scope.addItem = function(level) {
+		
+		$scope.levels[level].items.push({});
+	};
 	
 	$scope.save = function() {
 		

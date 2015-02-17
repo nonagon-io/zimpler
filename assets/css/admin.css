@@ -85,7 +85,7 @@ body {
 	right: 0px;
 	bottom: 0px;
 
-	border-top: 1px solid #f5f5f5;
+	border-top: 1px solid #fafafa;
 	
 	overflow-x: hidden;
 }
@@ -422,12 +422,11 @@ body {
 .n-options-header {
 	
 	position: absolute;
-	top: -1px;
+	top: 0px;
 	left: 0px;
 	right: 0px;
 	height: 30px;
 	
-	border-top: 1px solid #f5f5f5;
 	border-bottom: 1px solid #ccc;
 	background: #efefef;
 	
@@ -441,7 +440,7 @@ body {
 	top: 51px;
 }
 
-.n-culture-header.n-drop-shadow {
+.n-options-header.n-drop-shadow {
 	
 	box-shadow: 0px 10px 50px -20px black;
 }

@@ -14,26 +14,27 @@
 	</div>
 	<div class="n-content n-single-page">
 		<div class="n-columns-view">
-			<div class="n-column">
+			<div class="n-column" ng-repeat="level in levels" ng-cloak>
 				<div class="n-title">
-					Level 1
+					<div class="uk-grid uk-margin-remove">
+						<div class="uk-width-2-3">
+							<div class="uk-margin-small-top">
+								Level {{level.number}}
+							</div>
+						</div>
+						<div class="uk-width-1-3 uk-text-right">
+							<button type="button" class="uk-button uk-button-primary"
+									ng-click="addItem($index)">
+								<i class="uk-icon-plus"></i>
+							</button>
+						</div>
+					</div>
 				</div>
-			</div><div class="n-column">
-				<div class="n-title">
-					Level 2
-				</div>
-			</div><div class="n-column">
-				<div class="n-title">
-					Level 3
-				</div>
-			</div><div class="n-column">
-				<div class="n-title">
-					Level 4
-				</div>
-			</div><div class="n-column">
-				<div class="n-title">
-					Level 5
-				</div>
+				<ul class="n-items">
+					<li class="n-item" ng-repeat="item in level.items">
+						{{item.name}}
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>
