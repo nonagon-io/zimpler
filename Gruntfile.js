@@ -10,6 +10,7 @@ module.exports = function(grunt) {
 				files: {
 					'js/vendor.min.js': [
 						'bower_components/jquery/dist/jquery.min.js', 
+						'bower_components/jquery-ui/jquery-ui.min.js', 
 						'bower_components/uikit/js/uikit.min.js',
 						'bower_components/uikit/js/components/form-select.min.js',
 						'bower_components/intl-tel-input/build/js/intlTelInput.min.js',
@@ -18,6 +19,7 @@ module.exports = function(grunt) {
 						'bower_components/angular-intl-tel/angular-intl-tel.js',
 						'bower_components/angular-validation-match/dist/angular-input-match.min.js',
 						'bower_components/angular-modularizer/angular-modularizer.js',
+						'bower_components/angular-ui-sortable/sortable.min.js',
 						'bower_components/freezeh/freezeh.js',
 						'bower_components/codemirror/lib/codemirror.js',
 						'bower_components/codemirror/mode/markdown/markdown.js',

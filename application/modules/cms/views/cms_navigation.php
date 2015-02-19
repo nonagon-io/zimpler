@@ -14,7 +14,7 @@
 	</div>
 	<div class="n-content n-single-page">
 		<div class="n-columns-view">
-			<div class="n-column" ng-repeat="level in levels" ng-cloak>
+			<div class="n-column" ng-repeat="level in levels" ng-cloak="" n-horz-stack="{{$index}}">
 				<div class="n-title">
 					<div class="uk-grid uk-margin-remove">
 						<div class="uk-width-2-3">
@@ -30,13 +30,13 @@
 						</div>
 					</div>
 				</div>
-				<ul class="n-items">
+				<ul class="n-items" ui-sortable="sortableOptions" ng-model="level.items">
 					<li class="n-item" ng-repeat="item in level.items" 
 						ng-class="{'uk-active': item == editingData, 'n-drilling-down': item.expanded}"
 						ng-click="edit(item)">
 						<div class="uk-grid uk-grid-preserve uk-grid-small">
 							<div class="uk-width-1-10">
-								<i class="uk-icon-bars"></i>
+								<i class="uk-icon-bars n-handle"></i>
 							</div>
 							<div class="uk-width-7-10">
 								{{item.name}}

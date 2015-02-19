@@ -15,7 +15,7 @@
 .n-columns-view .n-column {
 	
 	position: absolute;
-	display: inline-block;
+	display: block;
 	width: 350px;
 	top: 0px;
 	bottom: 0px;
@@ -24,6 +24,47 @@
 
 	border-top: 1px solid #f9f9f9;
 	border-right: 1px solid #ddd;
+	
+    -webkit-transition: -webkit-transform 0.3s ease-out;
+    -moz-transition: -moz-transform 0.3s ease-out;
+    -o-transition: -o-transform 0.3s ease-out;
+    transition: transform 0.3s ease-out;
+}
+
+.n-columns-view .n-column.ng-enter {
+	
+	-webkit-transform: translate(-100%, 0);
+	-moz-transform: translate(-100%, 0);
+	-ms-transform: translate(-100%, 0);
+	-o-transform: translate(-100%, 0);
+	transform: translate(-100%, 0);
+}
+
+.n-columns-view .n-column.ng-enter.ng-enter-active {
+	
+	-webkit-transform: translate(0, 0);
+	-moz-transform: translate(0, 0);
+	-ms-transform: translate(0, 0);
+	-o-transform: translate(0, 0);
+	transform: translate(0, 0);
+}
+
+.n-columns-view .n-column.ng-leave {
+	
+	-webkit-transform: translate(0, 0);
+	-moz-transform: translate(0, 0);
+	-ms-transform: translate(0, 0);
+	-o-transform: translate(0, 0);
+	transform: translate(0, 0);
+}
+
+.n-columns-view .n-column.ng-leave-active {
+	
+	-webkit-transform: translate(-100%, 0);
+	-moz-transform: translate(-100%, 0);
+	-ms-transform: translate(-100%, 0);
+	-o-transform: translate(-100%, 0);
+	transform: translate(-100%, 0);
 }
 
 .n-columns-view .n-column:not(:first-child) {
