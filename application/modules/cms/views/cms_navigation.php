@@ -2,14 +2,40 @@
 	 ng-init="baseUrl = '<?= base_url("/admin/cms/navigations"); ?>'">
 	<div class="n-options-header" 
 		 ng-class="{'n-drop-shadow': mainContentBodyScrollTop > 0}">
-		<select id="cultureSelection" name="culture">
-			<option value="en-us" <?= $culture == 'en-us' ? 'selected' : '' ?>>English</option>
-			<option value="th-th" <?= $culture == 'th-th' ? 'selected' : '' ?>>Thai</option>
-		</select>
-		<div class="uk-button-group">
-			<a class="uk-button" title="Columns View" data-uk-tooltip=""><i class="uk-icon-columns"></i></a>
-			<a class="uk-button" title="Sitemap View" data-uk-tooltip=""><i class="uk-icon-sitemap"></i></a>
-			<a class="uk-button" title="List View" data-uk-tooltip=""><i class="uk-icon-th-list"></i></a>
+		<div class="uk-grid uk-grid-divider uk-grid-preserve">
+			<div class="uk-width-1-2" style="padding-right: 10px">
+				<div class="uk-grid uk-grid-preserve uk-grid-small">
+					<div class="uk-width-2-3">
+						<div class="uk-button-group">
+							<a class="uk-button" title="Columns View" data-uk-tooltip=""><i class="uk-icon-columns"></i></a>
+							<a class="uk-button" title="Sitemap View" data-uk-tooltip=""><i class="uk-icon-sitemap"></i></a>
+							<a class="uk-button" title="List View" data-uk-tooltip=""><i class="uk-icon-th-list"></i></a>
+						</div>
+					</div>
+					<div class="uk-width-1-3 uk-text-right">
+						<div class="uk-text-primary ng-hide" style="margin-top: 5px;">Published</div>
+						<button type="button" class="uk-button uk-button-danger ng-hide">
+							<i class="uk-icon-trash"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="uk-width-1-2" style="padding-left: 10px">
+				<div class="uk-grid uk-grid-preserve uk-grid-small">
+					<div class="uk-width-1-3">
+						<button type="button" class="uk-button uk-button-primary" style="width:80px">
+							Publish
+						</button>
+					</div>
+					<div class="uk-width-2-3 uk-text-right">
+						<div class="uk-display-inline-block">Rev. 1</div>
+						<select id="cultureSelection" name="culture">
+							<option value="en-us" <?= $culture == 'en-us' ? 'selected' : '' ?>>English</option>
+							<option value="th-th" <?= $culture == 'th-th' ? 'selected' : '' ?>>Thai</option>
+						</select>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="n-content n-single-page">
