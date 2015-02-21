@@ -28,7 +28,7 @@
 						</button>
 					</div>
 					<div class="uk-width-2-3 uk-text-right">
-						<div class="uk-display-inline-block">Rev. 1</div>
+						<div class="uk-display-inline-block uk-vertical-align-middle">Rev. 1</div>
 						<select id="cultureSelection" name="culture">
 							<option value="en-us" <?= $culture == 'en-us' ? 'selected' : '' ?>>English</option>
 							<option value="th-th" <?= $culture == 'th-th' ? 'selected' : '' ?>>Thai</option>

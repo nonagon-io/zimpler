@@ -30,13 +30,13 @@ class Cms_admin extends MX_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		
-		$this->lang->load('cms/admin_siteinfo');
-		$this->load->model("cms/siteinfo_model");
 	}
 
 	function siteinfo()
 	{
+		$this->lang->load('cms/admin_siteinfo');
+		$this->load->model("cms/siteinfo_model");
+		
 		$method = $this->input->server('REQUEST_METHOD');
 		
 		if($method == 'GET')
@@ -86,10 +86,15 @@ class Cms_admin extends MX_Controller {
 
 	function navigations()
 	{
+		$this->lang->load('cms/admin_siteinfo');
+		$this->load->model("cms/navigation_model");
+
 		$method = $this->input->server('REQUEST_METHOD');
 		
 		if($method == 'GET')
 		{
+			$navs = $this->navigation_model->get_hierarchy('th-th');
+			
 			$culture = $this->input->get("culture");
 			if(!$culture) $culture = "en-us";
 
