@@ -131,6 +131,9 @@ class Content_model extends CI_Model
  
     public function add_content($content)
     {
+	    if(!$content)
+	    	throw new Exception("content parameter cannot be null");
+	    
 	    if(!array_key_exists("title", $content))
 	    	throw new Exception("title must be specified");
 
@@ -182,6 +185,9 @@ class Content_model extends CI_Model
     
     public function update_content($content)
     {
+	    if(!$content)
+	    	throw new Exception("content parameter cannot be null");
+
 	    if(!array_key_exists("content_id", $content))
 	    	throw new Exception("content_id must be specified");
 
@@ -479,6 +485,9 @@ class Content_model extends CI_Model
     
     public function add_list_item($content_list_item)
     {
+	    if(!$content_list_item)
+	    	throw new Exception("content_list_item parameter cannot be null");
+
 	    if(!array_key_exists("content_id", $content_list_item))
 	    	throw new Exception("content_id must be specified");
 

@@ -30,6 +30,14 @@ class Navigation_model extends CI_Model
 			$this->dbforge->add_field("status			varchar(15)		NOT NULL");
 		    $this->dbforge->add_key("nav_id", TRUE);
 			$this->dbforge->create_table("nav", TRUE);
+			
+			$nav["revision"] = 1;
+		    $nav["date_created"] = date('Y-m-d H:i:s', now());
+		    $nav["last_modified"] = date('Y-m-d H:i:s', now());
+		    $nav["date_publish"] = null;
+		    $nav["status"] = "draft";
+			
+			$this->db->insert("nav", $nav);
 		}
 		
 		// content_label table.
@@ -157,20 +165,120 @@ class Navigation_model extends CI_Model
     public function add_item($nav_item)
     {
 	    $this->db->flush_cache();
+	    
+	    if(!$nav_item)
+	    	throw new Exception("nav_item parameter cannot be null");
+	    	
+	    if(!array_key_exists("culture", $nav_item))
+	    	throw new Exception("culture must be specified");
+	    	
+	    if(!array_key_exists("label", $nav_item))
+	    	throw new Exception("label must be specified");
+	    	
+	    if(!array_key_exists("url", $nav_item))
+	    	throw new Exception("url must be specified");
+	    	
+	    $nav = $this->db->get_where("nav", array(
+	    	"revision" => $this->get_top_revision(),
+	    	"status" => "draft"
+	    ))->row();
+	    
+	    if(!$nav)
+	    {
+	    	throw new Exception("The top revision is not in the 'draft' status");
+	    }
+
+		$nav_item["nav_id"] = $nav->nav_id;
+	    $nav_item["date_created"] = date('Y-m-d H:i:s', now());
+	    $nav_item["last_modified"] = date('Y-m-d H:i:s', now());
+	    $nav_item["status"] = "active";
+	    
+	    $this->db->insert("nav_item", $nav_item);
+	    $nav_item["nav_item_id"] = $this->db->insert_id();
+	    
+	    return $nav_item;
     }
     
     public function publish() {
 	    
 	    $this->db->flush_cache();
+	    
+	    $nav = $this->db->get_where("nav", array(
+	    	"revision" => $this->get_top_revision(),
+	    	"status" => "draft"
+	    ))->row();
+
+	    if(!$nav)
+	    {
+	    	throw new Exception("The top revision is not in the 'draft' status");
+	    }
+	    
+	    $this->db->set("status", "published");
+	    $this->db->set("date_publish", date('Y-m-d H:i:s', now()));
+	    $this->db->where("nav_id", $nav->nav_id);
+	    $this->db->update("nav");
     }
     
     public function create_new_revision() {
 	    
 	    $this->db->flush_cache();
+	    
+	    $revision = $this->get_top_revision($content_key, $culture);
+	    $nav = $this->db->get_where("nav", array(
+	    	"revision" => $revision
+	    ))->row();
+
+	    if($nav != null && $nav->status == "draft")
+	    {
+	    	throw new Exception("The new revision is already created");
+	    }
+	    
+	    unset($nav);
+	    
+	    $nav = array();
+		$nav["revision"] = $revision + 1;
+	    $nav["date_created"] = date('Y-m-d H:i:s', now());
+	    $nav["last_modified"] = date('Y-m-d H:i:s', now());
+	    $nav["date_publish"] = null;
+	    $nav["status"] = "draft";
+		
+		$this->db->insert("nav", $nav);
+		
+		$nav["nav_id"] = $this->db->insert_id();
+		
+		// Duplicate all nav_items.
+		$query = $this->db->get_where("nav_item", array("nav_id" => $nav->nav_id));
+		foreach($query->result() as $nav_item)
+		{
+			$nav_item->nav_id = $nav["nav_id"];
+		    $nav_item->date_created = date('Y-m-d H:i:s', now());
+		    $nav_item->last_modified = date('Y-m-d H:i:s', now());
+
+			$this->db-insert("nav_item", $nav_item);
+		}
+		
+		return $nav;
     }
     
     public function delete_top_revision() {
 	    
 	    $this->db->flush_cache();
+	    
+	    $revision = $this->get_top_revision($content_key, $culture);
+	    $nav = $this->db->get_where("nav", array(
+	    	"revision" => $revision,
+	    	"status" => "draft"
+	    ))->row();
+
+	    if(!$nav) return;
+	    {
+	    	throw new Exception("The top revision is not in the 'draft' status");
+	    }
+	    
+	    $this->db->where("nav_id", $nav->nav_id);
+	    $this->db->delete("nav");
+	    
+	    $this->db->where("nav_id", $nav->nav_id);
+	    $this->db->delete("nav_item");
     }
 }
