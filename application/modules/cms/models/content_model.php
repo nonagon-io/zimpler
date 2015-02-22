@@ -520,8 +520,8 @@ class Content_model extends CI_Model
 		$this->db->insert("content_list_item", $content_list_item);
     }
     
-    public function publish($content_key, $culture) {
-	    
+    public function publish($content_key, $culture)
+    {
 	    $this->db->flush_cache();
 	    
 	    $content = $this->db->get_where("content", array("content_key" => $content_key))->row();
@@ -547,8 +547,8 @@ class Content_model extends CI_Model
 	    $this->db->update($content_table);
     }
     
-    public function create_new_revision($content_key, $culture) {
-	    
+    public function create_new_revision($content_key, $culture)
+    {
 	    $this->db->flush_cache();
 	    
 	    $content = $this->db->get_where("content", array("content_key" => $content_key))->row();
@@ -578,8 +578,8 @@ class Content_model extends CI_Model
 	    $this->db->insert($content_table, $content_details);
     }
     
-    public function delete_revision($content_key, $culture, $revision) {
-	    
+    public function delete_revision($content_key, $culture, $revision)
+    {
 	    $this->db->flush_cache();
 	    
 	    $content = $this->db->get_where("content", array("content_key" => $content_key))->row();
