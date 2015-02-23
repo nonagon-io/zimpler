@@ -82,5 +82,17 @@
 				</ul>
 			</div>
 		</div>
+		
+		<?php 
+			
+			$data = array();
+			
+			$data['header'] = $this->load->view("cms/common/properties_header", $data, TRUE);
+			$data['body'] = $this->load->view("cms/properties/nav_properties", $data, TRUE);
+			$data['footer'] = $this->load->view("cms/common/properties_footer", $data, TRUE);
+			
+			$this->load->view("admin/common/properties_panel", $data);
+		?>
+
 	</div>
 </div>
