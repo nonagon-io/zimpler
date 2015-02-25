@@ -7,20 +7,22 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 		isOpen: false,
 		scrollTop: 0,
 		scrollMaxReached: false,
+		panel: $(".n-properties-panel"),
 		propertiesBody: $(".n-properties-panel .n-body"),
+		widthClasses: "uk-width-1-1 uk-width-medium-2-3 uk-width-large-6-10",
+		offset: $(".n-properties-panel").offset(),
 		scope: null,
 		
-		open: function($scope) {
+		open: function($scope, widthClasses) {
+			
+			if(widthClasses)
+				this.widthClasses = widthClasses;
 		
 			this.isOpen = true;
 			this.propertiesBody.scrollTop(0);
 			this.scope = $scope;
 			
 			$this = this;
-			
-			setTimeout(function() {
-				$this.propertiesBody.find(':input:visible:enabled:first').focus();
-			}, 300);
 			
 			var bodyScroll = function() {
 				
@@ -40,14 +42,36 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 			
 			this.bodyScroll = bodyScroll;
 			this.propertiesBody.on("scroll", bodyScroll);
+			
+			this.panel.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+				function(e) {
+				
+					$this.offsetLeft = $this.panel.offset().left;
+					$this.scope.$apply();
+				});
+			
+			setTimeout(function() {
+				
+				$this.propertiesBody.find(':input:visible:enabled:first').focus();
+				
+			}, 300);
+			
+			setTimeout(function() {
+				
+				bodyScroll();
+				
+			}, 1);
 		},
 		
 		close: function() {
 		
 			this.isOpen = false;
 			this.scope = null;
+			this.offsetLeft = 0;
 			
-			this.propertiesBody.off("scroll", bodyScroll);
+			this.scope.$apply();
+
+			this.propertiesBody.off("scroll", this.bodyScroll);
 		}
 	};
 	

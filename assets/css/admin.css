@@ -244,9 +244,7 @@ body {
 	border-left: 1px solid #ccc;
 	box-sizing: border-box;
 	
-	border-top: 1px solid #f9f9f9;
-	
-	box-shadow: -10px 2px 50px -25px black;
+	box-shadow: -10px 2px 50px -25px black !important;
 	
     -webkit-transition: right 0.3s ease-in-out;
     -moz-transition: right 0.3s ease-in-out;

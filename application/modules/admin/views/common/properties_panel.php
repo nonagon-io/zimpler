@@ -1,4 +1,4 @@
-<form class="n-properties-panel uk-panel uk-width-1-1 uk-width-medium-2-3 uk-width-large-6-10 uk-form ng-hide"
+<form class="n-properties-panel uk-panel {{propertiesPanel.widthClasses}} uk-form ng-hide"
 	  ng-show="propertiesPanel.isOpen" n-dirty-check=""
 	  name="propertiesForm" ng-init="baseUrl = '<?= base_url() ?>';" novalidate>
 	<shortcut></shortcut>

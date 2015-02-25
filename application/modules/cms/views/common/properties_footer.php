@@ -28,7 +28,7 @@
 				ng-click="savePropertiesData({alsoClose: true})">
 			Save <span ng-show="propertiesForm.$dirty">*</span>
 		</button>
-		<button type="button" class="uk-button" ng-click="closePropertiesPanel()">
+		<button type="button" class="uk-button" ng-click="propertiesPanel.close()">
 			Cancel
 		</button>
 	</div>
