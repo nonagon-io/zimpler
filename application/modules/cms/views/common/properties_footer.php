@@ -1,5 +1,6 @@
 <div class="uk-grid uk-margin-small-top">
 	<div class="uk-width-1-5">
+		<?php if(isset($allow_publish) && $allow_publish) : ?>
 		<button type="button" class="uk-button uk-button-primary" 
 				ng-if="editingData.status != 'published'"
 				ng-disabled="!propertiesForm.$valid"
@@ -10,6 +11,9 @@
 			  ng-if="editingData.status == 'published'">
 			Published
 		</span>
+		<?php else : ?>
+		&nbsp;
+		<?php endif ?>
 	</div>
 	<div class="uk-width-4-5 uk-text-right">
 		<button type="button" class="uk-button uk-button-primary" 

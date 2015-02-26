@@ -38,7 +38,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="n-content n-single-page" ng-style="{ right: (propertiesPanel.offsetLeft - contentOffset.left) + 'px' }">
+	<div class="n-content n-single-page" ng-style="{ right: (propertiesPanel.offsetLeft - contentOffset().left) + 'px' }">
 		<div class="n-columns-view">
 			<div class="n-column" ng-repeat="level in levels" ng-cloak="" n-horz-stack="{{$index}}">
 				<div class="n-title">
@@ -88,9 +88,9 @@
 		
 		$data = array();
 		
-		$data['header'] = $this->load->view("cms/common/properties_header", $data, TRUE);
-		$data['body'] = $this->load->view("cms/properties/nav_properties", $data, TRUE);
-		$data['footer'] = $this->load->view("cms/common/properties_footer", $data, TRUE);
+		$data['header'] = $this->load->view("cms/common/properties_header", null, TRUE);
+		$data['body'] = $this->load->view("cms/properties/nav_properties", null, TRUE);
+		$data['footer'] = $this->load->view("cms/common/properties_footer", null, TRUE);
 		
 		$this->load->view("admin/common/properties_panel", $data);
 	?>

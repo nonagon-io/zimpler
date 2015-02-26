@@ -1,6 +1,6 @@
 angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 
-.factory("propertiesPanel", ['$http', '$sce', function($http, $sce) {
+.factory("propertiesPanel", ['$http', '$sce', '$window', function($http, $sce, $window) {
 	
 	return {
 		
@@ -10,7 +10,6 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 		panel: $(".n-properties-panel"),
 		propertiesBody: $(".n-properties-panel .n-body"),
 		widthClasses: "uk-width-1-1 uk-width-medium-2-3 uk-width-large-6-10",
-		offset: $(".n-properties-panel").offset(),
 		scope: null,
 		
 		open: function($scope, widthClasses) {
@@ -43,6 +42,18 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 			this.bodyScroll = bodyScroll;
 			this.propertiesBody.on("scroll", bodyScroll);
 			
+			var resize = function() {
+				
+				if($this.scope) {
+					
+					$this.offsetLeft = $this.panel.offset().left;
+					$this.scope.$apply();
+				}
+			};
+			
+			this.resize = resize;
+			$($window).on("resize", resize);
+			
 			this.panel.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
 				function(e) {
 				
@@ -65,13 +76,12 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 		
 		close: function() {
 		
+			this.offsetLeft = 0;
 			this.isOpen = false;
 			this.scope = null;
-			this.offsetLeft = 0;
-			
-			this.scope.$apply();
 
 			this.propertiesBody.off("scroll", this.bodyScroll);
+			$($window).off("resize", this.resize);
 		}
 	};
 	
