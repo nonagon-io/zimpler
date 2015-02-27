@@ -45,7 +45,7 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 			}
 		},
 		
-		fire: function(event, callback) {
+		fire: function(event, formAttrs, callback) {
 			
 			if(!this.observers[event])
 				this.observers[event] = [];
@@ -54,7 +54,7 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 			for(var i=0; i<observers.length; i++) {
 				
 				var delegate = observers[i];
-				delegate(callback);
+				delegate(formAttrs, callback);
 			}
 		},
 		
@@ -139,12 +139,22 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 			});
 		},
 		
-		save: function(option) {
+		save: function(event, option) {
+
+			event.preventDefault();
+			this.scope.propertiesPanel.propertiesForm.$setSubmitted();
+			
+			if(!this.scope.propertiesPanel.propertiesForm.$valid) {
+				return;
+			}
 			
 			var $this = this;
-			this.fire("save", function(result) {
+			this.fire("save", event.target.attributes, function(result) {
 				
 				if(result && option && option.alsoClose) {
+					
+					$this.scope.propertiesPanel.propertiesForm.$setUntouched();
+					$this.scope.propertiesPanel.propertiesForm.$setPristine();
 					
 					$this.close();
 				}

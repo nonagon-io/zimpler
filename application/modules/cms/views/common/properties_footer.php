@@ -28,8 +28,7 @@
 				style="width: auto">
 			<i class="uk-icon-trash"></i>
 		</button>
-		<button type="submit" class="uk-button uk-button-success" 
-				ng-click="<?= $panel_name ?>.save({alsoClose: true})">
+		<button type="submit" class="uk-button uk-button-success">
 			Save <span ng-show="<?= $panel_name ?>.propertiesForm.$dirty">*</span>
 		</button>
 		<button type="button" class="uk-button" ng-click="<?= $panel_name ?>.close()">
