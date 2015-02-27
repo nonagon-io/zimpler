@@ -1,6 +1,6 @@
-<form class="n-properties-panel uk-panel {{propertiesPanel.widthClasses}} uk-form ng-hide"
-	  ng-show="propertiesPanel.isOpen" n-dirty-check=""
-	  name="form.propertiesForm" 
+<form class="n-properties-panel uk-panel {{<?= $panel_name ?>.widthClasses}} uk-form ng-hide"
+	  ng-show="<?= $panel_name ?>.isOpen" n-dirty-check=""
+	  name="<?= $panel_name ?>.propertiesForm" 
 	  ng-init="baseUrl = '<?= base_url() ?>';" novalidate>
 	<shortcut></shortcut>
 	<?php if($this->config->item("csrf_protection")) : ?>
@@ -13,9 +13,9 @@
 		   name="<?php echo $this->security->get_csrf_token_name(); ?>" 
 		   value="<?php echo $this->security->get_csrf_hash();?>" />
 	<?php endif ?>
-	<div class="n-header" ng-class="{'n-drop-shadow': propertiesPanel.scrollTop > 0}">
+	<div class="n-header" ng-class="{'n-drop-shadow': <?= $panel_name ?>.scrollTop > 0}">
 		<?= $header ?>
-		<div class="n-bottom-border" ng-hide="propertiesPanel.scrollTop > 0"></div>
+		<div class="n-bottom-border" ng-hide="<?= $panel_name ?>.scrollTop > 0"></div>
 	</div>
 	<div class="n-body uk-form-stacked">
 		<?= $body ?>
@@ -24,7 +24,7 @@
 		<div class="n-scroll-for-more ng-hide" 
 			 title="Scroll down for more" 
 			 data-uk-tooltip=""
-			 ng-show="!propertiesPanel.scrollMaxReached"></div>
+			 ng-show="!<?= $panel_name ?>.scrollMaxReached"></div>
 		<div class="n-top-border"></div>
 		<?= $footer ?>
 	</div>
@@ -41,7 +41,7 @@
 				   ng-bind-html="connectionErrorMessage">
 				</p>
 			</span>
-			<button type="button" class="uk-button" ng-click="propertiesPanel.close()">
+			<button type="button" class="uk-button" ng-click="<?= $panel_name ?>.close()">
 				Close
 			</button>
 		</div>

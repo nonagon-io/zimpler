@@ -13,6 +13,50 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 		propertiesBody: $(".n-properties-panel .n-body"),
 		widthClasses: "uk-width-1-1 uk-width-medium-2-3 uk-width-large-6-10",
 		scope: null,
+		observers: {},
+		
+		on: function(event, delegate) {
+			
+			if(event) {
+				
+				if(!this.observers[event])
+					this.observers[event] = [];
+				
+				this.observers[event].push(delegate);
+			}
+		},
+		
+		off: function(event, delegate) {
+			
+			if(event && this.observers[event]) {
+				
+				var observers = this.observers[event];
+				var newObservers = [];
+				
+				for(var i=0; i<observers.length; i++) {
+					
+					if(observers[i] == delegate)
+						continue;
+						
+					newObservers.push(observers[i]);
+				}
+				
+				this.observers[event] = newObservers;
+			}
+		},
+		
+		fire: function(event, callback) {
+			
+			if(!this.observers[event])
+				this.observers[event] = [];
+			
+			var observers = this.observers[event];	
+			for(var i=0; i<observers.length; i++) {
+				
+				var delegate = observers[i];
+				delegate(callback);
+			}
+		},
 		
 		open: function($scope, widthClasses) {
 			
@@ -74,16 +118,17 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 				bodyScroll();
 				
 			}, 1);
+			
+			$this.scope.propertiesPanel.propertiesForm.$setPristine(); 
 		},
 		
 		close: function() {
 			
 			$this = this;
 			
-			checkFormDirty(this.scope.form, "propertiesForm").confirm(function() {
+			checkFormDirty(this.scope.propertiesPanel, "propertiesForm").confirm(function() {
 				
-				$this.scope.form.propertiesForm.$setPristine(); 
-				$this.scope.form.propertiesForm.$setUntouched();
+				$this.scope.propertiesPanel.propertiesForm.$setUntouched();
 				
 				$this.offsetLeft = 0;
 				$this.isOpen = false;
@@ -91,6 +136,18 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 	
 				$this.propertiesBody.off("scroll", $this.bodyScroll);
 				$($window).off("resize", $this.resize);
+			});
+		},
+		
+		save: function(option) {
+			
+			var $this = this;
+			this.fire("save", function(result) {
+				
+				if(result && option && option.alsoClose) {
+					
+					$this.close();
+				}
 			});
 		}
 	};

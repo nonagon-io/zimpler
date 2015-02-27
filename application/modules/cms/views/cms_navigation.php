@@ -86,11 +86,11 @@
 	
 	<?php 
 		
-		$data = array();
+		$data = array("panel_name" => "propertiesPanel");
 		
-		$data['header'] = $this->load->view("cms/common/properties_header", null, TRUE);
-		$data['body'] = $this->load->view("cms/properties/nav_properties", null, TRUE);
-		$data['footer'] = $this->load->view("cms/common/properties_footer", null, TRUE);
+		$data['header'] = $this->load->view("cms/common/properties_header", $data, TRUE);
+		$data['body'] = $this->load->view("cms/properties/nav_properties", $data, TRUE);
+		$data['footer'] = $this->load->view("cms/common/properties_footer", $data, TRUE);
 		
 		$this->load->view("admin/common/properties_panel", $data);
 	?>
