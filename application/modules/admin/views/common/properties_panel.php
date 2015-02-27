@@ -1,6 +1,7 @@
 <form class="n-properties-panel uk-panel {{propertiesPanel.widthClasses}} uk-form ng-hide"
 	  ng-show="propertiesPanel.isOpen" n-dirty-check=""
-	  name="propertiesForm" ng-init="baseUrl = '<?= base_url() ?>';" novalidate>
+	  name="form.propertiesForm" 
+	  ng-init="baseUrl = '<?= base_url() ?>';" novalidate>
 	<shortcut></shortcut>
 	<?php if($this->config->item("csrf_protection")) : ?>
 	<input type="hidden" 

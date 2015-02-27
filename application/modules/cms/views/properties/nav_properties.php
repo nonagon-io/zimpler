@@ -3,7 +3,7 @@
 	<div class="uk-form-controls">
 		<input type="text" id="key" name="key" class="uk-width-1-1" 
 			   ng-model="editingData.key"
-			   ng-class="{'uk-form-danger': propertiesForm.key.$error.required && propertiesForm.$submitted}"
+			   ng-class="{'uk-form-danger': form.propertiesForm.key.$error.required && propertiesForm.$submitted}"
 			   placeholder="The unique key to identify the navigation item (e.g. home)"
 			   required/>
 	</div>
@@ -13,7 +13,7 @@
 	<div class="uk-form-controls">
 		<input type="text" id="url" name="url" class="uk-width-1-1" 
 			   ng-model="editingData.url"
-			   ng-class="{'uk-form-danger': propertiesForm.url.$error.required && propertiesForm.$submitted}"
+			   ng-class="{'uk-form-danger': form.propertiesForm.url.$error.required && propertiesForm.$submitted}"
 			   placeholder="The url of the page. Relative url indicates internal page."
 			   required/>
 			   
@@ -27,7 +27,7 @@
 			<div class="uk-width-1-3">
 				<select id="target" name="target" class="uk-width-1-1"
 					    ng-model="editingData.target"
-					    ng-class="{'uk-form-danger': propertiesForm.target.$error.required && propertiesForm.$submitted}">
+					    ng-class="{'uk-form-danger': form.propertiesForm.target.$error.required && propertiesForm.$submitted}">
 					<option value="normal">Normal</option>
 					<option value="new">New Tab / Window</option>
 				</select>
@@ -35,7 +35,7 @@
 			<div class="uk-width-2-3">
 				<input type="text" id="targetKey" name="targetKey" class="uk-width-1-1" 
 					   ng-model="editingData.targetKey"
-					   ng-class="{'uk-form-danger': propertiesForm.targetKey.$error.required && propertiesForm.$submitted}"
+					   ng-class="{'uk-form-danger': form.propertiesForm.targetKey.$error.required && propertiesForm.$submitted}"
 					   placeholder="Target Key (Optional)"
 					   required/>
 			</div>
@@ -48,7 +48,7 @@
 		<input type="text" id="label" name="publicTitle" class="uk-width-1-1" 
 			   ng-model="editingData.publicTitle"
 			   ng-readonly="editingData.status == 'published'"
-			   ng-class="{'uk-form-danger': propertiesForm.publicTitle.$error.required && propertiesForm.$submitted}"
+			   ng-class="{'uk-form-danger': form.propertiesForm.publicTitle.$error.required && propertiesForm.$submitted}"
 			   placeholder="The title that will be public in the selected language"
 			   required/>
 	</div>

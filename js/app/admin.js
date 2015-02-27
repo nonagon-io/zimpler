@@ -1,6 +1,8 @@
 angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 
-.factory("propertiesPanel", ['$http', '$sce', '$window', function($http, $sce, $window) {
+.factory("propertiesPanel", 
+	['$http', '$sce', '$window', 'checkFormDirty',
+	function($http, $sce, $window, checkFormDirty) {
 	
 	return {
 		
@@ -75,13 +77,21 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 		},
 		
 		close: function() {
-		
-			this.offsetLeft = 0;
-			this.isOpen = false;
-			this.scope = null;
-
-			this.propertiesBody.off("scroll", this.bodyScroll);
-			$($window).off("resize", this.resize);
+			
+			$this = this;
+			
+			checkFormDirty(this.scope.form, "propertiesForm").confirm(function() {
+				
+				$this.scope.form.propertiesForm.$setPristine(); 
+				$this.scope.form.propertiesForm.$setUntouched();
+				
+				$this.offsetLeft = 0;
+				$this.isOpen = false;
+				$this.scope = null;
+	
+				$this.propertiesBody.off("scroll", $this.bodyScroll);
+				$($window).off("resize", $this.resize);
+			});
 		}
 	};
 	

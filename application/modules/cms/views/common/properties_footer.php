@@ -30,7 +30,7 @@
 		</button>
 		<button type="submit" class="uk-button uk-button-success" 
 				ng-click="savePropertiesData({alsoClose: true})">
-			Save <span ng-show="propertiesForm.$dirty">*</span>
+			Save <span ng-show="form.propertiesForm.$dirty">*</span>
 		</button>
 		<button type="button" class="uk-button" ng-click="propertiesPanel.close()">
 			Cancel
