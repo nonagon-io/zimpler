@@ -22,7 +22,7 @@
  * @subpackage	CMS Module
  * @category	Libraries
  * @author		Chonnarong Hanyawongse
- * @link		http://zimpler.com/user_guide/setting/setting_controllers.html
+ * @link		http://zimpler.com/user_guide/cms/controllers/cms_admin.html
  */
 
 class Cms_admin extends MX_Controller {

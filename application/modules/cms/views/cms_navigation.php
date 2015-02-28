@@ -1,5 +1,4 @@
-<div class="n-abs-fit uk-form" ng-controller="CmsNavigationController"
-	 ng-init="baseUrl = '<?= base_url("/admin/cms/navigations"); ?>'">
+<div class="n-abs-fit uk-form" ng-controller="CmsNavigationController">
 	<div class="n-options-header" 
 		 ng-class="{'n-drop-shadow': mainContentBodyScrollTop > 0}">
 		<div class="uk-grid uk-grid-divider uk-grid-preserve">
@@ -86,7 +85,9 @@
 	
 	<?php 
 		
-		$data = array("panel_name" => "propertiesPanel");
+		$data = array(
+			"panel_name" => "propertiesPanel",
+			"action" => base_url('/cms/api/navigation/item'));
 		
 		$data['header'] = $this->load->view("cms/common/properties_header", $data, TRUE);
 		$data['body'] = $this->load->view("cms/properties/nav_properties", $data, TRUE);

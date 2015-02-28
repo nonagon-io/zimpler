@@ -2,7 +2,10 @@
 	  ng-show="<?= $panel_name ?>.isOpen" n-dirty-check=""
 	  name="<?= $panel_name ?>.propertiesForm" 
 	  ng-submit="<?= $panel_name ?>.save($event, {alsoClose:true})"
-	  action="<?= base_url('/admin/cms/navigations/') ?>" novalidate>
+	  action="<?= $action ?>" novalidate>
+	<input type="hidden" 
+		   name="<?php echo $this->security->get_csrf_token_name(); ?>" 
+		   value="<?php echo $this->security->get_csrf_hash();?>" />
 	<shortcut></shortcut>
 	<?php if($this->config->item("csrf_protection")) : ?>
 	<input type="hidden" 

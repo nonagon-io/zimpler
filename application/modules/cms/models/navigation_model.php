@@ -54,6 +54,7 @@ class Navigation_model extends CI_Model
 			$this->dbforge->add_field('parent_id		int				NOT NULL	default 0');
 			$this->dbforge->add_field('title			varchar(80)		NOT NULL');
 			$this->dbforge->add_field('url				varchar(255)	NOT NULL');
+			$this->dbforge->add_field('target			varchar(30)		NOT NULL');
 			$this->dbforge->add_field('`order`			int				NOT NULL');
 		    $this->dbforge->add_field('date_created 	datetime		NOT NULL');
 		    $this->dbforge->add_field('last_modified 	datetime		NOT NULL');
@@ -63,6 +64,7 @@ class Navigation_model extends CI_Model
 			
 			$nav_item['nav_id'] = $nav_id;
 			$nav_item['title'] = 'Home';
+			$nav_item['target'] = '_self';
 			$nav_item['url'] = '/';
 			$nav_item['order'] = 0;
 		    $nav_item['date_created'] = date('Y-m-d H:i:s', now());

@@ -51,7 +51,7 @@ angular.module("common", [])
 			return $http({ 
 				
 				method: method,
-				url: ($scope.baseUrl ? $scope.baseUrl : "") + url, 
+				url: url, 
 				data: $.param(data),
 				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			});
@@ -125,11 +125,11 @@ angular.module("common", [])
 		return promise;
 	}
 	
-	return function($scope, formName, url) {
+	return function($scope, $form, url) {
 		
 		var defer = $q.defer();
 		
-		if(!$scope[formName].$valid) {
+		if(!$form.$valid) {
 			return defaultPromise(defer.promise);
 		}
 		
@@ -138,7 +138,7 @@ angular.module("common", [])
 			
 			method = "PUT";
 		}
-	
+		
 		return httpEx($scope, method, url, $scope.editingData);
 	};
 }])
@@ -168,11 +168,11 @@ angular.module("common", [])
 		return promise;
 	}
 
-	return function($scope, formName) {
+	return function($form) {
 		
 		var defer = $q.defer();
 		
-		if($scope[formName].$dirty) {
+		if($form.$dirty) {
 			
 			modal.show(
 				"If you continue all changes you have been made will be lost.<br/>" +

@@ -126,7 +126,7 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 			
 			$this = this;
 			
-			checkFormDirty(this.scope.propertiesPanel, "propertiesForm").confirm(function() {
+			checkFormDirty(this.scope.propertiesPanel.propertiesForm).confirm(function() {
 				
 				$this.scope.propertiesPanel.propertiesForm.$setUntouched();
 				
