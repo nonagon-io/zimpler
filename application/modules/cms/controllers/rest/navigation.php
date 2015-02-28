@@ -37,6 +37,7 @@ class Navigation extends REST_Controller {
     function item_post()
     {
 	    $target = $this->post('target');
+	    $targetKey = $this->post('targetKey');
 	    
 	    switch($target)
 	    {

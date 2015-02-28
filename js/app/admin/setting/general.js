@@ -6,7 +6,8 @@ angular.module("setting-general", ['common', 'generic-modal', 'admin', 'ngAnimat
 	
 	$scope.save = function($event) {
 		
-		$event.preventDefault();
+		if($event)
+			$event.preventDefault();
 		
 		submitForm($scope, $scope.mainForm, $event.target.attributes.action.value).
 			success(function(data, status, headers, config) {

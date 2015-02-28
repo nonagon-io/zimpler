@@ -45,7 +45,7 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 			}
 		},
 		
-		fire: function(event, formAttrs, callback) {
+		fire: function(event, data, callback) {
 			
 			if(!this.observers[event])
 				this.observers[event] = [];
@@ -54,7 +54,7 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 			for(var i=0; i<observers.length; i++) {
 				
 				var delegate = observers[i];
-				delegate(formAttrs, callback);
+				delegate(data, callback);
 			}
 		},
 		
@@ -139,9 +139,11 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 			});
 		},
 		
-		save: function(event, option) {
+		save: function($event, option) {
 
-			event.preventDefault();
+			if($event)
+				$event.preventDefault();
+				
 			this.scope.propertiesPanel.propertiesForm.$setSubmitted();
 			
 			if(!this.scope.propertiesPanel.propertiesForm.$valid) {
@@ -149,12 +151,12 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 			}
 			
 			var $this = this;
-			this.fire("save", event.target.attributes, function(result) {
+			this.fire("save", null, function(result) {
+
+				$this.scope.propertiesPanel.propertiesForm.$setUntouched();
+				$this.scope.propertiesPanel.propertiesForm.$setPristine();
 				
 				if(result && option && option.alsoClose) {
-					
-					$this.scope.propertiesPanel.propertiesForm.$setUntouched();
-					$this.scope.propertiesPanel.propertiesForm.$setPristine();
 					
 					$this.close();
 				}

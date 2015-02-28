@@ -9,9 +9,9 @@
 			Rev. {{editingData.revision}}
 		</div>
 		<select class="uk-align-right uk-vertical-align-middle" ng-model="editingData.culture"
-				ng-disabled="!(propertiesForm.$valid)"
-				ng-click="savePropertiesData()"
-				ng-change="onPropertiesCultureChanged()">
+				ng-disabled="!(<?= $panel_name ?>.propertiesForm.$valid)"
+				ng-click="<?= $panel_name ?>.save()"
+				ng-change="<?= $panel_name ?>.fire('culture-changed')">
 			<option value="en-us">English</option>
 			<option value="th-th">Thai</option>
 		</select>
