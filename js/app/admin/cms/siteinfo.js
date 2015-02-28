@@ -5,12 +5,14 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 	
 	$scope.editingData = {};
 	
-	$scope.save = function() {
+	$scope.save = function($event) {
+		
+		$event.preventDefault();
 		
 		var culture = $("#cultureSelection").val();
 		$scope.editingData.culture = culture;
 		
-		submitForm($scope, "mainForm", "").
+		submitForm($scope, $scope.mainForm, $event.target.attributes.action.value).
 			success(function(data, status, headers, config) {
 				
 				$scope.originalData = angular.copy($scope.editingData);
@@ -25,7 +27,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 	
 	$scope.cancel = function() {
 		
-		checkFormDirty($scope, "mainForm").confirm(function() {
+		checkFormDirty($scope.mainForm).confirm(function() {
 			
 			$scope.editingData = angular.copy($scope.originalData);
 			

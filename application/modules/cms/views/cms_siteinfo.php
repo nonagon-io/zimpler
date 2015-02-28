@@ -1,7 +1,13 @@
-<form name="mainForm" class="uk-form n-abs-fit" novalidate="" ng-submit="save()" 
-	  ng-modules="cms-general" ng-controller="CmsSiteInfoController" n-focus-on-error
-	  ng-init="successMessage = '<?= lang("cms_save_success_message") ?>'; baseUrl = '<?= base_url("/admin/cms/siteinfo"); ?>'"
-	  n-dirty-check="" ng-cloak="">
+<form name="mainForm" class="uk-form n-abs-fit" novalidate="" ng-submit="save($event)" 
+	  ng-modules="cms-general" ng-controller="CmsSiteInfoController"
+	  action="<?= base_url("/admin/cms/siteinfo"); ?>"
+	  ng-init="successMessage = '<?= lang("cms_save_success_message") ?>';"
+	  n-dirty-check="" n-focus-on-error="" ng-cloak="">
+		  
+	<input type="hidden" 
+		   name="<?php echo $this->security->get_csrf_token_name(); ?>" 
+		   value="<?php echo $this->security->get_csrf_hash();?>" />
+
 	<div class="n-options-header" 
 		 ng-class="{'n-drop-shadow': mainContentBodyScrollTop > 0}">
 		<select id="cultureSelection" name="culture">

@@ -44,9 +44,6 @@ angular.module("common", [])
 		if(method == "POST" || method == "PUT" || method == "DELETE") {
 			
 			if(!data) data = {};
-			
-			for(var n in $scope.csrf)
-				data[n] = $scope.csrf[n];
 				
 			return $http({ 
 				
@@ -138,6 +135,12 @@ angular.module("common", [])
 			
 			method = "PUT";
 		}
+		
+		// All hidden data will be included in the POST.
+		$("[name='" + $form.$name + "'] input[type='hidden']").each(function(i, e) {
+			
+			$scope.editingData[e.name] = $(e).val();
+		});
 		
 		return httpEx($scope, method, url, $scope.editingData);
 	};

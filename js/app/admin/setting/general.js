@@ -4,9 +4,11 @@ angular.module("setting-general", ['common', 'generic-modal', 'admin', 'ngAnimat
 	
 	$scope.editingData = {};
 	
-	$scope.save = function() {
+	$scope.save = function($event) {
 		
-		submitForm($scope, "mainForm", "").
+		$event.preventDefault();
+		
+		submitForm($scope, $scope.mainForm, $event.target.attributes.action.value).
 			success(function(data, status, headers, config) {
 				
 				$scope.originalData = angular.copy($scope.editingData);
@@ -21,7 +23,7 @@ angular.module("setting-general", ['common', 'generic-modal', 'admin', 'ngAnimat
 	
 	$scope.cancel = function() {
 		
-		checkFormDirty($scope, "mainForm").confirm(function() {
+		checkFormDirty($scope.mainForm).confirm(function() {
 			
 			$scope.editingData = angular.copy($scope.originalData);
 			

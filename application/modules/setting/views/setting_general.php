@@ -1,7 +1,13 @@
-<form name="mainForm" class="uk-form n-abs-fit" novalidate="" ng-submit="save()" 
-	  ng-modules="setting-general" ng-controller="SettingGeneralController" n-focus-on-error
+<form name="mainForm" class="uk-form n-abs-fit" novalidate="" ng-submit="save($event)" 
+	  ng-modules="setting-general" ng-controller="SettingGeneralController" 
+	  action="<?= base_url("/admin/setting/general"); ?>"
 	  ng-init="successMessage = '<?= lang("setting_save_success_message") ?>';"
-	  n-dirty-check="" ng-cloak="">
+	  n-dirty-check="" n-focus-on-error="" ng-cloak="">
+		  
+	<input type="hidden" 
+		   name="<?php echo $this->security->get_csrf_token_name(); ?>" 
+		   value="<?php echo $this->security->get_csrf_hash();?>" />
+
 	<div class="n-content n-single-page" ng-class="{'n-semi-collapse': mainForm.$dirty}">
 		<?php if($setting_instruction) : ?>
 		<div class="uk-alert uk-alert-primary uk-margin-bottom uk-text-center">
