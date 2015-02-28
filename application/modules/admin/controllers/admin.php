@@ -44,6 +44,8 @@ class Admin extends Admin_Controller {
         $this->data['menu_items'] = $this->read_module_menu_items();
         
         $this->lang->load('general');
+        
+        define('MAIN_CONTROLLER', TRUE);
     }
 
 	protected function authenticate()

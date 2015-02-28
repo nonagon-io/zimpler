@@ -25,7 +25,7 @@
  * @link		http://zimpler.com/user_guide/setting/setting_controllers.html
  */
 
-class Setting_admin extends MX_Controller {
+class Setting_admin extends Partial_Controller {
 
 	function __construct()
 	{

@@ -87,7 +87,7 @@
 		
 		$data = array(
 			"panel_name" => "propertiesPanel",
-			"action" => base_url('/cms/api/navigation/item'));
+			"action" => base_url('/cms/rest/navigation/item'));
 		
 		$data['header'] = $this->load->view("cms/common/properties_header", $data, TRUE);
 		$data['body'] = $this->load->view("cms/properties/nav_properties", $data, TRUE);

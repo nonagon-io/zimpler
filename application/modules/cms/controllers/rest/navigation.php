@@ -22,7 +22,7 @@
  * @subpackage	CMS Module
  * @category	Libraries
  * @author		Chonnarong Hanyawongse
- * @link		http://zimpler.com/user_guide/cms/api/navigation.html
+ * @link		http://zimpler.com/user_guide/cms/rest/navigation.html
  */
 
 class Navigation extends REST_Controller {
@@ -30,11 +30,15 @@ class Navigation extends REST_Controller {
     function __construct()
     {
         parent::__construct();
+        
         $this->load->model('navigation_model');
     }
     
     function item_post()
     {
+        if(!defined('ADMIN_CONTENT'))
+        	show_404();
+
 	    $nav_item = array(
 		    
 		    'culture' => $this->post('culture'),
