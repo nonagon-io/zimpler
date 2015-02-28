@@ -36,17 +36,33 @@ class Navigation extends REST_Controller {
     
     function item_post()
     {
-        if(!defined('ADMIN_CONTENT'))
-        	show_404();
-
+	    $target = $this->post('target');
+	    
+	    switch($target)
+	    {
+		    case 'normal': 
+		    	$target = '_self';
+		    	break;
+		    	
+		    case 'new':
+		    	if($targetKey) $target = $targetKey;
+		    	else $target = '_blank';
+		    	break;
+	    }
+	    
 	    $nav_item = array(
 		    
-		    'culture' => $this->post('culture'),
-		    'target' => $this->post('target'),
 		    'title' => $this->post('key'),
 		    'url' => $this->post('url'),
-		    'text' => $this->post('publicTitle')
+		    'target' => $target,
+		    'label' => array(
+			    
+				'culture' => $this->post('culture'),
+				'text' => $this->post('publicTitle')
+		    )
 		);
+		
+		$nav_item = $this->navigation_model->add_item($nav_item);
 	    
 	    $this->response($nav_item);
     }
