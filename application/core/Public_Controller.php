@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 	
-class Public_Controller extends MY_Controller {
+abstract class Public_Controller extends MY_Controller {
 	
     function __construct()
     {

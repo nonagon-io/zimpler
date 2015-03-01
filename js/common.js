@@ -40,12 +40,14 @@ angular.module("common", [])
 	return function($scope, method, url, data) {
 		
 		$scope.connectionError = false;
+		
+		var promise = null;
 			
 		if(method == "POST" || method == "PUT" || method == "DELETE") {
 			
 			if(!data) data = {};
 				
-			return $http({ 
+			promise = $http({ 
 				
 				method: method,
 				url: url, 
@@ -61,11 +63,14 @@ angular.module("common", [])
 				params = "?" + $.param(data);
 			}
 			
-			return $http({ 
+			promise = $http({ 
 				
 				method: method,
-				url: $scope.baseUrl + url + params
-			}).
+				url: url + params
+			});
+		}
+		
+		return promise.
 			error(function(data, status, headers, config) {
 				
 				$scope.connectionError = true;
@@ -93,7 +98,6 @@ angular.module("common", [])
 						"If problem persists, please contact your system administrator.");
 				}
 			});
-		}
 	};
 }])
 

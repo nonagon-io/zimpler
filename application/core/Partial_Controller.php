@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 	
-class Partial_Controller extends MX_Controller {
+abstract class Partial_Controller extends MX_Controller {
 
 	function __construct()
 	{

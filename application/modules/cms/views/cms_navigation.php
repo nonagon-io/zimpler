@@ -1,4 +1,5 @@
-<div class="n-abs-fit uk-form" ng-controller="CmsNavigationController">
+<div class="n-abs-fit uk-form" ng-controller="CmsNavigationController"
+	 ng-init="restBaseUrl = '<?= base_url('/cms/rest/navigation') ?>'; refresh();">
 	<div class="n-options-header" 
 		 ng-class="{'n-drop-shadow': mainContentBodyScrollTop > 0}">
 		<div class="uk-grid uk-grid-divider uk-grid-preserve">

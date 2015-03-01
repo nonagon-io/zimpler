@@ -1,5 +1,6 @@
 {
 	"require": {
-		"ext-mysql": "*"
+		"ext-mysql": "*",
+		"athari/yalinqo": "1.*"
 	}
 }

@@ -1,4 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+	
+require_once FCPATH . '/vendor/athari/yalinqo/YaLinqo/Linq.php';
+use \YaLinqo\Enumerable;
+
 /**
  * Zimpler
  *
@@ -32,6 +36,29 @@ class Navigation extends REST_Controller {
         parent::__construct();
         
         $this->load->model('navigation_model');
+        $this->load->library('user/ion_auth');
+    }
+    
+    function items_get()
+    {
+	    $culture = $this->get('culture');
+	    $parent_id = $this->get('parent');
+	    
+	    $nav_items = $this->navigation_model->get($culture, $parent_id);
+	    
+	    $nav_items = from($nav_items)->select(function($nav_item) {
+		    
+		    $obj = new StdClass();
+		    $obj->id = $nav_item->nav_id;
+		    $obj->key = $nav_item->title;
+		    $obj->url = $nav_item->url;
+		    $obj->target = $nav_item->target;
+		    $obj->name = $nav_item->text;
+		    
+		    return $obj;
+	    })->toArray();
+	    
+	    $this->response($nav_items);
     }
     
     function item_post()
