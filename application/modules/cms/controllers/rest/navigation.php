@@ -48,14 +48,8 @@ class Navigation extends REST_Controller {
 	    
 	    $nav_items = from($nav_items)->select(function($nav_item) {
 		    
-		    $obj = new StdClass();
-		    $obj->id = $nav_item->nav_id;
-		    $obj->key = $nav_item->title;
-		    $obj->url = $nav_item->url;
-		    $obj->target = $nav_item->target;
-		    $obj->name = $nav_item->text;
+		    return Navigation::get_front_nav_item($nav_item);
 		    
-		    return $obj;
 	    })->toArray();
 	    
 	    $this->response($nav_items);
@@ -91,6 +85,7 @@ class Navigation extends REST_Controller {
 		);
 		
 		$nav_item = $this->navigation_model->add_item($nav_item);
+		$nav_item = Navigation::get_front_nav_item($nav_item);
 	    
 	    $this->response($nav_item);
     }
@@ -108,5 +103,41 @@ class Navigation extends REST_Controller {
     function revision_delete($content_key, $culture, $revision)
     {
 	    $this->content_model->delete_revision($content_key, $culture, $revision);
+    }
+    
+    public static function get_front_nav_item($nav_item)
+    {
+	    $nav_item = json_decode(json_encode($nav_item), FALSE);
+	    
+	    $target = $nav_item->target;
+	    $targetKey = '';
+	    
+	    switch($target)
+	    {
+		    case '_self':
+				$target = 'normal';
+				break;
+				
+			case '_blank':
+				$target = 'new';
+				$targetKey = '';
+				break;
+				
+			default:
+			
+				$target = 'new';
+				$targetKey = $target;
+				break;
+	    }
+
+	    $obj = new StdClass();
+	    $obj->id = $nav_item->nav_id;
+	    $obj->key = $nav_item->title;
+	    $obj->url = $nav_item->url;
+	    $obj->target = $target;
+	    $obj->targetKey = $targetKey;
+	    $obj->publicTitle = $nav_item->text;
+	    
+	    return $obj;
     }
 }

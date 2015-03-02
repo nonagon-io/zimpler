@@ -12,7 +12,8 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 		var culture = $("#cultureSelection").val();
 		$scope.editingData.culture = culture;
 		
-		submitForm($scope, $scope.mainForm, $event.target.attributes.action.value).
+		submitForm($scope, $scope.mainForm, "POST", 
+			$event.target.attributes.action.value, $scope.editingData).
 			success(function(data, status, headers, config) {
 				
 				$scope.originalData = angular.copy($scope.editingData);

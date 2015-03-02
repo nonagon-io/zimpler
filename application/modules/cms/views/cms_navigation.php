@@ -65,7 +65,7 @@
 								<i class="uk-icon-bars n-handle"></i>
 							</div>
 							<div class="uk-width-7-10">
-								{{item.name}}
+								{{item.publicTitle}}
 							</div>
 							<div class="uk-width-2-10 uk-text-right">
 								<button type="button" class="uk-button" style="margin: -5px -5px 0 0"

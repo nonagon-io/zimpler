@@ -126,7 +126,7 @@ angular.module("common", [])
 		return promise;
 	}
 	
-	return function($scope, $form, url) {
+	return function($scope, $form, method, url, data) {
 		
 		var defer = $q.defer();
 		
@@ -134,19 +134,15 @@ angular.module("common", [])
 			return defaultPromise(defer.promise);
 		}
 		
-		var method = "POST";
-		if($scope.editingData.id) {
-			
-			method = "PUT";
-		}
+		if(!data) data = {};
 		
 		// All hidden data will be included in the POST.
 		$("[name='" + $form.$name + "'] input[type='hidden']").each(function(i, e) {
 			
-			$scope.editingData[e.name] = $(e).val();
+			data[e.name] = $(e).val();
 		});
 		
-		return httpEx($scope, method, url, $scope.editingData);
+		return httpEx($scope, method, url, data);
 	};
 }])
 

@@ -9,7 +9,8 @@ angular.module("setting-general", ['common', 'generic-modal', 'admin', 'ngAnimat
 		if($event)
 			$event.preventDefault();
 		
-		submitForm($scope, $scope.mainForm, $event.target.attributes.action.value).
+		submitForm($scope, $scope.mainForm, "POST",
+			$event.target.attributes.action.value, $scope.editingData).
 			success(function(data, status, headers, config) {
 				
 				$scope.originalData = angular.copy($scope.editingData);

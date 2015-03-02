@@ -251,6 +251,10 @@ class Navigation_model extends CI_Model
 	    $nav_item_label['nav_item_id'] = $nav_item['nav_item_id'];
 	    $this->db->insert('nav_item_label', $nav_item_label);
 	    $nav_item_label['nav_item_label_id'] = $this->db->insert_id();
+
+		// Populate text and culture to the original array.
+	    $nav_item['text'] = $nav_item_label['text'];
+	    $nav_item['culture'] = $nav_item_label['culture'];
 	    
 	    return $nav_item;
     }
