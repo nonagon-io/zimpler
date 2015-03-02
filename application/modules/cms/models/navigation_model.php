@@ -274,8 +274,11 @@ class Navigation_model extends CI_Model
 	    if(!array_key_exists('nav_item_id', $nav_item))
 	    	throw new Exception('nav_item_id must be specified');
 
-	    if(array_key_exists('label', $nav_item))
+	    if(!array_key_exists('label', $nav_item))
 	    	throw new Exception('label must be specified');
+	    	
+	    $nav_item_label = $nav_item['label'];
+	    unset($nav_item['label']);
 	    	
 	    if(!array_key_exists('culture', $nav_item_label))
 	    	throw new Exception('label::culture must be specified');
@@ -283,9 +286,6 @@ class Navigation_model extends CI_Model
 	    if(!array_key_exists('text', $nav_item_label))
 	    	throw new Exception('label::text must be specified');
 
-	    $nav_item_label = $nav_item['label'];
-	    unset($nav_item['label']);
-	    	
 	    // Update title if specified.
 	    if(array_key_exists('title', $nav_item))
 	    	$this->db->set('title', $nav_item['title']);
@@ -294,10 +294,6 @@ class Navigation_model extends CI_Model
 	    if(array_key_exists('url', $nav_item))
 	    	$this->db->set('url', $nav_item['url']);
 	    	
-	    // Update order if specified.
-	    if(array_key_exists('order', $nav_item))
-	    	$this->db->set('order', $nav_item['order']);
-	    	
 	    $nav_item['last_modified'] = date('Y-m-d H:i:s', now());
 	    
 	    $this->db->where('nav_item_id', $nav_item['nav_item_id']);
@@ -305,7 +301,7 @@ class Navigation_model extends CI_Model
 	    
 	    $existing_label = $this->db->get_where(
 	    	'nav_item_label', array(
-	    		'nav_item_id' => $nav_item_label['nav_item_id'],
+	    		'nav_item_id' => $nav_item['nav_item_id'],
 	    		'culture' => $nav_item_label['culture']
 	    	)
 	    )->row();
@@ -320,6 +316,10 @@ class Navigation_model extends CI_Model
 		{
 		    $this->db->insert('nav_item_label', $nav_item_label);
 		}
+		
+		// Populate text and culture to the original array.
+	    $nav_item['text'] = $nav_item_label['text'];
+	    $nav_item['culture'] = $nav_item_label['culture'];
 	    	
 	    return $nav_item;
     }

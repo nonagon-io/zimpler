@@ -92,6 +92,44 @@ class Navigation extends REST_Controller {
 	    $this->response($nav_item);
     }
     
+    function item_put()
+    {
+	    $id = $this->put('id');
+	    $target = $this->put('target');
+	    $targetKey = $this->put('targetKey');
+	    
+	    switch($target)
+	    {
+		    case 'normal': 
+		    	$target = '_self';
+		    	break;
+		    	
+		    case 'new':
+		    	if($targetKey) $target = $targetKey;
+		    	else $target = '_blank';
+		    	break;
+	    }
+	    
+	    $nav_item = array(
+		    
+		    'nav_item_id' => $id,
+		    'parent_id' => $this->post('parent'),
+		    'title' => $this->put('key'),
+		    'url' => $this->put('url'),
+		    'target' => $target,
+		    'label' => array(
+			    
+				'culture' => $this->put('culture'),
+				'text' => $this->put('publicTitle')
+		    )
+		);
+		
+		$nav_item = $this->navigation_model->update_item($nav_item);
+		$nav_item = Navigation::get_front_nav_item($nav_item);
+	    
+	    $this->response($nav_item);
+    }
+    
     function tree_post() {
 	    
 	    $tree = json_decode($this->post("tree"));
@@ -140,6 +178,7 @@ class Navigation extends REST_Controller {
 
 	    $obj = new StdClass();
 	    $obj->id = $nav_item->nav_item_id;
+	    $obj->parent = $nav_item->parent_id;
 	    $obj->key = $nav_item->title;
 	    $obj->url = $nav_item->url;
 	    $obj->target = $target;

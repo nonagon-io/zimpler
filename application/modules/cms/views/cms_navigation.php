@@ -58,8 +58,8 @@
 				</div>
 				<ul class="n-items" ui-sortable="sortableOptions" ng-model="level.items" n-scroll-record="">
 					<li class="n-item" ng-repeat="item in level.items" 
-						ng-class="{'uk-active': item == editingData, 'n-drilling-down': item.expanded}"
-						ng-click="edit(item)"
+						ng-class="{'uk-active': item.id == editingData.id, 'n-drilling-down': item.expanded}"
+						ng-click="edit(item, level, $index)"
 						n-item-loaded="activateItem($event, item)">
 						<div class="uk-grid uk-grid-preserve uk-grid-small">
 							<div class="uk-width-1-10">
