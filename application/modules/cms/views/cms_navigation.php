@@ -59,7 +59,8 @@
 				<ul class="n-items" ui-sortable="sortableOptions" ng-model="level.items" n-scroll-record="">
 					<li class="n-item" ng-repeat="item in level.items" 
 						ng-class="{'uk-active': item == editingData, 'n-drilling-down': item.expanded}"
-						ng-click="edit(item)">
+						ng-click="edit(item)"
+						n-item-loaded="activateItem($event, item)">
 						<div class="uk-grid uk-grid-preserve uk-grid-small">
 							<div class="uk-width-1-10">
 								<i class="uk-icon-bars n-handle"></i>

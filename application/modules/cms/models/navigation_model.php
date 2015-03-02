@@ -116,6 +116,7 @@ class Navigation_model extends CI_Model
 		$this->db->where('culture', $culture);
 		$this->db->order_by('parent_id', 'asc');
 		$this->db->order_by('order', 'asc');
+		$this->db->order_by('nav_item.nav_item_id', 'asc');
 		$nav_items = $this->db->get()->result();
 		
 		return $nav_items;
@@ -174,8 +175,7 @@ class Navigation_model extends CI_Model
 		$this->db->where('culture', $culture);
 		$this->db->where('parent_id', $parent_id);
 		$this->db->order_by('order', 'asc');
-		
-		$this->db->order_by('order', 'asc');
+		$this->db->order_by('nav_item.nav_item_id', 'asc');
 		$nav_items = $this->db->get()->result();
 		
 		return $nav_items;

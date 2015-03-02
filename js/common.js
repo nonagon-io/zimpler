@@ -48,6 +48,21 @@ angular.module("common", [])
 	}
 })
 
+.directive('nItemLoaded', ['$parse', function($parse) {
+	return {
+		restrict: 'A',
+		link: function(scope, elem, attrs) {
+			
+			var e = { 
+				target: elem
+			};
+			
+			var fn = $parse(attrs.nItemLoaded);
+			fn(scope, {$event:e});
+		}
+	}
+}])
+
 .factory('httpEx', ['$http', '$sce', function($http, $sce) {
 	
 	return function($scope, method, url, data) {
