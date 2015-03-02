@@ -90,6 +90,12 @@ class Navigation extends REST_Controller {
 	    $this->response($nav_item);
     }
     
+    function tree_post() {
+	    
+	    $tree = json_decode($this->post("tree"));
+	    $this->navigation_model->update_tree($tree);
+    }
+    
     function publish_put($content_key, $culture)
     {
 		$this->content_model->publish($content_key, $culture);
@@ -131,7 +137,7 @@ class Navigation extends REST_Controller {
 	    }
 
 	    $obj = new StdClass();
-	    $obj->id = $nav_item->nav_id;
+	    $obj->id = $nav_item->nav_item_id;
 	    $obj->key = $nav_item->title;
 	    $obj->url = $nav_item->url;
 	    $obj->target = $target;

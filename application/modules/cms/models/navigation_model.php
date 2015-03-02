@@ -319,6 +319,35 @@ class Navigation_model extends CI_Model
 	    return $nav_item;
     }
     
+    public function update_tree($tree)
+    {
+	    $this->db->flush_cache();
+	    	
+	    $nav = $this->db->get_where('nav', array(
+	    	'revision' => $this->get_top_revision(),
+	    	'status' => 'draft'
+	    ))->row();
+	    
+	    if(!$nav)
+	    {
+	    	throw new Exception(
+	    		'The top revision is not in the "draft" status');
+	    }
+	    
+	    foreach($tree as $item)
+	    {
+		    $this->db->where('nav_id', $nav->nav_id);
+		    $this->db->where('nav_item_id', $item->id);
+		    $this->db->set('order', $item->order);
+		    $this->db->set('parent_id', $item->parent);
+		    $this->db->update('nav_item');
+	    }
+	    
+	    $this->db->where('nav_id', $nav->nav_id);
+	    $this->db->set('last_modified', date('Y-m-d H:i:s', now()));
+	    $this->db->update('nav');
+    }
+    
     public function publish()
     {
 	    $this->db->flush_cache();
