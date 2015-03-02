@@ -38,7 +38,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="n-content n-single-page" ng-style="{ right: (propertiesPanel.offsetLeft - contentOffset().left) + 'px' }">
+	<div class="n-content n-single-page" ng-style="{ right: contentRight() + 'px' }">
 		<div class="n-columns-view">
 			<div class="n-column" ng-repeat="level in levels" ng-cloak="" n-horz-stack="{{$index}}">
 				<div class="n-title">
