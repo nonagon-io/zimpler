@@ -56,7 +56,7 @@
 						</div>
 					</div>
 				</div>
-				<ul class="n-items" ui-sortable="sortableOptions" ng-model="level.items">
+				<ul class="n-items" ui-sortable="sortableOptions" ng-model="level.items" n-scroll-record="">
 					<li class="n-item" ng-repeat="item in level.items" 
 						ng-class="{'uk-active': item == editingData, 'n-drilling-down': item.expanded}"
 						ng-click="edit(item)">

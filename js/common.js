@@ -32,7 +32,20 @@ angular.module("common", [])
 			}
 		}
 	}
-	
+})
+
+.directive('nScrollRecord', function() {
+	return {
+		restrict: 'A',
+		link: function(scope, elem, attrs) {
+			
+			elem.on("scroll", function() {
+				
+				elem.prop("recordedScrollTop", elem.scrollTop());
+				elem.prop("recordedScrollLeft", elem.scrollLeft());
+			});
+		}
+	}
 })
 
 .factory('httpEx', ['$http', '$sce', function($http, $sce) {
