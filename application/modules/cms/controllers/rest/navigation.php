@@ -59,6 +59,7 @@ class Navigation extends REST_Controller {
     {
 	    $target = $this->post('target');
 	    $targetKey = $this->post('targetKey');
+	    $parent = $this->post('parent');
 	    
 	    switch($target)
 	    {
@@ -74,6 +75,7 @@ class Navigation extends REST_Controller {
 	    
 	    $nav_item = array(
 		    
+		    'parent_id' => $this->post('parent'),
 		    'title' => $this->post('key'),
 		    'url' => $this->post('url'),
 		    'target' => $target,

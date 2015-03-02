@@ -239,8 +239,13 @@ class Navigation_model extends CI_Model
 	    	throw new Exception(
 	    		'The top revision is not in the "draft" status');
 	    }
+	    
+	    $this->db->where('parent_id', $nav_item['parent_id']);
+	    $this->db->from('nav_item');
+	    $total_in_level = $this->db->count_all_results();
 
 		$nav_item['nav_id'] = $nav->nav_id;
+		$nav_item['order'] = $total_in_level;
 	    $nav_item['date_created'] = date('Y-m-d H:i:s', now());
 	    $nav_item['last_modified'] = date('Y-m-d H:i:s', now());
 	    $nav_item['status'] = 'active';
