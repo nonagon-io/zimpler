@@ -104,7 +104,9 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 				function(e) {
 				
 					$this.offsetLeft = $this.panel.offset().left;
-					$this.scope.$apply();
+					
+					if($this.scope)
+						$this.scope.$apply();
 				});
 			
 			setTimeout(function() {

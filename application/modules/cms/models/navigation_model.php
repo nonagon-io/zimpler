@@ -110,10 +110,13 @@ class Navigation_model extends CI_Model
 		
 		if(!$nav) return array();
 		
+		$this->db->select('nav_item.*, nav_item_label.culture, nav_item_label.text');
 		$this->db->from('nav_item');
-		$this->db->join('nav_item_label', 'nav_item.nav_item_id = nav_item_label.nav_item_id');
+		$this->db->join('nav_item_label', 
+			'nav_item.nav_item_id = nav_item_label.nav_item_id and '.
+			"(`nav_item_label`.`culture` IS NULL OR `nav_item_label`.`culture` = '" . $culture . "')", 
+			'left');
 		$this->db->where('nav_id', $nav->nav_id);
-		$this->db->where('culture', $culture);
 		$this->db->order_by('parent_id', 'asc');
 		$this->db->order_by('order', 'asc');
 		$this->db->order_by('nav_item.nav_item_id', 'asc');
@@ -169,10 +172,13 @@ class Navigation_model extends CI_Model
 		
 		if(!$nav) return array();
 
+		$this->db->select('nav_item.*, nav_item_label.culture, nav_item_label.text');
 		$this->db->from('nav_item');
-		$this->db->join('nav_item_label', 'nav_item.nav_item_id = nav_item_label.nav_item_id');
+		$this->db->join('nav_item_label', 
+			'nav_item.nav_item_id = nav_item_label.nav_item_id and '.
+			"(`nav_item_label`.`culture` IS NULL OR `nav_item_label`.`culture` = '" . $culture . "')", 
+			'left');
 		$this->db->where('nav_id', $nav->nav_id);
-		$this->db->where('culture', $culture);
 		$this->db->where('parent_id', $parent_id);
 		$this->db->order_by('order', 'asc');
 		$this->db->order_by('nav_item.nav_item_id', 'asc');

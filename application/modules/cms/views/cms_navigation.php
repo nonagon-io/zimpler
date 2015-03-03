@@ -65,8 +65,8 @@
 							<div class="uk-width-1-10">
 								<i class="uk-icon-bars n-handle"></i>
 							</div>
-							<div class="uk-width-7-10">
-								{{item.publicTitle}}
+							<div class="uk-width-7-10" ng-class="{'uk-text-danger': !item.publicTitle}">
+								{{item.publicTitle || item.key}}
 							</div>
 							<div class="uk-width-2-10 uk-text-right">
 								<button type="button" class="uk-button" style="margin: -5px -5px 0 0"
