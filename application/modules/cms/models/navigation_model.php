@@ -203,6 +203,35 @@ class Navigation_model extends CI_Model
 	    $this->db->where('revision', $revision);
 	    return $this->db->get('nav')->row()->status;
     }
+    
+    public function get_item($id, $culture)
+    {
+	    $this->db->flush_cache();
+	    
+	    $nav_item = $this->db->get_where('nav_item', array('nav_item_id' => $id))->row();
+	    
+	    if(!$nav_item)
+	    {
+	    	throw new Exception(
+	    		'nav_item by given id does not exists');
+	    }
+	    
+	    $nav_item_label = $this->db->get_where('nav_item_label', 
+	    	array('nav_item_id' => $nav_item->nav_item_id, 'culture' => $culture))->row();
+	    	
+	    $nav_item->culture = $culture;
+	    	
+	    if($nav_item_label)
+	    {
+		    $nav_item->text = $nav_item_label->text;
+		}
+		else
+		{
+			$nav_item->text = '';
+		}
+		    
+		return $nav_item;
+    }
  
     public function add_item($nav_item)
     {
@@ -314,6 +343,7 @@ class Navigation_model extends CI_Model
 		}
 		else
 		{
+			$nav_item_label['nav_item_id'] = $nav_item['nav_item_id'];
 		    $this->db->insert('nav_item_label', $nav_item_label);
 		}
 		

@@ -11,7 +11,7 @@
 		<select class="uk-align-right uk-vertical-align-middle" ng-model="editingData.culture"
 				ng-disabled="!(<?= $panel_name ?>.propertiesForm.$valid)"
 				ng-click="<?= $panel_name ?>.save()"
-				ng-change="<?= $panel_name ?>.fire('culture-changed')">
+				ng-change="<?= $panel_name ?>.fire('culture-changed', editingData.culture)">
 			<option value="en-us">English</option>
 			<option value="th-th">Thai</option>
 		</select>

@@ -55,6 +55,16 @@ class Navigation extends REST_Controller {
 	    $this->response($nav_items);
     }
     
+    function item_get()
+    {
+	    $id = $this->get('id');
+	    $culture = $this->get('culture');
+	    
+	    $nav_item = $this->navigation_model->get_item($id, $culture);
+	    
+	    $this->response(Navigation::get_front_nav_item($nav_item));
+    }
+    
     function item_post()
     {
 	    $target = $this->post('target');
@@ -178,6 +188,7 @@ class Navigation extends REST_Controller {
 
 	    $obj = new StdClass();
 	    $obj->id = $nav_item->nav_item_id;
+	    $obj->culture = $nav_item->culture;
 	    $obj->parent = $nav_item->parent_id;
 	    $obj->key = $nav_item->title;
 	    $obj->url = $nav_item->url;
