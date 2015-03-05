@@ -134,10 +134,18 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 				
 				$this.offsetLeft = 0;
 				$this.isOpen = false;
-				$this.scope = null;
 	
 				$this.propertiesBody.off("scroll", $this.bodyScroll);
 				$($window).off("resize", $this.resize);
+				
+				setTimeout(function() {
+					
+					$this.scope.$apply(function() {
+						$this.scope.propertiesPanel.propertiesForm.$setPristine();
+						$this.scope = null;
+					});
+					
+				}, 100);
 			});
 		},
 		

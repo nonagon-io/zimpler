@@ -7,9 +7,21 @@
 				<div class="uk-grid uk-grid-preserve uk-grid-small">
 					<div class="uk-width-2-3">
 						<div class="uk-button-group">
-							<a class="uk-button" title="Columns View" data-uk-tooltip=""><i class="uk-icon-columns"></i></a>
-							<a class="uk-button" title="Sitemap View" data-uk-tooltip=""><i class="uk-icon-sitemap"></i></a>
-							<a class="uk-button" title="List View" data-uk-tooltip=""><i class="uk-icon-th-list"></i></a>
+							<a class="uk-button" title="Columns View" data-uk-tooltip="" 
+							   ng-class="{'uk-active': view == 'columns'}"
+							   ng-click="view = 'columns'">
+								<i class="uk-icon-columns"></i>
+							</a>
+							<a class="uk-button" title="Sitemap View" data-uk-tooltip=""
+							   ng-class="{'uk-active': view == 'sitemap'}"
+							   ng-click="view = 'sitemap'">
+								<i class="uk-icon-sitemap"></i>
+							</a>
+							<a class="uk-button" title="List View" data-uk-tooltip=""
+							   ng-class="{'uk-active': view == 'list'}"
+							   ng-click="view = 'list'">
+								<i class="uk-icon-th-list"></i>
+							</a>
 						</div>
 					</div>
 					<div class="uk-width-1-3 uk-text-right">
@@ -39,7 +51,7 @@
 		</div>
 	</div>
 	<div class="n-content n-single-page" ng-style="{ right: contentRight() + 'px' }">
-		<div class="n-columns-view">
+		<div class="n-columns-view" ng-show="view == 'columns'">
 			<div class="n-column" ng-repeat="level in levels" ng-cloak="" n-horz-stack="{{$index}}">
 				<div class="n-title">
 					<div class="uk-grid uk-margin-remove">
@@ -81,6 +93,55 @@
 						</div>
 					</li>
 				</ul>
+			</div>
+		</div>
+		<div class="n-sitemap-view" ng-show="view == 'sitemap'">
+			<div class="uk-text-center">
+				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top">
+					Site Name
+				</div>
+			</div>
+			<div class="uk-text-center">
+				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
+							uk-margin-small-left uk-margin-small-right">
+					Site Name
+				</div>
+				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
+							uk-margin-small-left uk-margin-small-right">
+					Site Name
+				</div>
+				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
+							uk-margin-small-left uk-margin-small-right">
+					Site Name
+				</div>
+				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
+							uk-margin-small-left uk-margin-small-right">
+					Site Name
+				</div>
+				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
+							uk-margin-small-left uk-margin-small-right">
+					Site Name
+				</div>
+				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
+							uk-margin-small-left uk-margin-small-right">
+					Site Name
+				</div>
+				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
+							uk-margin-small-left uk-margin-small-right">
+					Site Name
+				</div>
+				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
+							uk-margin-small-left uk-margin-small-right">
+					Site Name
+				</div>
+				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
+							uk-margin-small-left uk-margin-small-right">
+					Site Name
+				</div>
+				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
+							uk-margin-small-left uk-margin-small-right">
+					Site Name
+				</div>
 			</div>
 		</div>
 	</div>
