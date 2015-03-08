@@ -5,7 +5,7 @@
 		<div class="uk-grid uk-grid-divider uk-grid-preserve">
 			<div class="uk-width-1-2" style="padding-right: 10px">
 				<div class="uk-grid uk-grid-preserve uk-grid-small">
-					<div class="uk-width-2-3">
+					<div class="uk-width-1-3">
 						<div class="uk-button-group">
 							<a class="uk-button" title="Columns View" data-uk-tooltip="" 
 							   ng-class="{'uk-active': view == 'columns'}"
@@ -19,9 +19,14 @@
 							</a>
 						</div>
 					</div>
-					<div class="uk-width-1-3 uk-text-right">
-						<div class="uk-text-primary ng-hide" ng-show="currentStatus == 'published'" style="margin-top: 5px;">
-							 Published
+					<div class="uk-width-2-3 uk-text-right">
+						<div class="uk-display-inline-block uk-vertical-align-middle" 
+							 ng-if="currentStatus != null" ng-cloak="" style="margin-top: 5px;">
+							Rev. {{currentRevision}}
+						</div>
+						<div class="uk-display-inline-block uk-text-primary uk-vertical-align-middle ng-hide" 
+							 ng-show="currentStatus == 'published'" style="margin-top: 5px;">
+							Published
 						</div>
 						<button type="button" class="uk-button uk-button-danger ng-hide">
 							<i class="uk-icon-trash"></i>
@@ -45,10 +50,6 @@
 						&nbsp;
 					</div>
 					<div class="uk-width-2-3 uk-text-right">
-						<div class="uk-display-inline-block uk-vertical-align-middle" 
-							 ng-if="currentStatus != null" ng-cloak="">
-							Rev. {{currentRevision}}
-						</div>
 						<select id="cultureSelection" name="culture">
 							<option value="en-us" <?= $culture == 'en-us' ? 'selected' : '' ?>>English</option>
 							<option value="th-th" <?= $culture == 'th-th' ? 'selected' : '' ?>>Thai</option>

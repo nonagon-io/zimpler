@@ -441,13 +441,18 @@ class Navigation_model extends CI_Model
 		$new_nav['nav_id'] = $this->db->insert_id();
 		
 		// Duplicate all nav_items.
-		$query = $this->db->get_where('nav_item', array('nav_id' => $nav->nav_id));
+		$this->db->where('nav_id', $nav->nav_id);
+		$this->db->order_by('parent_id', 'asc');
+		$this->db->order_by('order', 'asc');
+		$query = $this->db->get('nav_item');
 		$nav_item_result = $query->result();
 		
 		$query = $this->db->get_where('nav_item_label', array('nav_id' => $nav->nav_id));
 		$nav_item_label_result = $query->result();
 		
 		$label_lookup = array();
+		$new_nav_lookup = array();
+
 		foreach($nav_item_label_result as $nav_item_label)
 		{
 			$key = $nav_item_label->nav_item_id . '';
@@ -464,11 +469,20 @@ class Navigation_model extends CI_Model
 			unset($nav_item->nav_item_id);
 			
 			$nav_item->nav_id = $new_nav['nav_id'];
+			
+			if($nav_item->parent_id > 0)
+			{
+				$parent_key = $nav_item->parent_id . '';
+				if(array_key_exists($parent_key, $new_nav_lookup))
+					$nav_item->parent_id = $new_nav_lookup[$parent_key];
+			}
+			
 		    $nav_item->date_created = date('Y-m-d H:i:s', now());
 		    $nav_item->last_modified = date('Y-m-d H:i:s', now());
 
 			$this->db->insert('nav_item', $nav_item);
 			$new_nav_item_id = $this->db->insert_id();
+			$new_nav_lookup[$key] = $new_nav_item_id;
 			
 			if(array_key_exists($key, $label_lookup))
 			{
