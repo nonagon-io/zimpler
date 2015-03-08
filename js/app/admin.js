@@ -138,6 +138,8 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 				$this.propertiesBody.off("scroll", $this.bodyScroll);
 				$($window).off("resize", $this.resize);
 				
+				$this.fire("close");
+				
 				setTimeout(function() {
 					
 					$this.scope.$apply(function() {

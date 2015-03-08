@@ -160,3 +160,121 @@
 	background: #d8d8d8;
 	border-top: 1px solid #cdcdcd;
 }
+
+.n-sitemap-view .n-levels-container {
+	
+	position: relative;
+}
+
+.n-sitemap-view .n-levels-container .n-button {
+	
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	opacity: 0.3;
+	
+	color: #fff;
+	background: #333;
+}
+
+.n-sitemap-view .n-levels-container .n-button:hover {
+	
+	background: #555;
+}
+
+.n-sitemap-view .n-levels-container .n-button:active {
+
+	background: #111;	
+}
+
+.n-sitemap-view .n-level {
+	
+	position: relative;
+	overflow: auto;
+	white-space: nowrap;
+	padding: 0px 20px 20px 20px;
+	margin: 0px;
+	border-top: 1px solid #ccc;
+}
+
+.n-sitemap-view .n-item {
+
+	position: relative;
+	width: 120px;
+	margin-left: 5px;
+	margin-right: 5px;
+	text-align: center;
+	display: inline-block;
+}
+
+.n-sitemap-view .n-item .n-label {
+
+	display: inline-block;
+	width: 100%;
+	height: 20px;
+	overflow-x: hidden;
+	text-overflow: ellipsis !important;
+}
+
+.n-sitemap-view .n-item .n-tail {
+	
+	position: absolute;
+	left: 50%;
+	bottom: 0px;
+	height: 21px;
+	width: 50px;
+	margin-left: -25px;
+}
+
+.n-sitemap-view .n-level .n-item .n-connector {
+	
+	position: absolute;
+	left: 50%;
+	top: 100%;
+	height: 21px;
+	width: 1px;
+	
+	background: #ccc; 
+}
+
+.n-sitemap-view .n-level:not(:first-child) .n-item {
+	
+	height: 30px;
+}
+
+.n-sitemap-view .n-level:not(:first-child) .n-item:before {
+
+	position: absolute;
+	left: 50%;
+	top: -20px;
+	height: 20px;
+	width: 1px;
+	
+	background: #ccc; 
+}
+
+.n-sitemap-view .n-item.uk-active {
+	
+	color: #fff;
+	background: #35B3EE;
+	border-top: 1px solid #35B3EE;
+	border-bottom: 1px solid #35B3EE;
+}
+
+.n-sitemap-view .n-item.uk-active a {
+
+	color: white;	
+}
+
+.n-sitemap-view .n-item:not(.uk-active).n-drilling-down {
+	
+	color: #fff;
+	background: #555;
+	border-top: 1px solid #555;
+	border-bottom: 1px solid #555; 
+}
+
+.n-sitemap-view .n-item:not(.uk-active).n-drilling-down a {
+
+	color: white;	
+}

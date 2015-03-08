@@ -51,7 +51,7 @@
 		</div>
 	</div>
 	<div class="n-content n-single-page" ng-style="{ right: contentRight() + 'px' }">
-		<div class="n-columns-view" ng-show="view == 'columns'">
+		<div class="n-columns-view n-sortable-container" ng-show="view == 'columns'">
 			<div class="n-column" ng-repeat="level in levels" ng-cloak="" n-horz-stack="{{$index}}">
 				<div class="n-title">
 					<div class="uk-grid uk-margin-remove">
@@ -95,53 +95,32 @@
 				</ul>
 			</div>
 		</div>
-		<div class="n-sitemap-view" ng-show="view == 'sitemap'">
-			<div class="uk-text-center">
-				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top">
-					Site Name
-				</div>
-			</div>
-			<div class="uk-text-center">
-				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
-							uk-margin-small-left uk-margin-small-right">
-					Site Name
-				</div>
-				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
-							uk-margin-small-left uk-margin-small-right">
-					Site Name
-				</div>
-				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
-							uk-margin-small-left uk-margin-small-right">
-					Site Name
-				</div>
-				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
-							uk-margin-small-left uk-margin-small-right">
-					Site Name
-				</div>
-				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
-							uk-margin-small-left uk-margin-small-right">
-					Site Name
-				</div>
-				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
-							uk-margin-small-left uk-margin-small-right">
-					Site Name
-				</div>
-				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
-							uk-margin-small-left uk-margin-small-right">
-					Site Name
-				</div>
-				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
-							uk-margin-small-left uk-margin-small-right">
-					Site Name
-				</div>
-				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
-							uk-margin-small-left uk-margin-small-right">
-					Site Name
-				</div>
-				<div class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top 
-							uk-margin-small-left uk-margin-small-right">
-					Site Name
-				</div>
+		<div class="n-sitemap-view n-sortable-container" ng-show="view == 'sitemap'">
+			<ul class="n-level uk-text-center">
+				<li class="n-item uk-panel uk-panel-box uk-display-inline-block uk-margin-top">
+					<?= $this->config->item('site_title') ?>
+					<div class="n-connector"></div>
+				</li>
+			</ul>
+			<div class="n-levels-container" ng-repeat="level in levels">
+				<ul class="n-items n-level uk-text-center" ng-cloak="" ui-sortable="sortableOptions" ng-model="level.items">
+					<li class="n-item uk-panel uk-panel-box uk-margin-top"
+						ng-repeat="item in level.items"
+						ng-class="{'uk-active': item.id == editingData.id, 'n-drilling-down': item.expanded}"
+						n-item-loaded="activateItem($event, item)">
+						<a class="n-label" ng-click="edit(item, level, $index)">{{item.publicTitle || item.key}}</a>
+						<div class="n-tail">
+							<i class="uk-icon-plus-square-o" ng-click="expand(level, item, $event)" 
+							   ng-show="!item.expanded"></i>
+							<i class="uk-icon-minus-square-o" ng-click="collapse(level, item, $event)" 
+							   ng-show="item.expanded"></i>
+						</div>
+						<div class="n-connector" ng-show="item.expanded"></div>
+					</li>
+				</ul>
+				<button type="button" class="n-button uk-button uk-button-small" ng-click="addItem($index)">
+					<i class="uk-icon-plus"></i>
+				</button>
 			</div>
 		</div>
 	</div>
