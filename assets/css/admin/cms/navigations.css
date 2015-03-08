@@ -194,6 +194,10 @@
 	white-space: nowrap;
 	padding: 0px 20px 20px 20px;
 	margin: 0px;
+}
+
+.n-sitemap-view .n-levels-container .n-level {
+	
 	border-top: 1px solid #ccc;
 }
 
