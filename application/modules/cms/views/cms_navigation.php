@@ -17,11 +17,6 @@
 							   ng-click="view = 'sitemap'">
 								<i class="uk-icon-sitemap"></i>
 							</a>
-							<a class="uk-button" title="List View" data-uk-tooltip=""
-							   ng-class="{'uk-active': view == 'list'}"
-							   ng-click="view = 'list'">
-								<i class="uk-icon-th-list"></i>
-							</a>
 						</div>
 					</div>
 					<div class="uk-width-1-3 uk-text-right">
@@ -35,7 +30,8 @@
 			<div class="uk-width-1-2" style="padding-left: 10px">
 				<div class="uk-grid uk-grid-preserve uk-grid-small">
 					<div class="uk-width-1-3">
-						<button type="button" class="uk-button uk-button-primary" style="width:80px">
+						<button type="button" class="uk-button uk-button-primary" style="width:80px"
+								ng-click="publish()">
 							Publish
 						</button>
 					</div>
@@ -62,7 +58,8 @@
 						</div>
 						<div class="uk-width-1-3 uk-text-right">
 							<button type="button" class="uk-button uk-button-primary"
-									ng-click="addItem($index)">
+									ng-click="addItem($index)"
+									ng-disabled="propertiesPanel.isOpen">
 								<i class="uk-icon-plus"></i>
 							</button>
 						</div>
@@ -118,7 +115,9 @@
 						<div class="n-connector" ng-show="item.expanded"></div>
 					</li>
 				</ul>
-				<button type="button" class="n-button uk-button uk-button-small" ng-click="addItem($index)">
+				<button type="button" class="n-button uk-button uk-button-small" 
+						ng-click="addItem($index)"
+						ng-hide="propertiesPanel.isOpen">
 					<i class="uk-icon-plus"></i>
 				</button>
 			</div>
