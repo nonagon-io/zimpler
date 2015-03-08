@@ -477,6 +477,7 @@ class Navigation_model extends CI_Model
 				{
 					unset($label->nav_item_label_id);
 					$label->nav_item_id = $new_nav_item_id;
+					$label->nav_id = $nav_item->nav_id;
 					
 					$this->db->insert('nav_item_label', $label);
 				}
