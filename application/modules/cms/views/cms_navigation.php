@@ -1,5 +1,5 @@
 <div class="n-abs-fit uk-form" ng-controller="CmsNavigationController"
-	 ng-init="restBaseUrl = '<?= base_url('/cms/rest/navigation') ?>'; refresh();">
+	 ng-init="restBaseUrl = '<?= base_url('/cms/rest/navigation') ?>'; refreshRev(); refreshItems();">
 	<div class="n-options-header" 
 		 ng-class="{'n-drop-shadow': mainContentBodyScrollTop > 0}">
 		<div class="uk-grid uk-grid-divider uk-grid-preserve">
@@ -20,7 +20,9 @@
 						</div>
 					</div>
 					<div class="uk-width-1-3 uk-text-right">
-						<div class="uk-text-primary ng-hide" style="margin-top: 5px;">Published</div>
+						<div class="uk-text-primary ng-hide" ng-show="currentStatus == 'published'" style="margin-top: 5px;">
+							 Published
+						</div>
 						<button type="button" class="uk-button uk-button-danger ng-hide">
 							<i class="uk-icon-trash"></i>
 						</button>
@@ -30,13 +32,23 @@
 			<div class="uk-width-1-2" style="padding-left: 10px">
 				<div class="uk-grid uk-grid-preserve uk-grid-small">
 					<div class="uk-width-1-3">
-						<button type="button" class="uk-button uk-button-primary" style="width:80px"
-								ng-click="publish()">
+						<button type="button" class="uk-button uk-button-primary"
+								ng-click="publish()"
+								ng-if="currentStatus == 'draft'">
 							Publish
 						</button>
+						<button type="button" class="uk-button uk-button-success"
+								ng-click="newRev()"
+								ng-if="currentStatus == 'published'">
+							New Revision
+						</button>
+						&nbsp;
 					</div>
 					<div class="uk-width-2-3 uk-text-right">
-						<div class="uk-display-inline-block uk-vertical-align-middle">Rev. 1</div>
+						<div class="uk-display-inline-block uk-vertical-align-middle" 
+							 ng-if="currentStatus != null" ng-cloak="">
+							Rev. {{currentRevision}}
+						</div>
 						<select id="cultureSelection" name="culture">
 							<option value="en-us" <?= $culture == 'en-us' ? 'selected' : '' ?>>English</option>
 							<option value="th-th" <?= $culture == 'th-th' ? 'selected' : '' ?>>Thai</option>
@@ -59,7 +71,7 @@
 						<div class="uk-width-1-3 uk-text-right">
 							<button type="button" class="uk-button uk-button-primary"
 									ng-click="addItem($index)"
-									ng-disabled="propertiesPanel.isOpen">
+									ng-disabled="propertiesPanel.isOpen || currentStatus == 'published'">
 								<i class="uk-icon-plus"></i>
 							</button>
 						</div>

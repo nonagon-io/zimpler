@@ -28,11 +28,12 @@
 				style="width: auto">
 			<i class="uk-icon-trash"></i>
 		</button>
-		<button type="submit" class="uk-button uk-button-success">
+		<button type="submit" class="uk-button uk-button-success" ng-if="currentStatus != 'published'">
 			Save <span ng-show="<?= $panel_name ?>.propertiesForm.$dirty">*</span>
 		</button>
 		<button type="button" class="uk-button" ng-click="<?= $panel_name ?>.close()">
-			Cancel
+			<span ng-if="currentStatus == 'published'">Close</span>
+			<span ng-if="currentStatus == 'draft'">Cancel</span>
 		</button>
 	</div>
 </div>

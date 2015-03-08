@@ -14,6 +14,7 @@
 			   		<?= $panel_name ?>.propertiesForm.key.$error.required && 
 			   		<?= $panel_name ?>.propertiesForm.$submitted}"
 			   placeholder="The unique key to identify the navigation item (e.g. home)"
+			   ng-readonly="currentStatus == 'published'"
 			   required/>
 	</div>
 </div>
@@ -33,9 +34,12 @@
 			   		<?= $panel_name ?>.propertiesForm.url.$error.required && 
 			   		<?= $panel_name ?>.propertiesForm.$submitted}"
 			   placeholder="The url of the page. Relative url indicates internal page."
+			   ng-readonly="currentStatus == 'published'"
 			   required/>
 			   
-		<button type="button" class="uk-button uk-width-1-1">Select Page...</button>
+		<button type="button" class="uk-button uk-width-1-1" ng-disabled="currentStatus == 'published'">
+			Select Page...
+		</button>
 	</div>
 </div>
 <div class="uk-form-row">
@@ -46,6 +50,7 @@
 		<div class="uk-grid uk-grid-small">
 			<div class="uk-width-1-3">
 				<select id="target" name="target" class="uk-width-1-1"
+						ng-disabled="currentStatus == 'published'"
 					    ng-model="editingData.target">
 					<option value="normal">Normal</option>
 					<option value="new">New Tab / Window</option>
@@ -55,6 +60,7 @@
 				<input type="text" id="targetKey" name="targetKey" class="uk-width-1-1" 
 					   ng-model="editingData.targetKey"
 					   ng-show="editingData.target == 'new'"
+					   ng-readonly="currentStatus == 'published'"
 					   placeholder="Target Key (Optional)">
 			</div>
 		</div>
@@ -72,7 +78,7 @@
 	<div class="uk-form-controls">
 		<input type="text" id="label" name="publicTitle" class="uk-width-1-1" 
 			   ng-model="editingData.publicTitle"
-			   ng-readonly="editingData.status == 'published'"
+			   ng-readonly="currentStatus == 'published'"
 			   ng-class="{'uk-form-danger': 
 			   		<?= $panel_name ?>.propertiesForm.publicTitle.$error.required && 
 			   		<?= $panel_name ?>.propertiesForm.$submitted}"

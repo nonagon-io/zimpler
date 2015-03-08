@@ -88,6 +88,7 @@ class Navigation_model extends CI_Model
 			$this->dbforge->create_table('nav_item_label', TRUE);
 
 			$nav_item_label['nav_item_id'] = $nav_item_id;
+			$nav_item_label['nav_id'] = $nav_id;
 			$nav_item_label['text'] = 'Home';
 			
 			$this->db->insert('nav_item_label', $nav_item_label);
@@ -116,7 +117,7 @@ class Navigation_model extends CI_Model
 			'nav_item.nav_item_id = nav_item_label.nav_item_id and '.
 			"(`nav_item_label`.`culture` IS NULL OR `nav_item_label`.`culture` = '" . $culture . "')", 
 			'left');
-		$this->db->where('nav_id', $nav->nav_id);
+		$this->db->where('nav_item.nav_id', $nav->nav_id);
 		$this->db->order_by('parent_id', 'asc');
 		$this->db->order_by('order', 'asc');
 		$this->db->order_by('nav_item.nav_item_id', 'asc');
@@ -178,7 +179,7 @@ class Navigation_model extends CI_Model
 			'nav_item.nav_item_id = nav_item_label.nav_item_id and '.
 			"(`nav_item_label`.`culture` IS NULL OR `nav_item_label`.`culture` = '" . $culture . "')", 
 			'left');
-		$this->db->where('nav_id', $nav->nav_id);
+		$this->db->where('nav_item.nav_id', $nav->nav_id);
 		$this->db->where('parent_id', $parent_id);
 		$this->db->order_by('order', 'asc');
 		$this->db->order_by('nav_item.nav_item_id', 'asc');
@@ -289,6 +290,7 @@ class Navigation_model extends CI_Model
 	    $nav_item['nav_item_id'] = $this->db->insert_id();
 	    
 	    $nav_item_label['nav_item_id'] = $nav_item['nav_item_id'];
+	    $nav_item_label['nav_id'] = $nav_item['nav_id'];
 	    $this->db->insert('nav_item_label', $nav_item_label);
 	    $nav_item_label['nav_item_label_id'] = $this->db->insert_id();
 
@@ -350,6 +352,7 @@ class Navigation_model extends CI_Model
 		else
 		{
 			$nav_item_label['nav_item_id'] = $nav_item['nav_item_id'];
+			$nav_item_label['nav_id'] = $nav_item['nav_id'];
 		    $this->db->insert('nav_item_label', $nav_item_label);
 		}
 		
@@ -407,13 +410,16 @@ class Navigation_model extends CI_Model
 	    $this->db->set('date_publish', date('Y-m-d H:i:s', now()));
 	    $this->db->where('nav_id', $nav->nav_id);
 	    $this->db->update('nav');
+	    
+	    $nav->status = 'published';
+	    return $nav;
     }
     
     public function create_new_revision() 
     {
 	    $this->db->flush_cache();
 	    
-	    $revision = $this->get_top_revision($content_key, $culture);
+	    $revision = $this->get_top_revision();
 	    $nav = $this->db->get_where('nav', array(
 	    	'revision' => $revision
 	    ))->row();
@@ -423,38 +429,70 @@ class Navigation_model extends CI_Model
 	    	throw new Exception('The new revision is already created');
 	    }
 	    
-	    unset($nav);
-	    
-	    $nav = array();
-		$nav['revision'] = $revision + 1;
-	    $nav['date_created'] = date('Y-m-d H:i:s', now());
-	    $nav['last_modified'] = date('Y-m-d H:i:s', now());
-	    $nav['date_publish'] = null;
-	    $nav['status'] = 'draft';
+	    $new_nav = array();
+		$new_nav['revision'] = $revision + 1;
+	    $new_nav['date_created'] = date('Y-m-d H:i:s', now());
+	    $new_nav['last_modified'] = date('Y-m-d H:i:s', now());
+	    $new_nav['date_publish'] = null;
+	    $new_nav['status'] = 'draft';
 		
-		$this->db->insert('nav', $nav);
+		$this->db->insert('nav', $new_nav);
 		
-		$nav['nav_id'] = $this->db->insert_id();
+		$new_nav['nav_id'] = $this->db->insert_id();
 		
 		// Duplicate all nav_items.
 		$query = $this->db->get_where('nav_item', array('nav_id' => $nav->nav_id));
-		foreach($query->result() as $nav_item)
+		$nav_item_result = $query->result();
+		
+		$query = $this->db->get_where('nav_item_label', array('nav_id' => $nav->nav_id));
+		$nav_item_label_result = $query->result();
+		
+		$label_lookup = array();
+		foreach($nav_item_label_result as $nav_item_label)
 		{
-			$nav_item->nav_id = $nav['nav_id'];
+			$key = $nav_item_label->nav_item_id . '';
+			
+			if(!array_key_exists($key, $label_lookup))
+				$label_lookup[$key] = array();
+				
+			array_push($label_lookup[$key], $nav_item_label);
+		}
+		
+		foreach($nav_item_result as $nav_item)
+		{
+			$key = $nav_item->nav_item_id . '';
+			unset($nav_item->nav_item_id);
+			
+			$nav_item->nav_id = $new_nav['nav_id'];
 		    $nav_item->date_created = date('Y-m-d H:i:s', now());
 		    $nav_item->last_modified = date('Y-m-d H:i:s', now());
 
-			$this->db-insert('nav_item', $nav_item);
+			$this->db->insert('nav_item', $nav_item);
+			$new_nav_item_id = $this->db->insert_id();
+			
+			if(array_key_exists($key, $label_lookup))
+			{
+				$labels = $label_lookup[$key];
+				foreach($labels as $label)
+				{
+					unset($label->nav_item_label_id);
+					$label->nav_item_id = $new_nav_item_id;
+					
+					$this->db->insert('nav_item_label', $label);
+				}
+			}
 		}
 		
-		return $nav;
+	    unset($nav);
+		
+		return $new_nav;
     }
     
     public function delete_top_revision()
     {
 	    $this->db->flush_cache();
 	    
-	    $revision = $this->get_top_revision($content_key, $culture);
+	    $revision = $this->get_top_revision();
 	    $nav = $this->db->get_where('nav', array(
 	    	'revision' => $revision,
 	    	'status' => 'draft'

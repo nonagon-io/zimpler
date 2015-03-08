@@ -39,6 +39,30 @@ class Navigation extends REST_Controller {
         $this->load->library('user/ion_auth');
     }
     
+    function index_get()
+    {
+	    $top_rev = $this->navigation_model->get_top_revision();
+	    
+	    $result = array(
+		    'rev' => $top_rev,
+		    'status' => $this->navigation_model->get_status($top_rev)
+		);
+		
+		$this->response($result);
+    }
+    
+    function publish_post()
+    {
+	    $result = $this->navigation_model->publish();
+	    $this->response($result);
+    }
+    
+    function new_post()
+    {
+	    $result = $this->navigation_model->create_new_revision();
+	    $this->response($result);
+    }
+    
     function items_get()
     {
 	    $culture = $this->get('culture');

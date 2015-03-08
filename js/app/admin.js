@@ -195,4 +195,9 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 			$scope.mainContentBodyScrollMaxReached = scrollBottom >= mainContentBody.prop("scrollHeight");
 		});
 	});
+	
+	$(function() {
+		
+		$("table").freezeHeader(); 
+	});
 });
