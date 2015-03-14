@@ -468,6 +468,13 @@ body {
 	bottom: 0px;
 }
 
+.n-progress-panel {
+
+	background: #efefef;
+	color: #bbb;
+	z-index: 1000;
+}
+
 .gmnoprint img {
     max-width: none; 
 }

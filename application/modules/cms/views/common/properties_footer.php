@@ -1,5 +1,12 @@
 <div class="uk-grid uk-margin-small-top">
 	<div class="uk-width-1-5">
+		<?php if(isset($allow_delete) && $allow_delete) : ?>
+		<button type="button" class="uk-button uk-button-danger" 
+				ng-click="<?= $panel_name ?>.delete()"
+				style="width: auto">
+			<i class="uk-icon-trash"></i>
+		</button>
+		<?php endif ?>
 		<?php if(isset($allow_publish) && $allow_publish) : ?>
 		<button type="button" class="uk-button uk-button-primary" 
 				ng-if="editingData.status != 'published'"
@@ -16,6 +23,7 @@
 		<?php endif ?>
 	</div>
 	<div class="uk-width-4-5 uk-text-right">
+		<?php if(isset($allow_publish) && $allow_publish) : ?>
 		<button type="button" class="uk-button uk-button-primary" 
 				ng-if="editingData.status == 'published'"
 				ng-disabled="!<?= $panel_name ?>.propertiesForm.$valid"
@@ -28,6 +36,7 @@
 				style="width: auto">
 			<i class="uk-icon-trash"></i>
 		</button>
+		<?php endif ?>
 		<button type="submit" class="uk-button uk-button-success" ng-if="currentStatus != 'published'">
 			Save <span ng-show="<?= $panel_name ?>.propertiesForm.$dirty">*</span>
 		</button>
