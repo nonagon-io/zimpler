@@ -173,6 +173,18 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 					$this.close();
 				}
 			});
+		},
+
+		delete: function() {
+
+			var $this = this;
+			this.fire("delete", null, function(result) {
+
+				if(result) {
+					
+					$this.close();
+				}
+			});
 		}
 	};
 	

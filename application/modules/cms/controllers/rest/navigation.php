@@ -163,9 +163,17 @@ class Navigation extends REST_Controller {
 	    
 	    $this->response($nav_item);
     }
+
+    function item_delete($nav_item_id)
+    {
+    	$nav_item = $this->navigation_model->delete_item($nav_item_id);
+    	$nav_item = array('id' => $nav_item->nav_item_id);
+
+    	$this->response($nav_item);
+    }
     
-    function tree_post() {
-	    
+    function tree_post()
+    {
 	    $tree = json_decode($this->post("tree"));
 	    $this->navigation_model->update_tree($tree);
     }

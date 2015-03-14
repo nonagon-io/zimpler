@@ -118,6 +118,7 @@ class Navigation_model extends CI_Model
 			"(`nav_item_label`.`culture` IS NULL OR `nav_item_label`.`culture` = '" . $culture . "')", 
 			'left');
 		$this->db->where('nav_item.nav_id', $nav->nav_id);
+		$this->db->where('nav_item.status <>', 'deleted');
 		$this->db->order_by('parent_id', 'asc');
 		$this->db->order_by('order', 'asc');
 		$this->db->order_by('nav_item.nav_item_id', 'asc');
@@ -180,6 +181,7 @@ class Navigation_model extends CI_Model
 			"(`nav_item_label`.`culture` IS NULL OR `nav_item_label`.`culture` = '" . $culture . "')", 
 			'left');
 		$this->db->where('nav_item.nav_id', $nav->nav_id);
+		$this->db->where('nav_item.status <>', 'deleted');
 		$this->db->where('parent_id', $parent_id);
 		$this->db->order_by('order', 'asc');
 		$this->db->order_by('nav_item.nav_item_id', 'asc');
@@ -361,6 +363,18 @@ class Navigation_model extends CI_Model
 	    $nav_item['culture'] = $nav_item_label['culture'];
 	    	
 	    return $nav_item;
+    }
+
+    public function delete_item($nav_item_id)
+    {
+    	$this->db->where('nav_item_id', $nav_item_id);
+    	$nav_item = $this->db->get('nav_item')->row();
+
+    	$this->db->where('nav_item_id', $nav_item_id);
+    	$this->db->set('status', 'deleted');
+    	$this->db->update('nav_item');
+
+    	return $nav_item;
     }
     
     public function update_tree($tree)
