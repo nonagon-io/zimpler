@@ -124,14 +124,12 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 			$this.scope.propertiesPanel.propertiesForm.$setPristine(); 
 		},
 		
-		close: function() {
+		close: function(option) {
 			
 			$this = this;
-			
-			checkFormDirty(this.scope.propertiesPanel.propertiesForm).confirm(function() {
-				
-				$this.scope.propertiesPanel.propertiesForm.$setUntouched();
-				
+
+			var performClose = function() {
+
 				$this.offsetLeft = 0;
 				$this.isOpen = false;
 	
@@ -145,10 +143,27 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 					$this.scope.$apply(function() {
 						$this.scope.propertiesPanel.propertiesForm.$setPristine();
 						$this.scope = null;
+
+						$this.fire("closed");
 					});
 					
-				}, 100);
-			});
+				}, 300);
+			}
+
+			option = option || {};
+
+			if(option.force) {
+
+				performClose();
+
+			} else {
+
+				checkFormDirty(this.scope.propertiesPanel.propertiesForm).confirm(function() {
+
+					$this.scope.propertiesPanel.propertiesForm.$setUntouched();
+					performClose();
+				});
+			}
 		},
 		
 		save: function($event, option) {
