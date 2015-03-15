@@ -19,7 +19,7 @@
 							</a>
 						</div>
 					</div>
-					<div class="uk-width-2-3 uk-text-right">
+					<div class="uk-width-2-3 uk-text-right" style="line-height: 28px;">
 						<div class="uk-display-inline-block uk-vertical-align-middle" 
 							 ng-if="currentStatus != null" ng-cloak="">
 							Rev. {{currentRevision}}
