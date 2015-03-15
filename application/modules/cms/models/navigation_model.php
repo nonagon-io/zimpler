@@ -353,8 +353,13 @@ class Navigation_model extends CI_Model
 		}
 		else
 		{
+			$existing_nav_item = $this->db->get_where(
+				'nav_item', array(
+					'nav_item_id' => $nav_item['nav_item_id']
+				))->row();
+
 			$nav_item_label['nav_item_id'] = $nav_item['nav_item_id'];
-			$nav_item_label['nav_id'] = $nav_item['nav_id'];
+ 			$nav_item_label['nav_id'] = $existing_nav_item->nav_id;
 		    $this->db->insert('nav_item_label', $nav_item_label);
 		}
 		
@@ -527,7 +532,7 @@ class Navigation_model extends CI_Model
 	    	'status' => 'draft'
 	    ))->row();
 
-	    if(!$nav) return;
+	    if(!$nav)
 	    {
 	    	throw new Exception('The top revision is not in the "draft" status');
 	    }
@@ -537,5 +542,10 @@ class Navigation_model extends CI_Model
 	    
 	    $this->db->where('nav_id', $nav->nav_id);
 	    $this->db->delete('nav_item');
+	    
+	    $this->db->where('nav_id', $nav->nav_id);
+	    $this->db->delete('nav_item_label');
+
+	    return $nav;
     }
 }

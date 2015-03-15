@@ -50,6 +50,18 @@ class Navigation extends REST_Controller {
 		
 		$this->response($result);
     }
+
+    function index_delete()
+    {
+    	$result = $this->navigation_model->delete_top_revision();
+
+	    $result = array(
+		    'rev' => $result->revision,
+		    'status' => $result->status
+		);
+
+    	$this->response($result);
+    }
     
     function publish_post()
     {

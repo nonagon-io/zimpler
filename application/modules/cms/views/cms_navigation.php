@@ -21,14 +21,17 @@
 					</div>
 					<div class="uk-width-2-3 uk-text-right">
 						<div class="uk-display-inline-block uk-vertical-align-middle" 
-							 ng-if="currentStatus != null" ng-cloak="" style="margin-top: 5px;">
+							 ng-if="currentStatus != null" ng-cloak="">
 							Rev. {{currentRevision}}
 						</div>
 						<div class="uk-display-inline-block uk-text-primary uk-vertical-align-middle ng-hide" 
-							 ng-show="currentStatus == 'published'" style="margin-top: 5px;">
+							 ng-show="currentStatus == 'published'">
 							Published
 						</div>
-						<button type="button" class="uk-button uk-button-danger ng-hide">
+						<button type="button" class="uk-button uk-button-danger 
+													 uk-vertical-align-middle uk-margin-small-left ng-hide"
+								ng-show="currentStatus == 'draft' && currentRevision > 1"
+								ng-click="delete()">
 							<i class="uk-icon-trash"></i>
 						</button>
 					</div>
