@@ -38,15 +38,15 @@ $lang['cms_admin_siteinfo_copyright_author_desc'] =
 $lang['cms_admin_siteinfo_copyright_text_label'] = 'Copyright Text';
 $lang['cms_admin_siteinfo_copyright_text_placeholder'] = 'Copyright Text (Optional)';
 $lang['cms_admin_siteinfo_copyright_text_desc'] =
-	'The site copyright text. If specified, it will be rendered as meta tag on every pages. It may be overridden by any pages ' .
-	'if certain page has it own copyright text specified. ' .
+	'The site copyright text. If specified, it will be rendered as meta tag on every pages. ' .
+	'It may be overridden by any pages if certain page has it own copyright text specified. ' .
 	'The meta would look like: <code>&lt;meta name="copyright" content="&lt;copyright-text&gt;" /&gt;</code>';
 
 $lang['cms_admin_siteinfo_seo'] = 'Search Engine Optimization (SEO)';
 $lang['cms_admin_siteinfo_seo_description_label'] = 'Description';
 $lang['cms_admin_siteinfo_seo_description_placeholder'] = 'Description (Optional)';
 $lang['cms_admin_siteinfo_seo_description_desc'] =
-	'The main description of the site. If specified, it will be rendered as meta tag on <b class="uk-text-primary">' .
-	'home page only.</b> ' .
+	'The main description of the site. If specified, it will be rendered as default meta tag if page ' .
+	'specific description not set. ' .
 	'Recommend to specify the brief description that explains about the site. Do not repeat use of the keywords, ' .
 	'make sure it is readable and make sure it is not very long.';
