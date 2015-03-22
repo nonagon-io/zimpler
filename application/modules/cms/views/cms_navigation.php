@@ -73,7 +73,7 @@
 							</div>
 						</div>
 						<div class="uk-width-1-3 uk-text-right">
-							<button type="button" class="uk-button uk-button-primary"
+							<button type="button" class="uk-button uk-button-success"
 									ng-click="addItem(level)"
 									ng-disabled="propertiesPanel.isOpen || currentStatus == 'published'">
 								<i class="uk-icon-plus"></i>

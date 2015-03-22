@@ -86,7 +86,7 @@ class Cms_admin extends Partial_Controller {
 
 	function navigations()
 	{
-		$this->lang->load('cms/admin_siteinfo');
+		$this->lang->load('cms/admin_navigation');
 		$this->load->model('cms/navigation_model');
 
 		$method = $this->input->server('REQUEST_METHOD');
@@ -102,6 +102,17 @@ class Cms_admin extends Partial_Controller {
 			$this->data['culture'] = $culture;
 			$this->data['nav'] = $nav;
 			$this->load->view('cms_navigation', $this->data);
+		}
+	}
+
+	function designs()
+	{
+		$method = $this->input->server('REQUEST_METHOD');
+		
+		if($method == 'GET')
+		{
+			$this->data = array();
+			$this->load->view('cms_design', $this->data);
 		}
 	}
 

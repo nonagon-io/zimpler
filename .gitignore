@@ -11,3 +11,6 @@ vendor/composer
 
 # Node Modules
 node_modules
+
+# Binary
+bin

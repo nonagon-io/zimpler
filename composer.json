@@ -1,6 +1,24 @@
 {
+	"scripts": {
+
+		"post-install-cmd": [
+
+			"PhantomInstaller\\Installer::installPhantomJS"
+		],
+
+		"post-update-cmd": [
+
+			"PhantomInstaller\\Installer::installPhantomJS"
+		]
+	},
+
+	"config": {
+		"bin-dir": "bin"
+	},
+
 	"require": {
 		"ext-mysql": "*",
-		"athari/yalinqo": "1.*"
+		"athari/yalinqo": "1.*",
+		"jonnyw/php-phantomjs": "3.*"
 	}
 }

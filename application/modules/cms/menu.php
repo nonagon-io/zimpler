@@ -17,6 +17,13 @@ $module_menu_items = array(
 	),
 	
 	array(
+		'icon' => 'th-large',
+		'path' => 'admin/cms/designs',
+		'name' => lang('cms_menu_designs'),
+		'link' => base_url('admin/cms/designs')
+	),
+	
+	array(
 		'icon' => 'files-o',
 		'path' => 'admin/cms/pages',
 		'name' => lang('cms_menu_pages'),
