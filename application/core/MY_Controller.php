@@ -13,7 +13,7 @@ abstract class MY_Controller extends MX_Controller {
 	        'meta_language' => 'en',
 	        'meta_keywords' => '',
 	        'meta_description' => '',
-	        'title' => 'Zimpler'
+	        'title' => $this->config->item('site_title')
         );
     }
 }

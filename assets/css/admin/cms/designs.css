@@ -1,0 +1,25 @@
+.n-view-host .n-body .n-list {
+
+	background: transparent;
+	border-bottom: none;
+	padding: 60px 10px 10px 10px;
+	bottom: 0px;
+}
+
+.n-view-host .n-body .n-list .n-item-host {
+
+	background: url('../../../images/bg.png');
+}
+
+.n-item {
+
+	padding: 10px;
+	height: 100px;
+}
+
+.n-item .uk-panel-box {
+
+	background: #fefefe;
+	border-bottom: 1px solid #f9f9f9;
+	border-right: 1px solid #f9f9f9;
+}
