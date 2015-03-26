@@ -1,19 +1,22 @@
 angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate'])
 
 .controller("CmsDesignController", 
-	['$scope', '$rootScope', '$window', '$location', 'submitForm', 'checkFormDirty', 'propertiesPanel', 'httpEx', 'modal',
-	function($scope, $rootScope, $window, $location, submitForm, checkFormDirty, propertiesPanel, httpEx, modal) {
+	['$scope', '$rootScope', '$window', '$location', 'submitForm', 
+		'checkFormDirty', 'propertiesPanel', 'httpEx', 'modal',
+	function($scope, $rootScope, $window, $location, submitForm, 
+				checkFormDirty, propertiesPanel, httpEx, modal) {
 
 	$scope.items = [];
+	$scope.currentView = "list";
 
 	$scope.add = function() {
 
-		$scope.items.push({
+		$scope.currentView = "designer";
+	};
 
-			id: 1,
-			name: "Untitled",
-			thumbnail: null
-		});
+	$scope.cancel = function() {
+
+		$scope.currentView = "list";
 	};
 
 }]);
