@@ -8,6 +8,8 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 
 	$scope.items = [];
 	$scope.currentView = "list";
+	$scope.fullScreen = false;
+	$scope.canvasExpanded = true;
 
 	$scope.add = function() {
 
@@ -18,5 +20,10 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 
 		$scope.currentView = "list";
 	};
+
+	$scope.toggle = function(flag) {
+
+		$scope[flag] = !$scope[flag];
+	}
 
 }]);

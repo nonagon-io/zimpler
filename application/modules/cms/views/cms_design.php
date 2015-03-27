@@ -20,7 +20,7 @@
 		<div class="n-list">
 			<div class="n-item-host uk-grid uk-grid-collapse">
 				<div class="n-item uk-width-1-5" ng-repeat="item in items">
-					<div class="uk-panel uk-panel-box">
+					<div class="uk-panel uk-panel-box" ng-cloak>
 						{{item.name}}
 					</div>
 				</div>
@@ -28,17 +28,32 @@
 		</div>
 	</div>
 
-	<div class="n-abs-fit uk-form n-sliding-panel" style="background: white"
-		 ng-class="{'n-on': currentView == 'designer', 'n-off-next': currentView == 'list'}">
+	<div class="n-design-editor n-abs-fit uk-form n-sliding-panel n-off-next"
+		 ng-class="{'n-on': currentView == 'designer', 'n-off-next': currentView == 'list', 'n-expanded': fullScreen}">
 		<div class="n-options-header" 
 			 ng-class="{'n-drop-shadow': mainContentBodyScrollTop > 0}">
 			<div class="uk-grid uk-grid-collapse">
 				<div class="uk-width-1-2">
+					<button class="uk-button n-tool-button" ng-click="toggle('fullScreen')"
+							ng-class="{'uk-active': fullScreen}">
+						<i class="uk-icon-expand" ng-if="!fullScreen"></i>
+						<i class="uk-icon-compress" ng-if="fullScreen"></i>
+					</button>
+
 					<div class="uk-button-group">
-						<button class="uk-button">
-							<i class="uk-icon-bars"></i>
+						<button class="uk-button n-tool-button">
+							<i class="uk-icon-th"></i>
 						</button>
-						<button class="uk-button">
+						<button class="uk-button n-tool-button">
+							<i class="uk-icon-desktop"></i>
+						</button>
+						<button class="uk-button n-tool-button">
+							<i class="uk-icon-mobile"></i>
+						</button>
+						<button class="uk-button n-tool-button">
+							<i class="uk-icon-tablet"></i>
+						</button>
+						<button class="uk-button n-tool-button">
 							<i class="uk-icon-code"></i>
 						</button>
 					</div>
@@ -51,6 +66,18 @@
 						Cancel
 					</button>
 				</div>
+			</div>
+		</div>
+		<div class="n-designer">
+			<div class="n-canvas-panel" ng-class="{'n-expanded': canvasExpanded}">
+			</div>
+			<div class="n-components-panel" ng-class="{'n-collapsed': canvasExpanded}">
+				<button class="uk-button n-tool-button" 
+						ng-class="{'uk-active': !canvasExpanded}"
+						ng-click="toggle('canvasExpanded')">
+					<i class="uk-icon-circle" ng-if="!canvasExpanded"></i>
+					<i class="uk-icon-thumb-tack" ng-if="canvasExpanded"></i>
+				</button>
 			</div>
 		</div>
 	</div>
