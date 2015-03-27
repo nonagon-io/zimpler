@@ -33,6 +33,11 @@
 	bottom: 0px;
 }
 
+.n-designer > div {
+
+	background: url('../../../images/bg.png');
+}
+
 .n-designer .n-canvas-panel {
 
 	position: absolute;
@@ -68,7 +73,7 @@
 	bottom: 0px;
 }
 
-.n-designer > div {
+.n-designer > .n-abs-fit > div {
 
 	-webkit-transition: all .2s ease-out;
 	-moz-transition: all .2s ease-out;
@@ -100,4 +105,63 @@
 .n-tool-button.uk-active {
 
 	background: #fffbe8;
+}
+
+.n-device-preview {
+
+	-webkit-transition: all .2s ease-out;
+	-moz-transition: all .2s ease-out;
+	-ms-transition: all .2s ease-out;
+	-o-transition: all .2s ease-out;
+	transition: all .2s ease-out;
+}
+
+.n-tablet-preview {
+
+	position: absolute;
+	width: 861px;
+	height: 1063px;
+	margin-left: -430px;
+
+	left: 50%;
+	top: 50px;
+
+	background: url('../../../images/tablet-apple.png');
+}
+
+.n-mobile-preview {
+
+	position: absolute;
+	width: 418px;
+	height: 839px;
+	margin-left: -209px;
+
+	left: 50%;
+	top: 50px;
+
+	background: url('../../../images/phone-apple.png');
+}
+
+.n-device-preview.n-landscape {
+
+	top: 50%;
+
+	-webkit-transform: rotate(90deg);
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	transform: rotate(90deg);
+
+	-webkit-backface-visibility: hidden;
+	-webkit-perspective: 1000;
+}
+
+.n-tablet-preview.n-landscape {
+
+	margin-top: -332px;
+}
+
+.n-mobile-preview.n-landscape {
+
+	margin-top: -420px;
 }

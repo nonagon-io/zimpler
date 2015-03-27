@@ -10,6 +10,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 	$scope.currentView = "list";
 	$scope.fullScreen = false;
 	$scope.canvasExpanded = true;
+	$scope.designerView = "edit-canvas";
 
 	$scope.add = function() {
 

@@ -41,20 +41,44 @@
 					</button>
 
 					<div class="uk-button-group">
-						<button class="uk-button n-tool-button">
+						<button class="uk-button n-tool-button"
+								ng-class="{'uk-active': designerView == 'edit-canvas'}"
+								ng-click="designerView = 'edit-canvas'">
 							<i class="uk-icon-th"></i>
 						</button>
-						<button class="uk-button n-tool-button">
+						<button class="uk-button n-tool-button"
+								ng-class="{'uk-active': designerView == 'preview-desktop'}"
+								ng-click="designerView = 'preview-desktop'">
 							<i class="uk-icon-desktop"></i>
 						</button>
-						<button class="uk-button n-tool-button">
-							<i class="uk-icon-mobile"></i>
-						</button>
-						<button class="uk-button n-tool-button">
+						<button class="uk-button n-tool-button"
+								ng-class="{'uk-active': designerView == 'preview-tablet'}"
+								ng-click="designerView = 'preview-tablet'">
 							<i class="uk-icon-tablet"></i>
 						</button>
-						<button class="uk-button n-tool-button">
+						<button class="uk-button n-tool-button"
+								ng-class="{'uk-active': designerView == 'preview-mobile'}"
+								ng-click="designerView = 'preview-mobile'">
+							<i class="uk-icon-mobile"></i>
+						</button>
+						<button class="uk-button n-tool-button"
+								ng-class="{'uk-active': designerView == 'edit-code'}"
+								ng-click="designerView = 'edit-code'">
 							<i class="uk-icon-code"></i>
+						</button>
+					</div>
+
+					<div class="uk-button-group" 
+						 ng-show="designerView == 'preview-tablet' || designerView == 'preview-mobile'">
+						<button class="uk-button n-tool-button"
+								ng-class="{'uk-active': !landscape}"
+								ng-click="landscape = false">
+							<i class="uk-icon-arrows-v"></i>
+						</button>
+						<button class="uk-button n-tool-button"
+								ng-class="{'uk-active': landscape}"
+								ng-click="landscape = true">
+							<i class="uk-icon-arrows-h"></i>
 						</button>
 					</div>
 				</div>
@@ -69,15 +93,28 @@
 			</div>
 		</div>
 		<div class="n-designer">
-			<div class="n-canvas-panel" ng-class="{'n-expanded': canvasExpanded}">
+			<div class="n-abs-fit n-overflow-auto" ng-show="designerView == 'edit-canvas'">
+				<div class="n-canvas-panel" ng-class="{'n-expanded': canvasExpanded}">
+				</div>
+				<div class="n-components-panel" ng-class="{'n-collapsed': canvasExpanded}">
+					<button class="uk-button n-tool-button" 
+							ng-class="{'uk-active': !canvasExpanded}"
+							ng-click="toggle('canvasExpanded')">
+						<i class="uk-icon-circle" ng-if="!canvasExpanded"></i>
+						<i class="uk-icon-thumb-tack" ng-if="canvasExpanded"></i>
+					</button>
+				</div>
 			</div>
-			<div class="n-components-panel" ng-class="{'n-collapsed': canvasExpanded}">
-				<button class="uk-button n-tool-button" 
-						ng-class="{'uk-active': !canvasExpanded}"
-						ng-click="toggle('canvasExpanded')">
-					<i class="uk-icon-circle" ng-if="!canvasExpanded"></i>
-					<i class="uk-icon-thumb-tack" ng-if="canvasExpanded"></i>
-				</button>
+			<div class="n-abs-fit n-overflow-auto" ng-show="designerView == 'preview-desktop'">
+
+			</div>
+			<div class="n-abs-fit n-overflow-auto" ng-show="designerView == 'preview-tablet'">
+				<div class="n-tablet-preview n-device-preview" ng-class="{'n-landscape': landscape}">
+				</div>
+			</div>
+			<div class="n-abs-fit n-overflow-auto" ng-show="designerView == 'preview-mobile'">
+				<div class="n-mobile-preview n-device-preview" ng-class="{'n-landscape': landscape}">
+				</div>
 			</div>
 		</div>
 	</div>
