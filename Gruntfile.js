@@ -28,7 +28,9 @@ module.exports = function(grunt) {
 						'bower_components/codemirror/mode/gfm/gfm.js',
 						'bower_components/marked/lib/marked.js',
 						'bower_components/uikit/js/components/htmleditor.min.js',
-						'bower_components/uikit/js/components/notify.min.js'],
+						'bower_components/uikit/js/components/notify.min.js',
+						'bower_components/uikit/js/components/tooltip.min.js',
+						'bower_components/angular-gridster/dist/angular-gridster.min.js'],
 						
 					'js/lib/libphonenumber.js': [
 						'bower_components/intl-tel-input/lib/libphonenumber/build/utils.js']
@@ -45,8 +47,10 @@ module.exports = function(grunt) {
 						'bower_components/uikit/css/components/form-advanced.almost-flat.min.css',
 						'bower_components/uikit/css/components/htmleditor.almost-flat.min.css',
 						'bower_components/uikit/css/components/notify.almost-flat.min.css',
+						'bower_components/uikit/css/components/tooltip.almost-flat.min.css',
 						'bower_components/intl-tel-input/build/css/intlTelInput.css',
-						'bower_components/codemirror/lib/codemirror.css']
+						'bower_components/codemirror/lib/codemirror.css',
+						'bower_components/angular-gridster/dist/angular-gridster.min.css']
 				}
 			}
 		}

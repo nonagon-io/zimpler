@@ -11,6 +11,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 	$scope.fullScreen = false;
 	$scope.canvasExpanded = true;
 	$scope.designerView = "edit-canvas";
+	$scope.codeView = "html";
 
 	$scope.add = function() {
 
@@ -26,5 +27,32 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 
 		$scope[flag] = !$scope[flag];
 	}
+
+	$scope.designer = {
+
+		panels: [],
+
+		activePanel: null,
+
+		options: {
+
+			columns: 10,
+			rowHeight: 50,
+			margins: 0
+		},
+
+		add: function(parent, type) {
+
+			if(!parent.panels)
+				parent.panels = [];
+
+			parent.panels.push({ size: { x: 2, y: 1 }, position: [0, 0] })
+		},
+
+		setActive: function(parent, panel) {
+
+			parent.activePanel = panel;
+		}
+	};
 
 }]);

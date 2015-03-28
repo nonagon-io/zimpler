@@ -81,6 +81,25 @@
 							<i class="uk-icon-arrows-h"></i>
 						</button>
 					</div>
+
+					<div class="uk-button-group" 
+						 ng-show="designerView == 'edit-code'">
+						<button class="uk-button n-tool-button" style="width: auto"
+								ng-class="{'uk-active': codeView == 'html'}"
+								ng-click="codeView = 'html'">
+							HTML
+						</button>
+						<button class="uk-button n-tool-button" style="width: auto"
+								ng-class="{'uk-active': codeView == 'js'}"
+								ng-click="codeView = 'js'">
+							JS
+						</button>
+						<button class="uk-button n-tool-button" style="width: auto"
+								ng-class="{'uk-active': codeView == 'css'}"
+								ng-click="codeView = 'css'">
+							CSS
+						</button>
+					</div>
 				</div>
 				<div class="uk-width-1-2 uk-text-right">
 					<button class="uk-button uk-button-primary" style="width: 80px">
@@ -95,14 +114,26 @@
 		<div class="n-designer">
 			<div class="n-abs-fit n-overflow-auto" ng-show="designerView == 'edit-canvas'">
 				<div class="n-canvas-panel" ng-class="{'n-expanded': canvasExpanded}">
+					<div gridster="designer.options">
+						<ul>
+							<li gridster-item="item" ng-repeat="item in designer.panels"
+								ng-class="{'uk-active': item == designer.activePanel}"
+								ng-click="designer.setActive(designer, item)">
+								<div class="n-content">
+								</div>
+							</li>
+						</ul>
+					</div>
 				</div>
 				<div class="n-components-panel" ng-class="{'n-collapsed': canvasExpanded}">
-					<button class="uk-button n-tool-button" 
-							ng-class="{'uk-active': !canvasExpanded}"
-							ng-click="toggle('canvasExpanded')">
-						<i class="uk-icon-circle" ng-if="!canvasExpanded"></i>
-						<i class="uk-icon-thumb-tack" ng-if="canvasExpanded"></i>
-					</button>
+					<div>
+						<button class="uk-button uk-width-1-1"
+								ng-click="designer.add(designer, 'panel')"
+								title="Add New Panel"
+								data-uk-tooltip="{pos:'left'}">
+							<i class="uk-icon-square-o"></i>
+						</button>
+					</div>
 				</div>
 			</div>
 			<div class="n-abs-fit n-overflow-auto" ng-show="designerView == 'preview-desktop'">
@@ -116,7 +147,9 @@
 				<div class="n-mobile-preview n-device-preview" ng-class="{'n-landscape': landscape}">
 				</div>
 			</div>
+			<div class="n-abs-fit n-overflow-auto" ng-show="designerView == 'edit-code'">
+
+			</div>
 		</div>
 	</div>
-
 </div>
