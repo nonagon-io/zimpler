@@ -30,6 +30,7 @@ module.exports = function(grunt) {
 						'bower_components/uikit/js/components/htmleditor.min.js',
 						'bower_components/uikit/js/components/notify.min.js',
 						'bower_components/uikit/js/components/tooltip.min.js',
+						'bower_components/javascript-detect-element-resize/jquery.resize.js',
 						'bower_components/angular-gridster/dist/angular-gridster.min.js'],
 						
 					'js/lib/libphonenumber.js': [

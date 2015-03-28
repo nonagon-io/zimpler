@@ -117,8 +117,7 @@
 					<div gridster="designer.options">
 						<ul>
 							<li gridster-item="item" ng-repeat="item in designer.panels"
-								ng-class="{'uk-active': item == designer.activePanel}"
-								ng-click="designer.setActive(designer, item)">
+								ng-class="{'uk-active': item == designer.activePanel}">
 								<div class="n-content">
 								</div>
 							</li>
@@ -126,12 +125,26 @@
 					</div>
 				</div>
 				<div class="n-components-panel" ng-class="{'n-collapsed': canvasExpanded}">
-					<div>
-						<button class="uk-button uk-width-1-1"
+					<div ng-hide="designer.activePanel != null">
+						<button class="uk-button uk-button-success n-tool-button"
 								ng-click="designer.add(designer, 'panel')"
 								title="Add New Panel"
 								data-uk-tooltip="{pos:'left'}">
-							<i class="uk-icon-square-o"></i>
+							<i class="uk-icon-plus"></i>
+						</button>
+					</div>
+					<div class="ng-hide" ng-show="designer.activePanel != null">
+						<button class="uk-button n-tool-button"
+								ng-click="designer.showProperties()"
+								title="Panel Properties"
+								data-uk-tooltip="{pos:'left'}">
+							<i class="uk-icon-edit"></i>
+						</button>
+						<button class="uk-button uk-button-danger n-tool-button uk-margin-small-top"
+								ng-click="designer.delete(designer, designer.activePanel)"
+								title="Remove Panel"
+								data-uk-tooltip="{pos:'left'}">
+							<i class="uk-icon-trash"></i>
 						</button>
 					</div>
 				</div>
