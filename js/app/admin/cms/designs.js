@@ -62,7 +62,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 					targetRow = rowReach;
 			}
 
-			parent.panels.push({ sizeX: 10, sizeY: 1, row: targetRow, col: 0 })
+			parent.panels.push({ sizeX: 10, sizeY: 2, row: targetRow, col: 0 })
 		},
 
 		setActive: function(parent, panel) {
@@ -79,6 +79,12 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 
 			if(parent.activePanel == panel)
 				parent.activePanel = null;
+		},
+
+		clearActivePanel: function($event) {
+
+			if($($event.target).hasClass("n-canvas-panel"))
+				this.activePanel = null;
 		}
 	};
 

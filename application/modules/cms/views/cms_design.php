@@ -113,7 +113,8 @@
 		</div>
 		<div class="n-designer">
 			<div class="n-abs-fit n-overflow-auto" ng-show="designerView == 'edit-canvas'">
-				<div class="n-canvas-panel" ng-class="{'n-expanded': canvasExpanded}">
+				<div class="n-canvas-panel" ng-class="{'n-expanded': canvasExpanded}"
+					 ng-click="designer.clearActivePanel($event)">
 					<div gridster="designer.options">
 						<ul>
 							<li gridster-item="item" ng-repeat="item in designer.panels"

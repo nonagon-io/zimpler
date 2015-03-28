@@ -15,6 +15,17 @@ angular.module("common", [])
 	};
 })
 
+.directive('nStopEvent', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+            element.bind(attr.stopEvent, function (e) {
+                e.stopPropagation();
+            });
+        }
+    };
+ })
+
 .directive('nDirtyCheck', function() {
 	return {
 		restrict: 'A',
