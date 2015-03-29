@@ -9,7 +9,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 	$scope.items = [];
 	$scope.currentView = "list";
 	$scope.fullScreen = false;
-	$scope.canvasExpanded = true;
+	$scope.componentExpanded = false;
 	$scope.designerView = "edit-canvas";
 	$scope.codeView = "html";
 
@@ -83,8 +83,21 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 
 		clearActivePanel: function($event) {
 
-			if($($event.target).hasClass("n-canvas-panel"))
+			if($($event.target).hasClass("n-canvas-panel")) {
+				
 				this.activePanel = null;
+				this.hideProperties();
+			}
+		},
+
+		showProperties: function() {
+
+			$scope.componentExpanded = true;
+		},
+
+		hideProperties: function() {
+
+			$scope.componentExpanded = false;
 		}
 	};
 

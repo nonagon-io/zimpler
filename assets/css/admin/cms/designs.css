@@ -44,7 +44,7 @@
 	left: 0px;
 	top: 0px;
 	bottom: 0px;
-	right: 211px;
+	right: 311px;
 
 	background: white;
 	border-right: 1px solid #ccc;
@@ -58,13 +58,29 @@
 	right: 0px;
 	top: 0px;
 	bottom: 0px;
-	width: 200px;
+	width: 300px;
 	padding: 5px;
 
 	background: #efefef;
 	border-left: 1px solid #fbfbfb;
 
 	z-index: 10000;
+}
+
+.n-designer .n-components-panel > .uk-grid {
+
+	position: relative;
+	height: 100%;
+}
+
+.n-designer .n-components-panel > .uk-grid > .n-properties-panel {
+
+	position: absolute;
+	top: -5px;
+	width: 260px;
+	bottom: -5px;
+	left: 45px;
+	overflow: auto;
 }
 
 .n-design-editor.n-expanded {
@@ -175,9 +191,52 @@
 	background: #f9f9f9;
 }
 
-.n-canvas-panel .gridster-item.uk-active {
+.n-canvas-panel .n-cover {
+
+	position: absolute;
+	pointer-events: none;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	z-index: 100000;
+}
+
+.n-canvas-panel .gridster-item.uk-active,
+.n-canvas-panel .n-cover.uk-active {
 
 	-webkit-box-shadow: inset 0px 0px 15px 0px rgba(0,150,255,0.25);
 	-moz-box-shadow: inset 0px 0px 15px 0px rgba(0,150,255,0.25);
 	box-shadow: inset 0px 0px 15px 0px rgba(0,150,255,0.25);
+}
+
+.n-properties-panel {
+
+	padding: 0px;
+}
+
+.n-properties-panel label {
+
+	background: #ccc;
+	padding: 2px 5px;
+	display: block;
+	margin-bottom: 3px;
+	font-size: 0.8em;
+	font-weight: bold;
+}
+
+.n-properties-panel > div {
+
+	padding: 0px;
+}
+
+.n-properties-panel div:not(:first-child),
+.n-properties-panel label:not(:first-child) {
+
+	margin-top: 3px;
+}
+
+.n-properties-panel > div > .n-controls {
+
+	margin: 0 5px;
 }

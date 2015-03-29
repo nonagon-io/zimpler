@@ -113,7 +113,8 @@
 		</div>
 		<div class="n-designer">
 			<div class="n-abs-fit n-overflow-auto" ng-show="designerView == 'edit-canvas'">
-				<div class="n-canvas-panel" ng-class="{'n-expanded': canvasExpanded}"
+				<div class="n-canvas-panel" 
+					 ng-class="{'n-expanded': !componentExpanded}"
 					 ng-click="designer.clearActivePanel($event)">
 					<div gridster="designer.options">
 						<ul>
@@ -124,8 +125,9 @@
 							</li>
 						</ul>
 					</div>
+					<div class="n-cover" ng-class="{'uk-active': designer.activePanel == null}"></div>
 				</div>
-				<div class="n-components-panel" ng-class="{'n-collapsed': canvasExpanded}">
+				<div class="n-components-panel" ng-class="{'n-collapsed': !componentExpanded}">
 					<div ng-hide="designer.activePanel != null">
 						<button class="uk-button uk-button-success n-tool-button"
 								ng-click="designer.add(designer, 'panel')"
@@ -134,19 +136,198 @@
 							<i class="uk-icon-plus"></i>
 						</button>
 					</div>
-					<div class="ng-hide" ng-show="designer.activePanel != null">
-						<button class="uk-button n-tool-button"
-								ng-click="designer.showProperties()"
-								title="Panel Properties"
-								data-uk-tooltip="{pos:'left'}">
-							<i class="uk-icon-edit"></i>
-						</button>
-						<button class="uk-button uk-button-danger n-tool-button uk-margin-small-top"
-								ng-click="designer.delete(designer, designer.activePanel)"
-								title="Remove Panel"
-								data-uk-tooltip="{pos:'left'}">
-							<i class="uk-icon-trash"></i>
-						</button>
+					<div class="uk-grid uk-grid-collapse ng-hide" ng-show="designer.activePanel != null">
+						<div class="uk-width-1-6">
+							<button class="uk-button n-tool-button"
+									ng-click="designer.showProperties()"
+									title="Panel Properties"
+									data-uk-tooltip="{pos:'left'}">
+								<i class="uk-icon-edit"></i>
+							</button>
+							<button class="uk-button uk-button-danger n-tool-button uk-margin-small-top"
+									ng-click="designer.delete(designer, designer.activePanel)"
+									title="Remove Panel"
+									data-uk-tooltip="{pos:'left'}">
+								<i class="uk-icon-trash"></i>
+							</button>
+						</div>
+						<div class="uk-width-5-6 ng-hide n-properties-panel" ng-show="componentExpanded">
+							<div>
+								<label for="css">Custom CSS</label>
+								<div class="n-controls">
+									<input id="css" type="text" class="uk-width-1-1" placeholder="CSS Class" 
+										   ng-model="designer.activePanel.css"/>
+								</div>
+							</div>
+
+							<div>
+								<label for="height">Height</label>
+								<div class="n-controls">
+									<select id="height" class="uk-width-1-1" 
+											ng-model="designer.activePanel.heightFactor">
+										<option value="grid">As Grid Cell</option>
+										<option value="auto">By Content</option>
+										<option value="fill">As View Size</option>
+									</select>
+								</div>
+							</div>
+
+							<div>
+								<label for="type">Panel Type</label>
+								<div class="n-controls">
+									<select id="type" class="uk-width-1-1"
+											ng-model="designer.activePanel.type">
+										<option value="container">Container</option>
+										<option value="content">Content</option>
+										<option value="nav">Navigation</option>
+										<option value="slide">Slide View</option>
+										<option value="ads">Ads</option>
+										<option value="items">Items List</option>
+										<option value="placeholder">Placeholder</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="ng-hide" ng-show="designer.activePanel.type == 'container'">
+								<label for="cells">Horizontal Grid Cells</label>
+								<div class="n-controls">
+									<select id="cells" class="uk-width-1-1"
+											ng-model="designer.activePanel.container.gridcells">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="10">10</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="ng-hide" ng-show="designer.activePanel.type == 'nav'">
+								<label for="levels">Navigation Levels</label>
+								<div class="n-controls">
+									<select id="levels" class="uk-width-1-1"
+											ng-model="designer.activePanel.nav.levels">
+										<option value="1">1</option>
+										<option value="2">1-2</option>
+										<option value="3">1-3</option>
+										<option value="all">All Levels</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="ng-hide" ng-show="designer.activePanel.type == 'slide'">
+								<label for="transition">Transition</label>
+								<div class="n-controls">
+									<select id="transition" class="uk-width-1-1"
+											ng-model="designer.activePanel.slide.transition">
+										<option value="fade">Fade</option>
+										<option value="scroll">Scroll</option>
+										<option value="scale">Scale</option>
+										<option value="swipe">Swipe</option>
+										<option value="slice-down">Slice Down</option>
+										<option value="slice-up">Slice Up</option>
+										<option value="slice-up-down">Slice Up Down</option>
+										<option value="fold">Fold</option>
+										<option value="puzzle">Puzzle</option>
+										<option value="boxes">Boxes</option>
+										<option value="boxes-reverse">Boxes Reverse</option>
+										<option value="random">Random</option>
+									</select>
+								</div>
+
+								<div class="ng-hide" 
+									 ng-show="designer.activePanel.slide.transition.indexOf('slice') == 0">
+
+									<label for="slices">Slices</label>
+									<div class="n-controls">
+										<select id="slices" class="uk-width-1-1"
+												ng-model="designer.activePanel.slide.slices">
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+											<option value="5">5</option>
+											<option value="6">6</option>
+											<option value="7">7</option>
+											<option value="8">8</option>
+											<option value="9">9</option>
+											<option value="10">10</option>
+											<option value="11">11</option>
+											<option value="12">12</option>
+											<option value="13">13</option>
+											<option value="14">14</option>
+											<option value="15">15</option>
+										</select>
+									</div>
+								</div>
+
+								<label for="ken-burns">Ken Burns Effect</label>
+								<div class="n-controls">
+									<select id="ken-burns" class="uk-width-1-1"
+											ng-model="designer.activePanel.slide.kenburns">
+										<option value="false">No</option>
+										<option value="true">Yes</option>
+									</select>
+								</div>
+
+								<label for="duration">Duration</label>
+								<div class="n-controls">
+									<input id="duration" class="uk-width-1-1"
+										   ng-model="designer.activePanel.slide.duration"/>
+								</div>
+
+								<label for="auto-play">Auto Play</label>
+								<div class="n-controls">
+									<select id="auto-play" class="uk-width-1-1"
+											ng-model="designer.activePanel.slide.autoplay">
+										<option value="false">No</option>
+										<option value="true">Yes</option>
+									</select>
+								</div>
+
+								<label for="auto-play-interval">Auto Play Interval</label>
+								<div class="n-controls">
+									<input id="auto-play-interval" class="uk-width-1-1"
+										   ng-model="designer.activePanel.slide.autoplayInterval"/>
+								</div>
+
+								<label for="video-auto-play">Video Auto Play</label>
+								<div class="n-controls">
+									<select id="video-auto-play" class="uk-width-1-1"
+											ng-model="designer.activePanel.slide.videoautoplay">
+										<option value="false">No</option>
+										<option value="true">Yes</option>
+									</select>
+								</div>
+
+								<label for="video-mute">Video Auto Play</label>
+								<div class="n-controls">
+									<select id="video-mute" class="uk-width-1-1"
+											ng-model="designer.activePanel.slide.videomute">
+										<option value="false">No</option>
+										<option value="true">Yes</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="ng-hide" ng-show="designer.activePanel.type == 'ads'">
+							</div>
+
+							<div class="ng-hide" ng-show="designer.activePanel.type == 'items'">
+								<label for="items-layout">List Layout</label>
+								<div class="n-controls">
+									<select id="video-auto-play" class="uk-width-1-1"
+											ng-model="designer.activePanel.items.layout">
+										<option value="basic">Basic</option>
+										<option value="table">Table</option>
+										<option value="grid">Grid</option>
+										<option value="brick">Masonry Bricks</option>
+									</select>
+								</div>
+							</div>
+
+						</div>
 					</div>
 				</div>
 			</div>
