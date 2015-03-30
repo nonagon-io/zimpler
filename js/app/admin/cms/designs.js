@@ -1,4 +1,4 @@
-angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate'])
+angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate', 'ui.codemirror'])
 
 .controller("CmsDesignController", 
 	['$scope', '$rootScope', '$window', '$location', 'submitForm', 
@@ -84,7 +84,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 		clearActivePanel: function($event) {
 
 			if($($event.target).hasClass("n-canvas-panel")) {
-				
+
 				this.activePanel = null;
 				this.hideProperties();
 			}

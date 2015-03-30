@@ -71,6 +71,7 @@
 	<?php $this->load->view("admin/footer") ?>
 	
 	<script type="text/javascript" src="<?php echo base_url('js/vendor.min.js')?>"></script>
+	<script type="text/javascript" src="<?php echo base_url('js/lib/ui-codemirror.min.js')?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('js/common.js')?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('js/app/modal.js')?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('js/app/admin.js')?>"></script>

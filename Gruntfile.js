@@ -34,7 +34,13 @@ module.exports = function(grunt) {
 						'bower_components/angular-gridster/dist/angular-gridster.min.js'],
 						
 					'js/lib/libphonenumber.js': [
-						'bower_components/intl-tel-input/lib/libphonenumber/build/utils.js']
+						'bower_components/intl-tel-input/lib/libphonenumber/build/utils.js'],
+
+					'js/lib/ui-codemirror.min.js': [
+						'bower_components/codemirror/mode/javascript/javascript.js',
+						'bower_components/codemirror/mode/css/css.js',
+						'bower_components/codemirror/mode/htmlmixed/htmlmixed.js',
+						'bower_components/angular-ui-codemirror/ui-codemirror.js']
 				}
 			}
 		},
@@ -44,6 +50,7 @@ module.exports = function(grunt) {
 				files: {
 					'assets/css/vendor.min.css': [
 						'bower_components/uikit/css/uikit.almost-flat.min.css',
+						'bower_components/codemirror/lib/codemirror.css',
 						'bower_components/uikit/css/components/form-select.almost-flat.min.css',
 						'bower_components/uikit/css/components/form-advanced.almost-flat.min.css',
 						'bower_components/uikit/css/components/htmleditor.almost-flat.min.css',
@@ -51,7 +58,8 @@ module.exports = function(grunt) {
 						'bower_components/uikit/css/components/tooltip.almost-flat.min.css',
 						'bower_components/intl-tel-input/build/css/intlTelInput.css',
 						'bower_components/codemirror/lib/codemirror.css',
-						'bower_components/angular-gridster/dist/angular-gridster.min.css']
+						'bower_components/angular-gridster/dist/angular-gridster.min.css',
+						'bower_components/codemirror/theme/zenburn.css']
 				}
 			}
 		}
