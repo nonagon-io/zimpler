@@ -47,38 +47,9 @@
 							<i class="uk-icon-th"></i>
 						</button>
 						<button class="uk-button n-tool-button"
-								ng-class="{'uk-active': designerView == 'preview-desktop'}"
-								ng-click="designerView = 'preview-desktop'">
-							<i class="uk-icon-desktop"></i>
-						</button>
-						<button class="uk-button n-tool-button"
-								ng-class="{'uk-active': designerView == 'preview-tablet'}"
-								ng-click="designerView = 'preview-tablet'">
-							<i class="uk-icon-tablet"></i>
-						</button>
-						<button class="uk-button n-tool-button"
-								ng-class="{'uk-active': designerView == 'preview-mobile'}"
-								ng-click="designerView = 'preview-mobile'">
-							<i class="uk-icon-mobile"></i>
-						</button>
-						<button class="uk-button n-tool-button"
 								ng-class="{'uk-active': designerView == 'edit-code'}"
 								ng-click="designerView = 'edit-code'">
 							<i class="uk-icon-code"></i>
-						</button>
-					</div>
-
-					<div class="uk-button-group" 
-						 ng-show="designerView == 'preview-tablet' || designerView == 'preview-mobile'">
-						<button class="uk-button n-tool-button"
-								ng-class="{'uk-active': !landscape}"
-								ng-click="landscape = false">
-							<i class="uk-icon-arrows-v"></i>
-						</button>
-						<button class="uk-button n-tool-button"
-								ng-class="{'uk-active': landscape}"
-								ng-click="landscape = true">
-							<i class="uk-icon-arrows-h"></i>
 						</button>
 					</div>
 
@@ -98,6 +69,38 @@
 								ng-class="{'uk-active': codeView == 'css'}"
 								ng-click="codeView = 'css'">
 							CSS
+						</button>
+					</div>
+
+					<div class="uk-button-group">
+						<button class="uk-button n-tool-button"
+								ng-class="{'uk-active': designerView == 'preview-desktop'}"
+								ng-click="designerView = 'preview-desktop'">
+							<i class="uk-icon-desktop"></i>
+						</button>
+						<button class="uk-button n-tool-button"
+								ng-class="{'uk-active': designerView == 'preview-tablet'}"
+								ng-click="designerView = 'preview-tablet'">
+							<i class="uk-icon-tablet"></i>
+						</button>
+						<button class="uk-button n-tool-button"
+								ng-class="{'uk-active': designerView == 'preview-mobile'}"
+								ng-click="designerView = 'preview-mobile'">
+							<i class="uk-icon-mobile"></i>
+						</button>
+					</div>
+
+					<div class="uk-button-group" 
+						 ng-show="designerView == 'preview-tablet' || designerView == 'preview-mobile'">
+						<button class="uk-button n-tool-button"
+								ng-class="{'uk-active': !landscape}"
+								ng-click="landscape = false">
+							<i class="uk-icon-arrows-v"></i>
+						</button>
+						<button class="uk-button n-tool-button"
+								ng-class="{'uk-active': landscape}"
+								ng-click="landscape = true">
+							<i class="uk-icon-arrows-h"></i>
 						</button>
 					</div>
 				</div>
@@ -177,8 +180,8 @@
 								<div class="n-controls">
 									<select id="type" class="uk-width-1-1"
 											ng-model="designer.activePanel.type">
-										<option value="container">Container</option>
-										<option value="content">Content</option>
+										<option value="container">Layout Container</option>
+										<option value="content">Mixed Content</option>
 										<option value="nav">Navigation</option>
 										<option value="slide">Slide View</option>
 										<option value="ads">Ads</option>
