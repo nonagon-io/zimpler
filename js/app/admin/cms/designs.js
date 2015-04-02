@@ -49,10 +49,10 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 		var panels = $scope.designer.panels;
 		var code = _canvasToCode(panels, "v", 1);
 
-		console.debug(code);
+		$scope.designer.html = code;
 	}
 
-	function _canvasToCode(panels, mode, level) {
+	function _canvasToCode(panels, mode, level, horzCells) {
 
 		if(mode == "v") {
 
@@ -120,8 +120,6 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 		groups.push(group);
 
-		console.debug(groups);
-
 		_.each(groups, function(group) {
 
 			var indent = Array(level).join("\t");
@@ -134,10 +132,10 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 				} else {
 
-					var totalSize = _(groups).sum(function(group) { return group.size; });
-					var gcd = _gcd(group.size, totalSize);
+					var totalSize = 10;
+					if(horzCells) totalSize = horzCells;
 
-					var cls = "uk-width-" + (group.size / gcd) + "-" + (totalSize / gcd);
+					var cls = "uk-width-" + group.size + "-" + totalSize;
 
 					code = code.concat(indent + "<div class=\"" + cls + "\"></div>\r\n");
 				}
@@ -149,15 +147,18 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 				if(mode == "v") {
 
 					code = code.concat(indent + "<div class=\"uk-grid uk-grid-collapse\">\r\n");
-					code = code.concat(_canvasToCode(group.panels, mode == "v" ? "h" : "v", nextLevel));
+					code = code.concat(_canvasToCode(group.panels, mode == "v" ? "h" : "v", nextLevel, horzCells));
 					code = code.concat(indent + "</div>\r\n");
 
 				} else {
 
-					var cls = "uk-width-" + group.size + "-10";
+					var totalSize = 10;
+					if(horzCells) totalSize = horzCells;
+
+					var cls = "uk-width-" + group.size + "-" + totalSize;
 
 					code = code.concat(indent + "<div class=\"" + cls + "\">\r\n");
-					code = code.concat(_canvasToCode(group.panels, mode == "v" ? "h" : "v", nextLevel));
+					code = code.concat(_canvasToCode(group.panels, mode == "v" ? "h" : "v", nextLevel, group.size));
 					code = code.concat(indent + "</div>\r\n");
 				}
 			}
