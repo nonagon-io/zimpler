@@ -43,12 +43,12 @@
 					<div class="uk-button-group">
 						<button class="uk-button n-tool-button"
 								ng-class="{'uk-active': designerView == 'edit-canvas'}"
-								ng-click="designerView = 'edit-canvas'">
+								ng-click="switchToCanvasView()">
 							<i class="uk-icon-th"></i>
 						</button>
 						<button class="uk-button n-tool-button"
 								ng-class="{'uk-active': designerView == 'edit-code'}"
-								ng-click="designerView = 'edit-code'">
+								ng-click="switchToCodeView()">
 							<i class="uk-icon-code"></i>
 						</button>
 					</div>
