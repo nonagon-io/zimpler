@@ -347,7 +347,9 @@
 			</div>
 			<div class="n-abs-fit n-overflow-auto" ng-show="designerView == 'edit-code'">
 				<div ng-show="codeView == 'html'" 
-					 ui-codemirror="{ lineNumbers: true, theme: 'zenburn', mode: 'htmlmixed' }" ng-model="designer.html"></div>
+					 ui-codemirror="{ lineNumbers: true, theme: 'zenburn', mode: 'htmlmixed' }" 
+					 ng-model="designer.html"
+					 ui-refresh="designer.refreshEditor"></div>
 
 				<div ng-show="codeView == 'js'" 
 					 ui-codemirror="{ lineNumbers: true, theme: 'zenburn', mode: 'javascript' }" ng-model="designer.javascript"></div>

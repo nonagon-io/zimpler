@@ -1,10 +1,10 @@
 angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate', 'ui.codemirror'])
 
 .controller("CmsDesignController", 
-	['$scope', '$rootScope', '$window', '$location', 'submitForm', 
-		'checkFormDirty', 'propertiesPanel', 'httpEx', 'modal',
-	function($scope, $rootScope, $window, $location, submitForm, 
-				checkFormDirty, propertiesPanel, httpEx, modal) {
+	['$scope', '$rootScope', '$window', '$location', '$timeout', 
+		'submitForm', 'checkFormDirty', 'propertiesPanel', 'httpEx', 'modal',
+	function($scope, $rootScope, $window, $location, $timeout, 
+				submitForm, checkFormDirty, propertiesPanel, httpEx, modal) {
 
 	$scope.items = [];
 	$scope.currentView = "list";
@@ -36,8 +36,8 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 	$scope.switchToCodeView = function() {
 
-		canvasToCode();
-		$scope.designerView = "edit-code";
+		if(canvasToCode())
+			$scope.designerView = "edit-code";
 	}
 
 	function codeToCanvas() {
@@ -46,10 +46,28 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 	function canvasToCode() {
 
-		var panels = $scope.designer.panels;
-		var code = _canvasToCode(panels, "v", 1);
+		try {
 
-		$scope.designer.html = code;
+			var panels = $scope.designer.panels;
+			var code = _canvasToCode(panels, "v", 1);
+
+			$scope.designer.html = code;
+
+			$scope.designer.refreshEditor = true;
+			$timeout(function () {
+				$scope.designer.refreshEditor = false;
+			}, 100);
+
+		} catch(e) {
+
+			UIkit.notify("<i class='uk-icon-times'></i> " + 
+				"We do not support this kind of layout.", 
+				{ status: "danger", timeout: 3000, pos: "top-right" });
+
+			return false;
+		}
+
+		return true;
 	}
 
 	function _canvasToCode(panels, mode, level, horzCells) {
@@ -57,12 +75,20 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 		if(mode == "v") {
 
 			// Sort by row.
-			panels.sort(function(a, b) { return a.row - b.row; });
+			panels.sort(function(a, b) { 
+
+				if(a.row != b.row) return a.row - b.row;
+				else return a.col - b.col
+			});
 
 		} else {
 
 			// Sort by col.
-			panels.sort(function(a, b) { return a.col - b.col; });
+			panels.sort(function(a, b) { 
+
+				if(a.col != b.col) return a.col - b.col; 
+				else return a.row - b.row;
+			});
 		}
 
 		var code = "";
@@ -124,7 +150,10 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 			var indent = Array(level).join("\t");
 
-			if(group.panels.length == 1) {
+			var singlePanel = (group.panels.length == 1) &&
+				(mode == 'v' && _(group.panels).first().col == 0 || mode == 'h');
+
+			if(singlePanel) {
 
 				if(mode == "v") {
 
@@ -137,20 +166,39 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 					var cls = "uk-width-" + group.size + "-" + totalSize;
 
+					var firstItem = _(group.panels).first();
+					if(firstItem && firstItem.cls)
+						cls = cls.concat(" " + firstItem.cls);
+
 					code = code.concat(indent + "<div class=\"" + cls + "\"></div>\r\n");
 				}
 
-			} else if(group.panels.length > 1) {
+			} else {
 
 				var nextLevel = level + 1;
 
 				if(mode == "v") {
 
+					var firstItem = _(group.panels).first();
+
+					if(firstItem.col > 0) {
+
+						group.panels = [{
+
+							cls: "zm-invisible",
+							row: firstItem.row, 
+							col: 0, 
+							sizeX: firstItem.col, 
+							sizeY: firstItem.sizeY
+
+						}].concat(group.panels);
+					}
+
 					code = code.concat(indent + "<div class=\"uk-grid uk-grid-collapse\">\r\n");
 					code = code.concat(_canvasToCode(group.panels, mode == "v" ? "h" : "v", nextLevel, horzCells));
 					code = code.concat(indent + "</div>\r\n");
 
-				} else {
+				} else if(mode == "h") {
 
 					var totalSize = 10;
 					if(horzCells) totalSize = horzCells;
@@ -193,6 +241,8 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 				}
 			}
 		},
+
+		refreshEditor: false,
 
 		add: function(parent, type) {
 
