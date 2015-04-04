@@ -67,7 +67,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 		return true;
 	}
 
-	function _canvasToCode(panels, mode, level, horzCells) {
+	function _canvasToCode(panels, mode, level, horzCells, horzStarts) {
 
 		if(panels.length == 0) return;
 
@@ -198,7 +198,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 				if(mode == "v") {
 
-					var expectHorzStart = group.col || 0;
+					var expectHorzStart = horzStarts || 0;
 					var updatedPanels = [];
 
 					for(var i=0; i<group.panels.length; i++) {
@@ -225,7 +225,8 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 					}
 
 					code = code.concat(indent + "<div class=\"uk-grid uk-grid-collapse\">\r\n");
-					code = code.concat(_canvasToCode(updatedPanels, mode == "v" ? "h" : "v", nextLevel, horzCells));
+					code = code.concat(_canvasToCode(updatedPanels, 
+						mode == "v" ? "h" : "v", nextLevel, horzCells, horzStarts));
 					code = code.concat(indent + "</div>\r\n");
 
 				} else if(mode == "h") {
@@ -236,7 +237,8 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 					var cls = "uk-width-" + group.size + "-" + totalSize;
 
 					code = code.concat(indent + "<div class=\"" + cls + "\">\r\n");
-					code = code.concat(_canvasToCode(group.panels, mode == "v" ? "h" : "v", nextLevel, group.size));
+					code = code.concat(_canvasToCode(group.panels, 
+						mode == "v" ? "h" : "v", nextLevel, group.size, group.start));
 					code = code.concat(indent + "</div>\r\n");
 				}
 			}
