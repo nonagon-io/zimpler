@@ -59,13 +59,11 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 		} catch(e) {
 
-			UIkit.notify("<i class='uk-icon-times'></i> " + 
-				"We do not support this kind of layout.", 
-				{ status: "danger", timeout: 3000, pos: "top-right" });
-
+			$scope.designer.valid = false;
 			return false;
 		}
 
+		$scope.designer.valid = true;
 		return true;
 	}
 
@@ -112,6 +110,9 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 				group.start = (mode == "v" ? panel.row : panel.col);
 				group.size = (mode == "v" ? panel.sizeY : panel.sizeX);
 
+				group.col = (mode == "v" ? panel.col : 0);
+				group.row = (mode == "h" ? panel.row : 0);
+
 			} else {
 
 				var newGroup = false;
@@ -131,6 +132,9 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 						start: mode == 'v' ? panel.row : panel.col,
 						size: 0
 					};
+
+					group.col = (mode == "v" ? panel.col : 0);
+					group.row = (mode == "h" ? panel.row : 0);
 				}
 
 				group.panels.push(panel);
@@ -194,23 +198,34 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 				if(mode == "v") {
 
-					var firstItem = _(group.panels).first();
+					var expectHorzStart = group.col || 0;
+					var updatedPanels = [];
 
-					if(firstItem.col > 0) {
+					for(var i=0; i<group.panels.length; i++) {
 
-						group.panels = [{
+						var panel = group.panels[i];
+						var blankCols = panel.col - expectHorzStart;
 
-							cls: "zm-invisible",
-							row: firstItem.row, 
-							col: 0, 
-							sizeX: firstItem.col, 
-							sizeY: firstItem.sizeY
+						if(blankCols > 0) {
 
-						}].concat(group.panels);
+							var blankPanel = {
+
+								cls: "zm-invisible",
+								row: panel.row, 
+								col: expectHorzStart, 
+								sizeX: blankCols, 
+								sizeY: panel.sizeY
+							}
+
+							updatedPanels.push(blankPanel);
+						}
+
+						updatedPanels.push(panel);
+						expectHorzStart = panel.col + panel.sizeX;
 					}
 
 					code = code.concat(indent + "<div class=\"uk-grid uk-grid-collapse\">\r\n");
-					code = code.concat(_canvasToCode(group.panels, mode == "v" ? "h" : "v", nextLevel, horzCells));
+					code = code.concat(_canvasToCode(updatedPanels, mode == "v" ? "h" : "v", nextLevel, horzCells));
 					code = code.concat(indent + "</div>\r\n");
 
 				} else if(mode == "h") {
@@ -237,6 +252,8 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 	};
 
 	$scope.designer = {
+
+		valid: true,
 
 		panels: [],
 

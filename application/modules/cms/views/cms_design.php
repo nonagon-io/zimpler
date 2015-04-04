@@ -103,6 +103,10 @@
 							<i class="uk-icon-arrows-h"></i>
 						</button>
 					</div>
+
+					<span class="uk-alert uk-alert-danger ng-hide" ng-show="!designer.valid">
+						<i class="uk-icon-exclamation"></i> We do not support this kind of layout.
+					</span>
 				</div>
 				<div class="uk-width-1-2 uk-text-right">
 					<button class="uk-button uk-button-primary" style="width: 80px">
