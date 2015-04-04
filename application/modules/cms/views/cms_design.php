@@ -115,18 +115,23 @@
 			</div>
 		</div>
 		<div class="n-designer">
-			<div class="n-abs-fit n-overflow-auto" ng-show="designerView == 'edit-canvas'">
+			<div class="n-abs-fit" ng-show="designerView == 'edit-canvas'">
 				<div class="n-canvas-panel" 
-					 ng-class="{'n-expanded': !componentExpanded}"
-					 ng-click="designer.clearActivePanel($event)">
-					<div gridster="designer.options">
-						<ul>
-							<li gridster-item="item" ng-repeat="item in designer.panels"
-								ng-class="{'uk-active': item == designer.activePanel}">
-								<div class="n-content">
-								</div>
-							</li>
-						</ul>
+					 ng-class="{'n-expanded': !componentExpanded}">
+					<div class="n-inner-panel n-abs-fit n-overflow-auto"
+						 ng-click="designer.clearActivePanel($event)">
+						<div class="n-layout-grid"
+							 ng-click="designer.clearActivePanel($event)">
+							<div gridster="designer.options">
+								<ul>
+									<li gridster-item="item" ng-repeat="item in designer.panels"
+										ng-class="{'uk-active': item == designer.activePanel}">
+										<div class="n-content">
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
 					</div>
 					<div class="n-cover" ng-class="{'uk-active': designer.activePanel == null}"></div>
 				</div>
@@ -170,7 +175,7 @@
 											ng-model="designer.activePanel.heightFactor">
 										<option value="grid">As Grid Cell</option>
 										<option value="auto">By Content</option>
-										<option value="fill">As View Size</option>
+										<option value="fill">As Container</option>
 									</select>
 								</div>
 							</div>

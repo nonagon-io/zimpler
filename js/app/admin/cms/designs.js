@@ -36,8 +36,12 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 	$scope.switchToCodeView = function() {
 
-		if(canvasToCode())
-			$scope.designerView = "edit-code";
+		$scope.designerView = "edit-code";
+
+		$scope.designer.refreshEditor = true;
+		$timeout(function () {
+			$scope.designer.refreshEditor = false;
+		}, 100);
 	}
 
 	function codeToCanvas() {
@@ -53,11 +57,6 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 			$scope.designer.html = code;
 
-			$scope.designer.refreshEditor = true;
-			$timeout(function () {
-				$scope.designer.refreshEditor = false;
-			}, 100);
-
 		} catch(e) {
 
 			UIkit.notify("<i class='uk-icon-times'></i> " + 
@@ -71,6 +70,8 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 	}
 
 	function _canvasToCode(panels, mode, level, horzCells) {
+
+		if(panels.length == 0) return;
 
 		if(mode == "v") {
 
@@ -155,9 +156,20 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 			if(singlePanel) {
 
+				var firstItem = _(group.panels).first();
+
 				if(mode == "v") {
 
-					code = code.concat(indent + "<div></div>\r\n");
+					var cls = "";
+
+					if(firstItem) {
+						cls = cls.concat("zm-height-" + firstItem.sizeY);
+
+						if(firstItem.sizeX < 10)
+							cls = cls.concat(" uk-width-" + firstItem.sizeX + "-10");
+					}
+
+					code = code.concat(indent + "<div class=\"" + cls + "\"></div>\r\n");
 
 				} else {
 
@@ -166,9 +178,12 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 					var cls = "uk-width-" + group.size + "-" + totalSize;
 
-					var firstItem = _(group.panels).first();
 					if(firstItem && firstItem.cls)
 						cls = cls.concat(" " + firstItem.cls);
+
+					if(firstItem) {
+						cls = cls.concat(" " + "zm-height-" + firstItem.sizeY);
+					}
 
 					code = code.concat(indent + "<div class=\"" + cls + "\"></div>\r\n");
 				}
@@ -238,6 +253,17 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 				start: function(e, el, widget) {
 
 					$scope.designer.setActive($scope.designer, widget);
+				},
+				stop: function(e, el, widget) {
+
+					canvasToCode();
+				}
+			}, 
+			resizable: {
+				enabled: true,
+				stop: function(e, el, widget) {
+
+					canvasToCode();
 				}
 			}
 		},
@@ -258,6 +284,8 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 			}
 
 			parent.panels.push({ sizeX: 10, sizeY: 2, row: targetRow, col: 0 })
+
+			canvasToCode();
 		},
 
 		setActive: function(parent, panel) {
@@ -278,7 +306,12 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 		clearActivePanel: function($event) {
 
-			if($($event.target).hasClass("n-canvas-panel")) {
+			var target = $($event.target);
+
+			if(target.hasClass("n-canvas-panel") ||
+				target.hasClass("n-inner-panel") ||
+				target.hasClass("n-layout-grid") ||
+				target.hasClass("gridster")) {
 
 				this.activePanel = null;
 				this.hideProperties();
@@ -295,5 +328,4 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 			$scope.componentExpanded = false;
 		}
 	};
-
 }]);

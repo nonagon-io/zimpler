@@ -191,6 +191,11 @@
 	opacity: 0.8;
 }
 
+.n-canvas-panel .n-layout-grid {
+
+	background: url('../../../images/designer-bg.png');
+}
+
 .n-canvas-panel .n-cover {
 
 	position: absolute;
