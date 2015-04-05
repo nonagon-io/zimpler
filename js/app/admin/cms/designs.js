@@ -322,15 +322,42 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 			if(!parent.panels)
 				parent.panels = [];
 
+			var targetCol = 0;
 			var targetRow = 0;
+			var targetSizeX = 10;
+			var targetSizeY = 2;
+
 			for(var i=0; i<parent.panels.length; i++) {
 
-				var rowReach = parent.panels[i].row + parent.panels[i].sizeY;
+				var panel = parent.panels[i];
+				var rowReach = panel.row;
+
+				rowReach += panel.sizeY;
+
+				if(panel.col + panel.sizeX >= 10) {
+
+					targetCol = 0;
+					targetSizeX = 10;
+					targetSizeY = 2;
+
+				} else {
+
+					targetCol = panel.col + panel.sizeX;
+					targetSizeX = this.options.columns - targetCol;
+					targetSizeY = panel.sizeY;
+				}
+
 				if(rowReach > targetRow)
 					targetRow = rowReach;
 			}
 
-			parent.panels.push({ sizeX: 10, sizeY: 2, row: targetRow, col: 0 })
+			parent.panels.push({ 
+				
+				sizeX: targetSizeX, 
+				sizeY: targetSizeY, 
+				row: targetRow, 
+				col: targetCol
+			});
 
 			canvasToCode();
 		},
