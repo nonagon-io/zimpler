@@ -352,11 +352,38 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 			}
 
 			parent.panels.push({ 
-				
+
 				sizeX: targetSizeX, 
 				sizeY: targetSizeY, 
 				row: targetRow, 
-				col: targetCol
+				col: targetCol,
+
+				heightFactor: 'grid',
+				type: 'container',
+
+				content: {
+
+					html: null
+				},
+				nav: {
+
+					levels: 2
+				},
+				slide: {
+
+					transition: "fade",
+					slices: 10,
+					kenburns: "false",
+					duration: 1000,
+					autoplay: "true",
+					autoplayInterval: 7000,
+					videoautoplay: "true",
+					videomute: "true",
+				},
+				items: {
+
+					layout: "basic"
+				}
 			});
 
 			canvasToCode();

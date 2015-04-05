@@ -135,6 +135,14 @@
 										ng-dblclick="designer.setActive(designer, item); designer.showProperties();">
 										<div class="n-content">
 										</div>
+										<div class="n-indicators">
+											<div class="ng-hide" ng-show="item.heightFactor == 'auto'">
+												<i class="uk-icon-arrows-v"></i> auto
+											</div>
+											<div class="ng-hide" ng-show="item.heightFactor == 'fill'">
+												<i class="uk-icon-arrows-v"></i> 100%
+											</div>
+										</div>
 									</li>
 								</ul>
 							</div>
@@ -163,7 +171,7 @@
 									title="Panel Properties"
 									data-uk-tooltip="{pos:'left'}"
 									ng-hide="componentExpanded">
-								<i class="uk-icon-edit"></i>
+								<i class="uk-icon-list-alt"></i>
 							</button>
 							<button class="uk-button n-tool-button ng-hide"
 									ng-click="designer.hideProperties()"
@@ -172,6 +180,15 @@
 									ng-show="componentExpanded">
 								<i class="uk-icon-toggle-right"></i>
 							</button>
+							<div>
+								<button class="uk-button n-tool-button uk-margin-small-top"
+										ng-click="designer.drillDown(designer.activePanel)"
+										title="Drill Down"
+										data-uk-tooltip="{pos:'left'}"
+										ng-show="designer.activePanel.type == 'container'">
+									<i class="uk-icon-level-down"></i>
+								</button>
+							</div>
 							<button class="uk-button uk-button-danger n-tool-button uk-margin-small-top"
 									ng-click="designer.delete(designer, designer.activePanel)"
 									title="Remove Panel"
@@ -215,21 +232,6 @@
 										<option value="ads">Ads</option>
 										<option value="items">Items List</option>
 										<option value="placeholder">Placeholder</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="ng-hide" ng-show="designer.activePanel.type == 'container'">
-								<label for="cells">Horizontal Grid Cells</label>
-								<div class="n-controls">
-									<select id="cells" class="uk-width-1-1"
-											ng-model="designer.activePanel.container.gridcells">
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-										<option value="10">10</option>
 									</select>
 								</div>
 							</div>
@@ -332,7 +334,7 @@
 									</select>
 								</div>
 
-								<label for="video-mute">Video Auto Play</label>
+								<label for="video-mute">Video Mute</label>
 								<div class="n-controls">
 									<select id="video-mute" class="uk-width-1-1"
 											ng-model="designer.activePanel.slide.videomute">
@@ -353,7 +355,7 @@
 										<option value="basic">Basic</option>
 										<option value="table">Table</option>
 										<option value="grid">Grid</option>
-										<option value="brick">Masonry Bricks</option>
+										<option value="bricks">Masonry Bricks</option>
 									</select>
 								</div>
 							</div>
@@ -379,10 +381,12 @@
 					 ui-refresh="designer.refreshEditor"></div>
 
 				<div ng-show="codeView == 'js'" 
-					 ui-codemirror="{ lineNumbers: true, theme: 'zenburn', mode: 'javascript' }" ng-model="designer.javascript"></div>
+					 ui-codemirror="{ lineNumbers: true, theme: 'zenburn', mode: 'javascript' }" 
+					 ng-model="designer.javascript"></div>
 
 				<div ng-show="codeView == 'css'" 
-					 ui-codemirror="{ lineNumbers: true, theme: 'zenburn', mode: 'css' }" ng-model="designer.css"></div>
+					 ui-codemirror="{ lineNumbers: true, theme: 'zenburn', mode: 'css' }" 
+					 ng-model="designer.css"></div>
 			</div>
 		</div>
 	</div>
