@@ -1,6 +1,7 @@
 angular.module("setting-general", ['common', 'generic-modal', 'admin', 'ngAnimate'])
 
-.controller("SettingGeneralController", ['$scope', 'submitForm', 'checkFormDirty', function($scope, submitForm, checkFormDirty) {
+.controller("SettingGeneralController", ['$scope', 'submitForm', 'checkFormDirty', 
+	function($scope, submitForm, checkFormDirty) {
 	
 	$scope.editingData = {};
 	

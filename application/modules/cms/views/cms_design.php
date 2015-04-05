@@ -1,6 +1,5 @@
 <div class="n-abs-fit" ng-controller="CmsDesignController"
 	 ng-init="restBaseUrl = '<?= base_url('/cms/rest/design') ?>'; refreshItems();">
-	<n-shortcut></n-shortcut>
 	<div class="n-abs-fit uk-form n-sliding-panel" 
 		 ng-class="{'n-on': currentView == 'list', 'n-off-prev': currentView == 'designer'}">
 		<div class="n-options-header" 

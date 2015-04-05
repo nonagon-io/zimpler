@@ -1,11 +1,8 @@
 angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 
-.factory("keydownHandler", function() {
+.factory("keydownHandlers", function() {
 
-	return {
-
-		handlers: []
-	};
+	return [];
 })
 
 .factory("propertiesPanel", 
@@ -213,8 +210,8 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 	
 }])
 
-.controller('AdminController', ['$scope', '$locale', 'keydownHandler', 
-	function($scope, $locale, keydownHandler) {
+.controller('AdminController', ['$scope', '$locale', 'keydownHandlers', 
+	function($scope, $locale, keydownHandlers) {
 	
 	var mainContentBody = $(".n-body .n-content");
 
@@ -239,8 +236,12 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 
 	$(function() {
 
-		// Prevent the backspace key from navigating back.
+		// Prevent the backspace key from navigating back and also
+		// fire keydown event.
 		$(document).unbind('keydown').bind('keydown', function (event) {
+
+	    	for(var i=0; i<keydownHandlers.length; i++)
+	    		keydownHandlers[i](event);
 
 		    var doPrevent = false;
 		    if (event.keyCode === 8) {
@@ -256,18 +257,17 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 		                 d.type.toUpperCase() === 'DATE' )
 		             ) || 
 		             d.tagName.toUpperCase() === 'TEXTAREA') {
+
 		            doPrevent = d.readOnly || d.disabled;
-		        }
-		        else {
+
+		        } else {
+
 		            doPrevent = true;
 		        }
 		    }
 
 		    if (doPrevent) {
 
-		    	for(var i=0; i<keydownHandler.handlers.length; i++)
-		    		keydownHandler.handlers[i](event);
-		    	
 		        event.preventDefault();
 		    }
 		});

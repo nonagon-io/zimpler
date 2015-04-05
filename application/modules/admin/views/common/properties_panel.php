@@ -6,7 +6,6 @@
 	<input type="hidden" 
 		   name="<?php echo $this->security->get_csrf_token_name(); ?>" 
 		   value="<?php echo $this->security->get_csrf_hash();?>" />
-	<shortcut></shortcut>
 	<?php if($this->config->item("csrf_protection")) : ?>
 	<input type="hidden" 
 		   ng-init='<?php 

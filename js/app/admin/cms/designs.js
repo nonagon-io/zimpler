@@ -2,11 +2,11 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 .controller("CmsDesignController", 
 	['$scope', '$rootScope', '$window', '$location', '$timeout', 
-		'submitForm', 'checkFormDirty', 'propertiesPanel', 'httpEx', 'modal', 'keydownHandler',
+		'submitForm', 'checkFormDirty', 'propertiesPanel', 'httpEx', 'modal', 'keydownHandlers',
 	function($scope, $rootScope, $window, $location, $timeout, 
-				submitForm, checkFormDirty, propertiesPanel, httpEx, modal, keydownHandler) {
+				submitForm, checkFormDirty, propertiesPanel, httpEx, modal, keydownHandlers) {
 
-	keydownHandler.handlers.push(function($event) {
+	keydownHandlers.push(function($event) {
 
 		if($event.keyCode === 8) {
 
@@ -15,6 +15,21 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 				$scope.designer.delete(
 					$scope.designer, 
 					$scope.designer.activePanel);
+			});
+
+		} else if($event.keyCode === 27) {
+
+			$scope.$apply(function() {
+
+				if($scope.componentExpanded) {
+					$scope.designer.hideProperties();
+					return;
+				}
+
+				if($scope.designer.activePanel) {
+					$scope.designer.clearActivePanel();
+					return;
+				}
 			});
 		}
 	});
@@ -265,22 +280,6 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 	    if(!b) return a;
 	    return _gcd(b, a % b);
 	};
-
-	$scope.keyDown = function(e) {
-
-		if(e.keyCode == 27) {
-
-			if($scope.componentExpanded) {
-				$scope.designer.hideProperties();
-				return;
-			}
-
-			if($scope.designer.activePanel) {
-				$scope.designer.clearActivePanel();
-				return;
-			}
-		}
-	}
 
 	$scope.designer = {
 
