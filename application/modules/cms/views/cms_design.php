@@ -33,7 +33,7 @@
 		<div class="n-options-header" 
 			 ng-class="{'n-drop-shadow': mainContentBodyScrollTop > 0}">
 			<div class="uk-grid uk-grid-collapse">
-				<div class="uk-width-1-2">
+				<div class="uk-width-2-3">
 					<button class="uk-button n-tool-button" ng-click="toggle('fullScreen')"
 							ng-class="{'uk-active': fullScreen}">
 						<i class="uk-icon-expand" ng-if="!fullScreen"></i>
@@ -51,6 +51,25 @@
 								ng-click="switchToCodeView()"
 								ng-disabled="!designer.valid">
 							<i class="uk-icon-code"></i>
+						</button>
+					</div>
+
+					<div class="uk-button-group" 
+						 ng-show="designerView == 'edit-canvas'">
+						<button class="uk-button n-tool-button" style="width: auto"
+								ng-class="{'uk-active': canvasView == 'large'}"
+								ng-click="canvasView = 'large'">
+							L
+						</button>
+						<button class="uk-button n-tool-button" style="width: auto"
+								ng-class="{'uk-active': canvasView == 'medium'}"
+								ng-click="canvasView = 'medium'">
+							M
+						</button>
+						<button class="uk-button n-tool-button" style="width: auto"
+								ng-class="{'uk-active': canvasView == 'small'}"
+								ng-click="canvasView = 'small'">
+							S
 						</button>
 					</div>
 
@@ -108,7 +127,7 @@
 						</button>
 					</div>
 				</div>
-				<div class="uk-width-1-2 uk-text-right">
+				<div class="uk-width-1-3 uk-text-right">
 					<button class="uk-button uk-button-primary" 
 							style="width: 80px"
 							ng-disabled="!designer.valid">
@@ -125,9 +144,9 @@
 				<div class="n-canvas-panel" 
 					 ng-class="{'n-expanded': !componentExpanded}">
 					<div class="n-inner-panel n-abs-fit n-overflow-auto"
-						 ng-click="designer.clearActivePanel($event)">
-						<div class="n-layout-grid"
-							 ng-click="designer.clearActivePanel($event)">
+						 ng-click="designer.clearActivePanel($event)"
+						 ng-dblclick="designer.clearActivePanel($event); designer.showProperties();">
+						<div class="n-layout-grid">
 							<div gridster="designer.options">
 								<ul>
 									<li gridster-item="item" ng-repeat="item in designer.panels"
@@ -156,13 +175,50 @@
 					</div>
 				</div>
 				<div class="n-components-panel" ng-class="{'n-collapsed': !componentExpanded}">
-					<div ng-hide="designer.activePanel != null">
-						<button class="uk-button uk-button-success n-tool-button"
-								ng-click="designer.add(designer, 'panel')"
-								title="Add New Panel"
-								data-uk-tooltip="{pos:'left'}">
-							<i class="uk-icon-plus"></i>
-						</button>
+					<div class="uk-grid uk-grid-collapse" ng-hide="designer.activePanel != null">
+						<div class="uk-width-1-6">
+							<button class="uk-button n-tool-button"
+									ng-click="designer.showProperties()"
+									title="Body Properties"
+									data-uk-tooltip="{pos:'left'}"
+									ng-hide="componentExpanded">
+								<i class="uk-icon-list-alt"></i>
+							</button>
+							<button class="uk-button n-tool-button ng-hide"
+									ng-click="designer.hideProperties()"
+									title="Hide Properties"
+									data-uk-tooltip="{pos:'left'}"
+									ng-show="componentExpanded">
+								<i class="uk-icon-toggle-right"></i>
+							</button>
+							<button class="uk-button uk-button-success n-tool-button uk-margin-small-top"
+									ng-click="designer.add(designer, 'panel')"
+									title="Add New Panel"
+									data-uk-tooltip="{pos:'left'}">
+								<i class="uk-icon-plus"></i>
+							</button>
+						</div>
+						<div class="uk-width-5-6 ng-hide n-properties-panel" ng-show="componentExpanded">
+							<div>
+								<label for="css">Custom CSS</label>
+								<div class="n-controls">
+									<input id="css" type="text" class="uk-width-1-1" placeholder="CSS Class" 
+										   ng-model="designer.css"/>
+								</div>
+							</div>
+
+							<div>
+								<label for="height">Height</label>
+								<div class="n-controls">
+									<select id="height" class="uk-width-1-1" 
+											ng-model="designer.heightFactor">
+										<option value="auto">By Content (height: auto)</option>
+										<option value="fill">As Container (height: 100%)</option>
+									</select>
+								</div>
+							</div>
+
+						</div>
 					</div>
 					<div class="uk-grid uk-grid-collapse ng-hide" ng-show="designer.activePanel != null">
 						<div class="uk-width-1-6">
@@ -228,9 +284,11 @@
 										<option value="container">Layout Container</option>
 										<option value="content">Mixed Content</option>
 										<option value="nav">Navigation</option>
+										<!-- Not for this editor
 										<option value="slide">Slide View</option>
 										<option value="ads">Ads</option>
 										<option value="items">Items List</option>
+										-->
 										<option value="placeholder">Placeholder</option>
 									</select>
 								</div>

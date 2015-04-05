@@ -40,6 +40,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 	$scope.componentExpanded = false;
 	$scope.designerView = "edit-canvas";
 	$scope.codeView = "html";
+	$scope.canvasView = "large";
 
 	$scope.add = function() {
 
@@ -58,11 +59,13 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 	$scope.switchToCanvasView = function() {
 
-		codeToCanvas();
+		$scope.codeToCanvas();
 		$scope.designerView = "edit-canvas";
 	}
 
 	$scope.switchToCodeView = function() {
+
+		$scope.canvasToCode();
 
 		$scope.designerView = "edit-code";
 
@@ -72,11 +75,11 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 		}, 100);
 	}
 
-	function codeToCanvas() {
+	$scope.codeToCanvas = function() {
 
 	}
 
-	function canvasToCode() {
+	$scope.canvasToCode = function() {
 
 		try {
 
@@ -192,32 +195,48 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 				if(mode == "v") {
 
-					var cls = "";
+					var cls = [];
 
 					if(firstItem) {
-						cls = cls.concat("zm-height-" + firstItem.sizeY);
+
+						if(firstItem.heightFactor == "grid") {
+							cls.push("zm-height-" + firstItem.sizeY)
+						} else if(firstItem.heightFactor == "fill") {
+							cls.push("uk-height-1-1");
+						}
+
+						if(firstItem.css)
+							cls.push(firstItem.css);
 
 						if(firstItem.sizeX < 10)
-							cls = cls.concat(" uk-width-" + firstItem.sizeX + "-10");
+							cls.push("uk-width-" + firstItem.sizeX + "-10");
 					}
 
-					code = code.concat(indent + "<div class=\"" + cls + "\"></div>\r\n");
+					if(cls.length) 
+						cls = " class=\"" + cls.join(" ") + "\"";
+
+					code = code.concat(indent + "<div" + cls + "></div>\r\n");
 
 				} else {
 
 					var totalSize = 10;
 					if(horzCells) totalSize = horzCells;
 
-					var cls = "uk-width-" + group.size + "-" + totalSize;
-
-					if(firstItem && firstItem.cls)
-						cls = cls.concat(" " + firstItem.cls);
+					var cls = ["uk-width-" + group.size + "-" + totalSize];
 
 					if(firstItem) {
-						cls = cls.concat(" " + "zm-height-" + firstItem.sizeY);
+
+						if(firstItem.heightFactor == "grid") {
+							cls.push("zm-height-" + firstItem.sizeY)
+						} else if(firstItem.heightFactor == "fill") {
+							cls.push("uk-height-1-1");
+						}
+
+						if(firstItem.css)
+							cls.push(firstItem.css);
 					}
 
-					code = code.concat(indent + "<div class=\"" + cls + "\"></div>\r\n");
+					code = code.concat(indent + "<div class=\"" + cls.join(" ") + "\"></div>\r\n");
 				}
 
 			} else {
@@ -284,10 +303,11 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 	$scope.designer = {
 
 		valid: true,
-
 		panels: [],
-
 		activePanel: null,
+
+		css: "",
+		heightFactor: "auto",
 
 		options: {
 
@@ -303,14 +323,14 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 				},
 				stop: function(e, el, widget) {
 
-					canvasToCode();
+					$scope.canvasToCode();
 				}
 			}, 
 			resizable: {
 				enabled: true,
 				stop: function(e, el, widget) {
 
-					canvasToCode();
+					$scope.canvasToCode();
 				}
 			}
 		},
@@ -386,7 +406,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 				}
 			});
 
-			canvasToCode();
+			$scope.canvasToCode();
 		},
 
 		setActive: function(parent, panel) {
@@ -417,13 +437,11 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 					target.hasClass("gridster")) {
 
 					this.activePanel = null;
-					this.hideProperties();
 				}
 
 			} else {
 
 				this.activePanel = null;
-				this.hideProperties();
 			}
 		},
 
