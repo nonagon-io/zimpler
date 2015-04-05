@@ -188,7 +188,9 @@
 
 .n-canvas-panel .gridster-item:hover {
 
-	opacity: 0.8;
+	-webkit-box-shadow: inset 0px 0px 15px 0px rgba(255,150,0,0.1);
+	-moz-box-shadow: inset 0px 0px 15px 0px rgba(255,150,0,0.1);
+	box-shadow: inset 0px 0px 15px 0px rgba(255,150,0,0.1);
 }
 
 .n-canvas-panel .n-layout-grid {

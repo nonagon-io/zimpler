@@ -1,5 +1,13 @@
 angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 
+.factory("keydownHandler", function() {
+
+	return {
+
+		handlers: []
+	};
+})
+
 .factory("propertiesPanel", 
 	['$http', '$sce', '$window', 'checkFormDirty',
 	function($http, $sce, $window, checkFormDirty) {
@@ -205,7 +213,8 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 	
 }])
 
-.controller('AdminController', function($scope, $locale) {
+.controller('AdminController', ['$scope', '$locale', 'keydownHandler', 
+	function($scope, $locale, keydownHandler) {
 	
 	var mainContentBody = $(".n-body .n-content");
 
@@ -227,4 +236,40 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 		
 		$("table").freezeHeader(); 
 	});
-});
+
+	$(function() {
+
+		// Prevent the backspace key from navigating back.
+		$(document).unbind('keydown').bind('keydown', function (event) {
+
+		    var doPrevent = false;
+		    if (event.keyCode === 8) {
+
+		        var d = event.srcElement || event.target;
+		        if ((d.tagName.toUpperCase() === 'INPUT' && (
+		        	
+		                 d.type.toUpperCase() === 'TEXT' ||
+		                 d.type.toUpperCase() === 'PASSWORD' || 
+		                 d.type.toUpperCase() === 'FILE' || 
+		                 d.type.toUpperCase() === 'EMAIL' || 
+		                 d.type.toUpperCase() === 'SEARCH' || 
+		                 d.type.toUpperCase() === 'DATE' )
+		             ) || 
+		             d.tagName.toUpperCase() === 'TEXTAREA') {
+		            doPrevent = d.readOnly || d.disabled;
+		        }
+		        else {
+		            doPrevent = true;
+		        }
+		    }
+
+		    if (doPrevent) {
+
+		    	for(var i=0; i<keydownHandler.handlers.length; i++)
+		    		keydownHandler.handlers[i](event);
+		    	
+		        event.preventDefault();
+		    }
+		});
+	});
+}]);

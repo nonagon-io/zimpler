@@ -2,9 +2,22 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 .controller("CmsDesignController", 
 	['$scope', '$rootScope', '$window', '$location', '$timeout', 
-		'submitForm', 'checkFormDirty', 'propertiesPanel', 'httpEx', 'modal',
+		'submitForm', 'checkFormDirty', 'propertiesPanel', 'httpEx', 'modal', 'keydownHandler',
 	function($scope, $rootScope, $window, $location, $timeout, 
-				submitForm, checkFormDirty, propertiesPanel, httpEx, modal) {
+				submitForm, checkFormDirty, propertiesPanel, httpEx, modal, keydownHandler) {
+
+	keydownHandler.handlers.push(function($event) {
+
+		if($event.keyCode === 8) {
+
+			$scope.$apply(function() {
+
+				$scope.designer.delete(
+					$scope.designer, 
+					$scope.designer.activePanel);
+			});
+		}
+	});
 
 	$scope.items = [];
 	$scope.currentView = "list";
@@ -253,6 +266,22 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 	    return _gcd(b, a % b);
 	};
 
+	$scope.keyDown = function(e) {
+
+		if(e.keyCode == 27) {
+
+			if($scope.componentExpanded) {
+				$scope.designer.hideProperties();
+				return;
+			}
+
+			if($scope.designer.activePanel) {
+				$scope.designer.clearActivePanel();
+				return;
+			}
+		}
+	}
+
 	$scope.designer = {
 
 		valid: true,
@@ -325,12 +354,20 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 		clearActivePanel: function($event) {
 
-			var target = $($event.target);
+			if($event) {
 
-			if(target.hasClass("n-canvas-panel") ||
-				target.hasClass("n-inner-panel") ||
-				target.hasClass("n-layout-grid") ||
-				target.hasClass("gridster")) {
+				var target = $($event.target);
+
+				if(target.hasClass("n-canvas-panel") ||
+					target.hasClass("n-inner-panel") ||
+					target.hasClass("n-layout-grid") ||
+					target.hasClass("gridster")) {
+
+					this.activePanel = null;
+					this.hideProperties();
+				}
+
+			} else {
 
 				this.activePanel = null;
 				this.hideProperties();

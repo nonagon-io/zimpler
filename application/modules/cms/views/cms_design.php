@@ -1,5 +1,6 @@
 <div class="n-abs-fit" ng-controller="CmsDesignController"
 	 ng-init="restBaseUrl = '<?= base_url('/cms/rest/design') ?>'; refreshItems();">
+	<n-shortcut></n-shortcut>
 	<div class="n-abs-fit uk-form n-sliding-panel" 
 		 ng-class="{'n-on': currentView == 'list', 'n-off-prev': currentView == 'designer'}">
 		<div class="n-options-header" 
@@ -48,7 +49,8 @@
 						</button>
 						<button class="uk-button n-tool-button"
 								ng-class="{'uk-active': designerView == 'edit-code'}"
-								ng-click="switchToCodeView()">
+								ng-click="switchToCodeView()"
+								ng-disabled="!designer.valid">
 							<i class="uk-icon-code"></i>
 						</button>
 					</div>
@@ -75,17 +77,20 @@
 					<div class="uk-button-group">
 						<button class="uk-button n-tool-button"
 								ng-class="{'uk-active': designerView == 'preview-desktop'}"
-								ng-click="designerView = 'preview-desktop'">
+								ng-click="designerView = 'preview-desktop'"
+								ng-disabled="!designer.valid">
 							<i class="uk-icon-desktop"></i>
 						</button>
 						<button class="uk-button n-tool-button"
 								ng-class="{'uk-active': designerView == 'preview-tablet'}"
-								ng-click="designerView = 'preview-tablet'">
+								ng-click="designerView = 'preview-tablet'"
+								ng-disabled="!designer.valid">
 							<i class="uk-icon-tablet"></i>
 						</button>
 						<button class="uk-button n-tool-button"
 								ng-class="{'uk-active': designerView == 'preview-mobile'}"
-								ng-click="designerView = 'preview-mobile'">
+								ng-click="designerView = 'preview-mobile'"
+								ng-disabled="!designer.valid">
 							<i class="uk-icon-mobile"></i>
 						</button>
 					</div>
@@ -103,13 +108,11 @@
 							<i class="uk-icon-arrows-h"></i>
 						</button>
 					</div>
-
-					<span class="uk-alert uk-alert-danger ng-hide" ng-show="!designer.valid">
-						<i class="uk-icon-exclamation"></i> We do not support this kind of layout.
-					</span>
 				</div>
 				<div class="uk-width-1-2 uk-text-right">
-					<button class="uk-button uk-button-primary" style="width: 80px">
+					<button class="uk-button uk-button-primary" 
+							style="width: 80px"
+							ng-disabled="!designer.valid">
 						Save
 					</button>
 					<button class="uk-button" style="width: 80px" ng-click="cancel()">
@@ -129,7 +132,8 @@
 							<div gridster="designer.options">
 								<ul>
 									<li gridster-item="item" ng-repeat="item in designer.panels"
-										ng-class="{'uk-active': item == designer.activePanel}">
+										ng-class="{'uk-active': item == designer.activePanel}"
+										ng-dblclick="designer.setActive(designer, item); designer.showProperties();">
 										<div class="n-content">
 										</div>
 									</li>
@@ -137,7 +141,12 @@
 							</div>
 						</div>
 					</div>
-					<div class="n-cover" ng-class="{'uk-active': designer.activePanel == null}"></div>
+					<div class="n-cover uk-text-center" ng-class="{'uk-active': designer.activePanel == null}">
+						<div class="uk-alert uk-alert-danger uk-margin-top uk-display-inline-block ng-hide" 
+							 ng-show="!designer.valid">
+							<i class="uk-icon-exclamation-circle"></i> We do not support this kind of layout mixing.
+						</div>
+					</div>
 				</div>
 				<div class="n-components-panel" ng-class="{'n-collapsed': !componentExpanded}">
 					<div ng-hide="designer.activePanel != null">
@@ -153,8 +162,16 @@
 							<button class="uk-button n-tool-button"
 									ng-click="designer.showProperties()"
 									title="Panel Properties"
-									data-uk-tooltip="{pos:'left'}">
+									data-uk-tooltip="{pos:'left'}"
+									ng-hide="componentExpanded">
 								<i class="uk-icon-edit"></i>
+							</button>
+							<button class="uk-button n-tool-button ng-hide"
+									ng-click="designer.hideProperties()"
+									title="Hide Properties"
+									data-uk-tooltip="{pos:'left'}"
+									ng-show="componentExpanded">
+								<i class="uk-icon-toggle-right"></i>
 							</button>
 							<button class="uk-button uk-button-danger n-tool-button uk-margin-small-top"
 									ng-click="designer.delete(designer, designer.activePanel)"
@@ -177,9 +194,12 @@
 								<div class="n-controls">
 									<select id="height" class="uk-width-1-1" 
 											ng-model="designer.activePanel.heightFactor">
-										<option value="grid">As Grid Cell</option>
-										<option value="auto">By Content</option>
-										<option value="fill">As Container</option>
+										<option value="grid">
+											As Grid Cell (height: 
+											{{designer.activePanel.sizeY * designer.options.rowHeight}}px)
+										</option>
+										<option value="auto">By Content (height: auto)</option>
+										<option value="fill">As Container (height: 100%)</option>
 									</select>
 								</div>
 							</div>
@@ -338,7 +358,6 @@
 									</select>
 								</div>
 							</div>
-
 						</div>
 					</div>
 				</div>
