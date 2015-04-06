@@ -180,25 +180,25 @@
 				<div class="n-components-panel" ng-class="{'n-collapsed': !componentExpanded}">
 					<div class="uk-grid uk-grid-collapse" ng-hide="designer.activePanel != null">
 						<div class="uk-width-1-6">
-							<button class="uk-button n-tool-button"
+							<button class="uk-button uk-button-success n-tool-button"
+									ng-click="designer.add(designer, 'panel')"
+									title="Add New Panel"
+									data-uk-tooltip="{pos:'left'}">
+								<i class="uk-icon-plus"></i>
+							</button>
+							<button class="uk-button n-tool-button uk-margin-small-top"
 									ng-click="designer.showProperties()"
 									title="Body Properties"
 									data-uk-tooltip="{pos:'left'}"
 									ng-hide="componentExpanded">
 								<i class="uk-icon-list-alt"></i>
 							</button>
-							<button class="uk-button n-tool-button ng-hide"
+							<button class="uk-button n-tool-button ng-hide uk-margin-small-top"
 									ng-click="designer.hideProperties()"
 									title="Hide Properties"
 									data-uk-tooltip="{pos:'left'}"
 									ng-show="componentExpanded">
 								<i class="uk-icon-toggle-right"></i>
-							</button>
-							<button class="uk-button uk-button-success n-tool-button uk-margin-small-top"
-									ng-click="designer.add(designer, 'panel')"
-									title="Add New Panel"
-									data-uk-tooltip="{pos:'left'}">
-								<i class="uk-icon-plus"></i>
 							</button>
 						</div>
 						<div class="uk-width-5-6 ng-hide n-properties-panel" ng-show="componentExpanded">
@@ -237,14 +237,20 @@
 					</div>
 					<div class="uk-grid uk-grid-collapse ng-hide" ng-show="designer.activePanel != null">
 						<div class="uk-width-1-6">
-							<button class="uk-button n-tool-button"
+							<button class="uk-button uk-button-success n-tool-button"
+									ng-click="designer.add(designer, 'panel')"
+									title="Add New Panel"
+									data-uk-tooltip="{pos:'left'}">
+								<i class="uk-icon-plus"></i>
+							</button>
+							<button class="uk-button n-tool-button uk-margin-small-top"
 									ng-click="designer.showProperties()"
 									title="Panel Properties"
 									data-uk-tooltip="{pos:'left'}"
 									ng-hide="componentExpanded">
 								<i class="uk-icon-list-alt"></i>
 							</button>
-							<button class="uk-button n-tool-button ng-hide"
+							<button class="uk-button n-tool-button ng-hide uk-margin-small-top"
 									ng-click="designer.hideProperties()"
 									title="Hide Properties"
 									data-uk-tooltip="{pos:'left'}"
