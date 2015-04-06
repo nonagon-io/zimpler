@@ -625,6 +625,10 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 						panel.heightFactor = "grid";
 					}
 				}
+
+				// Check for overflow sizeX of each panels.
+				if(panel.sizeX > this.options.columns)
+					panel.sizeX = this.options.columns;
 			}
 		}
 	};

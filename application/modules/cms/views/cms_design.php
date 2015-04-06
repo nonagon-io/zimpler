@@ -203,20 +203,32 @@
 						</div>
 						<div class="uk-width-5-6 ng-hide n-properties-panel" ng-show="componentExpanded">
 							<div>
-								<label for="css">Custom CSS</label>
+								<label for="canvas-css">Custom CSS</label>
 								<div class="n-controls">
-									<input id="css" type="text" class="uk-width-1-1" placeholder="CSS Class" 
+									<input id="canvas-css" type="text" class="uk-width-1-1" placeholder="CSS Class" 
 										   ng-model="designer.css"/>
 								</div>
 							</div>
 
 							<div>
-								<label for="height">Height</label>
+								<label for="canvas-height">Height</label>
 								<div class="n-controls">
-									<select id="height" class="uk-width-1-1" 
+									<select id="canvas-height" class="uk-width-1-1" 
 											ng-model="designer.heightFactor">
 										<option value="auto">By Content (height: auto)</option>
 										<option value="fill">As Container (height: 100%)</option>
+									</select>
+								</div>
+							</div>
+
+							<div>
+								<label for="canvas-columns">Columns</label>
+								<div class="n-controls">
+									<select id="canvas-columns" class="uk-width-1-1" 
+											ng-model="designer.options.columns"
+											ng-change="designer.determineEachRowAttributes()">
+										<option value="10">10 Columns</option>
+										<option value="12">12 Columns</option>
 									</select>
 								</div>
 							</div>
@@ -276,6 +288,27 @@
 										</option>
 										<option value="auto">By Content (height: auto)</option>
 										<option value="fill">As Container (height: 100%)</option>
+									</select>
+								</div>
+							</div>
+
+							<div>
+								<label for="width">Width</label>
+								<div class="n-controls">
+									<select id="width" class="uk-width-1-1" 
+											ng-model="designer.activePanel.sizeX">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+										<option value="11" ng-show="designer.options.columns == 12">11</option>
+										<option value="12" ng-show="designer.options.columns == 12">12</option>
 									</select>
 								</div>
 							</div>
