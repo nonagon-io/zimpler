@@ -6,6 +6,8 @@ angular.module("setting-general", ['common', 'generic-modal', 'admin', 'ngAnimat
 	$scope.editingData = {};
 	
 	$scope.save = function($event) {
+
+		$scope.mainForm.$submitted = true;
 		
 		if($event)
 			$event.preventDefault();
