@@ -267,3 +267,14 @@ div[ui-codemirror] > .CodeMirror > .CodeMirror-scroll {
 div[ui-codemirror] > .CodeMirror > .CodeMirror-scroll > .CodeMirror-gutters {
 
 	height: 100%;
+}
+
+.gridster-item.n-height-fill .gridster-item-resizable-handler.handle-s,
+.gridster-item.n-height-fill .gridster-item-resizable-handler.handle-n,
+.gridster-item.n-height-fill .gridster-item-resizable-handler.handle-sw,
+.gridster-item.n-height-fill .gridster-item-resizable-handler.handle-se,
+.gridster-item.n-height-fill .gridster-item-resizable-handler.handle-nw,
+.gridster-item.n-height-fill .gridster-item-resizable-handler.handle-ne {
+
+	display: none !important;
+}

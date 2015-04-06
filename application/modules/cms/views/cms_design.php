@@ -150,7 +150,10 @@
 							<div gridster="designer.options">
 								<ul>
 									<li gridster-item="item" ng-repeat="item in designer.panels"
-										ng-class="{'uk-active': item == designer.activePanel}"
+										ng-class="{
+											'uk-active': item == designer.activePanel, 
+											'n-height-fill': item.heightFactor == 'fill'
+										}"
 										ng-dblclick="designer.setActive(designer, item); designer.showProperties();">
 										<div class="n-content">
 										</div>
@@ -265,7 +268,8 @@
 								<label for="height">Height</label>
 								<div class="n-controls">
 									<select id="height" class="uk-width-1-1" 
-											ng-model="designer.activePanel.heightFactor">
+											ng-model="designer.activePanel.heightFactor"
+											ng-change="designer.panelHeightFactorChanged()">
 										<option value="grid">
 											As Grid Cell (height: 
 											{{designer.activePanel.sizeY * designer.options.rowHeight}}px)

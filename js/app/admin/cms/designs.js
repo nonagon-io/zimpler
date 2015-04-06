@@ -247,6 +247,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 					var expectHorzStart = horzStarts || 0;
 					var updatedPanels = [];
+					var hasAnyFullHeight = false;
 
 					for(var i=0; i<group.panels.length; i++) {
 
@@ -269,11 +270,21 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 						updatedPanels.push(panel);
 						expectHorzStart = panel.col + panel.sizeX;
+
+						if(panel.heightFactor == "fill")
+							hasAnyFullHeight = true;
 					}
 
-					code = code.concat(indent + "<div class=\"uk-grid uk-grid-collapse\">\r\n");
+					var cls = ["uk-grid uk-grid-collapse"];
+
+					if(hasAnyFullHeight)
+						cls.push("uk-height-1-1");
+
+					code = code.concat(indent + "<div class=\"" + cls.join(" ") + "\">\r\n");
+
 					code = code.concat(_canvasToCode(updatedPanels, 
 						mode == "v" ? "h" : "v", nextLevel, horzCells, horzStarts));
+
 					code = code.concat(indent + "</div>\r\n");
 
 				} else if(mode == "h") {
@@ -284,8 +295,10 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 					var cls = "uk-width-" + group.size + "-" + totalSize;
 
 					code = code.concat(indent + "<div class=\"" + cls + "\">\r\n");
+
 					code = code.concat(_canvasToCode(group.panels, 
 						mode == "v" ? "h" : "v", nextLevel, group.size, group.start));
+
 					code = code.concat(indent + "</div>\r\n");
 				}
 			}
@@ -309,6 +322,8 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 		css: "",
 		heightFactor: "auto",
 
+		fillSizeY: 12,
+
 		options: {
 
 			columns: 10,
@@ -323,6 +338,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 				},
 				stop: function(e, el, widget) {
 
+					$scope.designer.determineAdjacentsAttributes(widget);
 					$scope.canvasToCode();
 				}
 			}, 
@@ -330,6 +346,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 				enabled: true,
 				stop: function(e, el, widget) {
 
+					$scope.designer.determinePanelAttributes(widget);
 					$scope.canvasToCode();
 				}
 			}
@@ -346,6 +363,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 			var targetRow = 0;
 			var targetSizeX = 10;
 			var targetSizeY = 2;
+			var targetHeightFactor = "grid";
 
 			for(var i=0; i<parent.panels.length; i++) {
 
@@ -359,12 +377,16 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 					targetCol = 0;
 					targetSizeX = 10;
 					targetSizeY = 2;
+					targetHeightFactor = "grid";
 
 				} else {
 
 					targetCol = panel.col + panel.sizeX;
 					targetSizeX = this.options.columns - targetCol;
 					targetSizeY = panel.sizeY;
+
+					if(panel.heightFactor == "fill")
+						targetHeightFactor = "fill";
 				}
 
 				if(rowReach > targetRow)
@@ -378,7 +400,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 				row: targetRow, 
 				col: targetCol,
 
-				heightFactor: 'grid',
+				heightFactor: targetHeightFactor,
 				type: 'container',
 
 				content: {
@@ -423,6 +445,16 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 			if(parent.activePanel == panel)
 				parent.activePanel = null;
+
+			// HACK: Wait until all animation finished. 
+			// Still does not see other way else to do.
+			setTimeout(function() {
+
+				$scope.$apply(function() {
+					$scope.designer.determineEachRowAttributes();
+				});
+
+			}, 700);
 		},
 
 		clearActivePanel: function($event) {
@@ -453,6 +485,147 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 		hideProperties: function() {
 
 			$scope.componentExpanded = false;
+		},
+
+		panelHeightFactorChanged: function() {
+
+			if(this.activePanel.heightFactor == "fill") {
+
+				this.activePanel.sizeY = this.fillSizeY;
+
+				for(var i=0; i<this.panels.length; i++) {
+
+					var panel = this.panels[i];
+					if(panel.row == this.activePanel.row) {
+
+						panel.heightFactor = this.activePanel.heightFactor;
+						panel.sizeY = this.activePanel.sizeY;
+					}
+				}
+
+			} else {
+
+				// Move it away from the adjacent cells if any of panel of 
+				// the same row has "fill" height factor.
+
+				$this = this;
+
+				var isAnyFill = _(this.panels).any(function(panel) {
+
+					return panel.row == $this.activePanel.row && panel.heightFactor == "fill";
+				});
+
+				if(isAnyFill) {
+
+					var bottomMost = _(this.panels).max(function(panel) {
+
+						return panel.row + panel.sizeY;
+					})
+
+					this.activePanel.col = 0;
+					this.activePanel.row = bottomMost.row + bottomMost.sizeY;
+					this.activePanel.sizeX = this.options.columns;
+				}
+			}
+		},
+
+		determinePanelAttributes: function(panel) {
+
+			if(panel.heightFactor != "fill") {
+
+				// Change the height factor of the panel to 'fill' if any of the adjacent
+				// panels having 'fill' height factor.
+
+				var isAnyFill = _(this.panels).any(function(currentPanel) {
+
+					return panel != currentPanel && 
+							panel.row == currentPanel.row && 
+							currentPanel.heightFactor == "fill";
+				});
+
+				if(isAnyFill) {
+
+					 panel.heightFactor = "fill";
+					 panel.sizeY = this.fillSizeY;
+				}
+
+			} else {
+
+				// Change the height factor of the panel to 'grid' if any of the adjacent
+				// panels are not having 'fill' height factor.
+
+				var isAnyUnFill = _(this.panels).any(function(currentPanel) {
+
+					return panel != currentPanel &&
+							panel.row == currentPanel.row && 
+							currentPanel.heightFactor != "fill";
+				});
+
+				if(isAnyUnFill) {
+
+					 panel.heightFactor = "grid";
+				}
+			}
+		},
+
+		determineAdjacentsAttributes: function(panel) {
+
+			if(panel.heightFactor != "fill") {
+
+				// Change all adjacent panels height factor to 'grid' if the adjacent
+				// panel having 'fill' height factor.
+
+				for(var i=0; i<this.panels.length; i++) {
+
+					var currentPanel = this.panels[i];
+					if(panel != currentPanel &&
+						currentPanel.row == panel.row && currentPanel.heightFactor == "fill") {
+
+						currentPanel.heightFactor = "grid";
+					}
+				}
+			} else {
+
+				// Change all adjacent panels height factor to 'fill' if the adjacent
+				// panel does not having 'fill' height factor.
+
+				for(var i=0; i<this.panels.length; i++) {
+
+					var currentPanel = this.panels[i];
+					if(panel != currentPanel &&
+						currentPanel.row == panel.row && currentPanel.heightFactor != "fill") {
+
+						currentPanel.heightFactor = panel.heightFactor;
+						currentPanel.sizeY = panel.sizeY;
+					}
+				}
+			}
+		},
+
+		determineEachRowAttributes: function() {
+
+			for(var i=0; i<this.panels.length; i++) {
+
+				var panel = this.panels[i];
+
+				if(panel.heightFactor == "fill") {
+
+					// Change the height factor of the panel to 'grid' if any of the adjacent
+					// panels are not having 'fill' height factor.
+
+					var isAnyUnFill = _(this.panels).any(function(currentPanel) {
+
+						return panel != currentPanel && 
+								panel.row == currentPanel.row && 
+								currentPanel.heightFactor != "fill";
+					});
+
+					if(isAnyUnFill) {
+
+						panel.heightFactor = "grid";
+					}
+				}
+			}
 		}
 	};
 }]);
