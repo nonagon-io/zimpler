@@ -337,6 +337,27 @@
 								</div>
 							</div>
 
+							<div class="ng-hide" ng-show="designer.activePanel.type == 'container'">
+								<label for="columns">Columns</label>
+								<div class="n-controls">
+									<select id="columns" class="uk-width-1-1"
+											ng-model="designer.activePanel.container.columns">
+										<option value="10">10 Columns</option>
+										<option value="12">12 Columns</option>
+									</select>
+								</div>
+
+								<label for="rowHeight">Row Height</label>
+								<div class="n-controls">
+									<select id="rowHeight" class="uk-width-1-1"
+											ng-model="designer.activePanel.container.rowHeight">
+										<option value="5">5 px</option>
+										<option value="10">10 px</option>
+										<option value="50">50 px</option>
+									</select>
+								</div>
+							</div>
+
 							<div class="ng-hide" ng-show="designer.activePanel.type == 'nav'">
 								<label for="levels">Navigation Levels</label>
 								<div class="n-controls">

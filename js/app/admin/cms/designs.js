@@ -403,6 +403,12 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 				heightFactor: targetHeightFactor,
 				type: 'container',
 
+				container: {
+
+					columns: 10,
+					rowHeight: 5
+				},
+
 				content: {
 
 					html: null
