@@ -57,18 +57,18 @@
 					<div class="uk-button-group" 
 						 ng-show="designerView == 'edit-canvas'">
 						<button class="uk-button n-tool-button" style="width: auto"
-								ng-class="{'uk-active': canvasView == 'large'}"
-								ng-click="canvasView = 'large'">
+								ng-class="{'uk-active': designer.canvasView == 'large'}"
+								ng-click="designer.setCanvasView('large')">
 							L
 						</button>
 						<button class="uk-button n-tool-button" style="width: auto"
-								ng-class="{'uk-active': canvasView == 'medium'}"
-								ng-click="canvasView = 'medium'">
+								ng-class="{'uk-active': designer.canvasView == 'medium'}"
+								ng-click="designer.setCanvasView('medium')">
 							M
 						</button>
 						<button class="uk-button n-tool-button" style="width: auto"
-								ng-class="{'uk-active': canvasView == 'small'}"
-								ng-click="canvasView = 'small'">
+								ng-class="{'uk-active': designer.canvasView == 'small'}"
+								ng-click="designer.setCanvasView('small')">
 							S
 						</button>
 					</div>
@@ -154,7 +154,7 @@
 											'uk-active': item == designer.activePanel, 
 											'n-height-fill': item.heightFactor == 'fill'
 										}"
-										ng-dblclick="designer.setActive(designer, item); designer.showProperties();">
+										ng-dblclick="designer.setActive(item); designer.showProperties();">
 										<div class="n-content">
 										</div>
 										<div class="n-indicators">
@@ -267,7 +267,7 @@
 								</button>
 							</div>
 							<button class="uk-button uk-button-danger n-tool-button uk-margin-small-top"
-									ng-click="designer.delete(designer, designer.activePanel)"
+									ng-click="designer.delete(designer.activePanel)"
 									title="Remove Panel"
 									data-uk-tooltip="{pos:'left'}">
 								<i class="uk-icon-trash"></i>

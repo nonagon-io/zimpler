@@ -13,7 +13,6 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 			$scope.$apply(function() {
 
 				$scope.designer.delete(
-					$scope.designer, 
 					$scope.designer.activePanel);
 			});
 
@@ -31,6 +30,24 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 					return;
 				}
 			});
+
+		} else if($event.keyCode === 70) { // "f"
+
+			if($scope.currentView == "designer") {
+
+				$scope.$apply(function() {
+					$scope.toggle("fullScreen");
+				});
+			}
+		} else if($event.shiftKey && $event.keyCode == 187) { // "+"
+
+			if($scope.currentView == "designer") {
+
+				$scope.$apply(function() {
+					
+					$scope.designer.add($scope.designer, "panel");
+				});
+			}
 		}
 	});
 
@@ -40,7 +57,6 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 	$scope.componentExpanded = false;
 	$scope.designerView = "edit-canvas";
 	$scope.codeView = "html";
-	$scope.canvasView = "large";
 
 	$scope.add = function() {
 
@@ -315,6 +331,8 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 	$scope.designer = {
 
+		canvasView: "large",
+
 		valid: true,
 		panels: [],
 		activePanel: null,
@@ -334,7 +352,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 				enabled: true,
 				start: function(e, el, widget) {
 
-					$scope.designer.setActive($scope.designer, widget);
+					$scope.designer.setActive(widget);
 				},
 				stop: function(e, el, widget) {
 
@@ -354,10 +372,16 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 
 		refreshEditor: false,
 
-		add: function(parent, type) {
+		setCanvasView: function(view) {
 
-			if(!parent.panels)
-				parent.panels = [];
+			this.canvasView = view;
+			this.options.draggable.enabled = (view == 'large');
+		},
+
+		add: function(type) {
+
+			if(!this.panels)
+				this.panels = [];
 
 			var targetCol = 0;
 			var targetRow = 0;
@@ -365,9 +389,9 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 			var targetSizeY = 2;
 			var targetHeightFactor = "grid";
 
-			for(var i=0; i<parent.panels.length; i++) {
+			for(var i=0; i<this.panels.length; i++) {
 
-				var panel = parent.panels[i];
+				var panel = this.panels[i];
 				var rowReach = panel.row;
 
 				rowReach += panel.sizeY;
@@ -393,7 +417,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 					targetRow = rowReach;
 			}
 
-			parent.panels.push({ 
+			this.panels.push({ 
 
 				sizeX: targetSizeX, 
 				sizeY: targetSizeY, 
@@ -437,20 +461,20 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 			$scope.canvasToCode();
 		},
 
-		setActive: function(parent, panel) {
+		setActive: function(panel) {
 
-			parent.activePanel = panel;
+			this.activePanel = panel;
 		},
 
-		delete: function(parent, panel) {
+		delete: function(panel) {
 
-			parent.panels = $.grep(parent.panels, function(item) {
+			this.panels = $.grep(this.panels, function(item) {
 
 				return item != panel;
 			});
 
-			if(parent.activePanel == panel)
-				parent.activePanel = null;
+			if(this.activePanel == panel)
+				this.activePanel = null;
 
 			// HACK: Wait until all animation finished. 
 			// Still does not see other way else to do.
