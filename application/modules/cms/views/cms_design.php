@@ -157,6 +157,9 @@
 										ng-dblclick="designer.setActive(item); designer.showProperties();">
 										<div class="n-content">
 										</div>
+										<div class="n-abs-fit" ng-click="designer.setActive(item)"
+											 ng-show="designer.canvasView != 'large'">
+										</div>
 										<div class="n-indicators">
 											<div class="ng-hide" ng-show="item.heightFactor == 'auto'">
 												<i class="uk-icon-arrows-v"></i> auto
