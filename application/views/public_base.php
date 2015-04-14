@@ -60,7 +60,7 @@
 	
 	<base href="<?php echo current_url() ?>/" />
 </head>
-<body>
+<body ng-app="root">
 	
 	<?php $this->load->view("public/header") ?>
 
