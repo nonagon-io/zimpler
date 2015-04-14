@@ -20,11 +20,11 @@ class Startup extends Public_Controller {
 
 	function index()
 	{
-		if($this->user_model->is_any_users_exists())
-		{
-			show_404();
-			return;
-		}
+		// if($this->user_model->is_any_users_exists())
+		// {
+		// 	show_404();
+		// 	return;
+		// }
 
 		$tables = $this->config->item('tables','ion_auth');
 		

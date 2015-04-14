@@ -28,11 +28,35 @@
 		{
 			$page = null;
 		}
+
+		$css_include_list = array();
+		$js_include_list = array();
+		
+		$page_accum = "";
+		
+		foreach($pages as $page)
+		{
+			$page_accum .= $page;
+			
+			$page_path = base_url('assets/css/public/' . $page_accum . '.css');
+			$real_path = 'assets/css/public/' . $page_accum . '.css';
+			
+			if(file_exists(FCPATH.$real_path))
+				array_push($css_include_list, $page_path);
+
+			$page_path = base_url('js/app/public/' . $page_accum . '.js');
+			$real_path = 'js/app/public/' . $page_accum . '.js';
+
+			if(file_exists(FCPATH.$real_path))
+				array_push($js_include_list, $page_path);
+			
+			$page_accum .= '/';
+		}
 	?>
 	
-	<?php if($page) : ?>
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/css/public/' . $page . '.css')?>"/>
-	<?php endif ?>
+	<?php foreach($css_include_list as $item) : ?>
+	<link rel="stylesheet" type="text/css" href="<?php echo $item?>"/>
+	<?php endforeach ?>
 	
 	<base href="<?php echo current_url() ?>/" />
 </head>
@@ -45,9 +69,15 @@
 	<?php $this->load->view("public/footer") ?>
 	
 	<script type="text/javascript" src="<?php echo base_url('js/vendor.min.js')?>"></script>
+	<script type="text/javascript" src="<?php echo base_url('js/common.js')?>"></script>
+	<script type="text/javascript" src="<?php echo base_url('js/app/modal.js')?>"></script>
 	
-	<?php if($page) : ?>
-	<script type="text/javascript" src="<?php echo base_url('js/app/public/' . $page . '.js')?>"></script>
-	<?php endif ?>
+	<?php foreach($js_include_list as $item) : ?>
+	<script type="text/javascript" src="<?php echo $item?>"></script>
+	<?php endforeach ?>
+	
+	<script type="text/javascript">
+		angular.modularize("root");
+	</script>
 </body>
 </html>
