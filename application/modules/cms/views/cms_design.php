@@ -159,6 +159,8 @@
 										</div>
 										<div class="n-abs-fit" ng-click="designer.setActive(item)"
 											 ng-show="designer.canvasView != 'large'">
+											 <!-- This is the element to allow setting 
+											 	  active in medium and small canvas mode -->
 										</div>
 										<div class="n-indicators">
 											<div class="ng-hide" ng-show="item.heightFactor == 'auto'">
@@ -184,7 +186,8 @@
 					<div class="uk-grid uk-grid-collapse" ng-hide="designer.activePanel != null">
 						<div class="uk-width-1-6">
 							<button class="uk-button uk-button-success n-tool-button"
-									ng-click="designer.add(designer, 'panel')"
+									ng-disabled="designer.canvasView != 'large'"
+									ng-click="designer.add('panel')"
 									title="Add New Panel"
 									data-uk-tooltip="{pos:'left'}">
 								<i class="uk-icon-plus"></i>
@@ -241,7 +244,8 @@
 					<div class="uk-grid uk-grid-collapse ng-hide" ng-show="designer.activePanel != null">
 						<div class="uk-width-1-6">
 							<button class="uk-button uk-button-success n-tool-button"
-									ng-click="designer.add(designer, 'panel')"
+									ng-click="designer.add('panel')"
+									ng-disabled="designer.canvasView != 'large'"
 									title="Add New Panel"
 									data-uk-tooltip="{pos:'left'}">
 								<i class="uk-icon-plus"></i>

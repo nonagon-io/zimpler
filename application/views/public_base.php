@@ -47,7 +47,7 @@
 	<script type="text/javascript" src="<?php echo base_url('js/vendor.min.js')?>"></script>
 	
 	<?php if($page) : ?>
-	<script type="text/javascript" src="<?php echo base_url('js/public/' . $page . '.js')?>"></script>
+	<script type="text/javascript" src="<?php echo base_url('js/app/public/' . $page . '.js')?>"></script>
 	<?php endif ?>
 </body>
 </html>
