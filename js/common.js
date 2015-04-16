@@ -190,6 +190,8 @@ angular.module("common", [])
 				});
 			}
 		}
+
+		if(!method) method = "POST";
 		
 		// All hidden data will be included in the POST.
 		$("[name='" + $form.$name + "'] input[type='hidden']").each(function(i, e) {
