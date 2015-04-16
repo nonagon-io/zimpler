@@ -167,13 +167,29 @@ angular.module("common", [])
 	
 	return function($scope, $form, method, url, data) {
 		
+		var nativeForm = $("[name='" + $form.$name + "']");
+
 		var defer = $q.defer();
 		
 		if(!$form.$valid) {
 			return defaultPromise(defer.promise);
 		}
-		
-		if(!data) data = {};
+
+		if(nativeForm) {
+
+			if(!method) method = nativeForm.attr("method");
+			if(!url) url = nativeForm.attr("action");
+			if(!data) {
+
+				data = {};
+
+				nativeForm.find("input[name]").
+					not("[type = 'hidden']").each(function(i, e) {
+
+					data[e.name] = $(e).val();
+				});
+			}
+		}
 		
 		// All hidden data will be included in the POST.
 		$("[name='" + $form.$name + "'] input[type='hidden']").each(function(i, e) {
