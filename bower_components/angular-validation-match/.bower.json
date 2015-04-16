@@ -1,6 +1,6 @@
 {
   "name": "angular-input-match",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "homepage": "https://github.com/TheSharpieOne/angular-input-match",
   "authors": [
     "TheSharpieOne  <evan@lostonia.com>"
@@ -38,14 +38,14 @@
   "devDependencies": {
     "angular-mocks": ">=1.2.0 <2.0.0"
   },
-  "_release": "1.4.0",
+  "_release": "1.4.1",
   "_resolution": {
     "type": "version",
-    "tag": "v1.4.0",
-    "commit": "2efa59e34659c118d911cc6c07f3a286ca4fab54"
+    "tag": "v1.4.1",
+    "commit": "81fc91e753d172b2417c3361fe79e1eefe2a570f"
   },
   "_source": "git://github.com/TheSharpieOne/angular-input-match.git",
-  "_target": "~1.4.0",
+  "_target": "~1.4.1",
   "_originalSource": "angular-validation-match",
   "_direct": true
 }
