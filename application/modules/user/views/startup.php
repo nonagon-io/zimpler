@@ -143,7 +143,7 @@
 					</label>
 					<div class="uk-form-controls">
 						<input type="password" id="passwordConfirm" name="passwordConfirm" class="uk-width-1-1" 
-							   maxlength="20" ng-model="passwordConfirm" match="password"
+							   maxlength="20" ng-model="passwordConfirm" match="startupForm.password"
 							   ng-class="{'uk-form-danger': startupForm.passwordConfirm.$error.match && startupForm.$submitted}"
 							   ng-init="passwordConfirm = '<?= $passwordConfirm ?>'"
 							   placeholder="<?= lang('startup_password_confirm_placeholder') ?>" />
