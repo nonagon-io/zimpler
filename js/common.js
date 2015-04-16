@@ -122,7 +122,12 @@ angular.module("common", [])
 				} else if(status == 401) {
 					
 					$scope.connectionErrorMessage = $sce.trustAsHtml(
-						"You don't have permission to view the resource.");
+						"Unauthorized");
+						
+				} else if(status == 403) {
+					
+					$scope.connectionErrorMessage = $sce.trustAsHtml(
+						"You do not have permission to view the resource.");
 						
 				} else if(status >= 500) {
 					
