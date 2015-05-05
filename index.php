@@ -19,7 +19,7 @@
  *
  */
  
-$app_mode = getenv('APP_MODE');
+$app_mode = getenv('APP_ENV');
 if(!$app_mode) $app_mode = 'development';
 
 define('ENVIRONMENT', $app_mode);
