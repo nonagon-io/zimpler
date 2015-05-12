@@ -61,7 +61,7 @@ class User_model extends CI_Model {
 	{
 		$tables = $this->config->item('tables', 'ion_auth');
 
-		$this->db->where($this->config-item('identity'), $username);
+		$this->db->where($this->config->item('identity'), $username);
 		$this->db->from($tables["users"]);
 
 		return $this->db->count_all_results() > 0;
