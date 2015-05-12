@@ -51,7 +51,19 @@ class User_model extends CI_Model {
 
 	public function is_any_users_exists()
 	{
-		$this->db->from("user");
+		$tables = $this->config->item('tables', 'ion_auth');
+
+		$this->db->from($tables["users"]);
+		return $this->db->count_all_results() > 0;
+	}
+
+	public function is_user_exists($username)
+	{
+		$tables = $this->config->item('tables', 'ion_auth');
+
+		$this->db->where('username', $username);
+		$this->db->from($tables["users"]);
+		
 		return $this->db->count_all_results() > 0;
 	}
 }
