@@ -188,7 +188,7 @@ angular.module("common", [])
 
 				data = {};
 
-				nativeForm.find("input[name]").
+				nativeForm.find("[name]").
 					not("[type = 'hidden']").each(function(i, e) {
 
 					data[e.name] = $(e).val();
