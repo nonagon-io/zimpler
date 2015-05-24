@@ -11,7 +11,7 @@ abstract class Admin_Controller extends MY_Controller {
     }
     
     protected function authenticate() { return FALSE; }
-    
+
     protected function read_module_menu_items()
     {
 	    $this->load->helper("file");
@@ -36,11 +36,21 @@ abstract class Admin_Controller extends MY_Controller {
 			    if(isset($module_menu_items))
 			    {
 				    foreach($module_menu_items as $item)
-				    array_push($menu_items, $item);
+				    {
+				    	if($item['visible'] === TRUE)
+				    		array_push($menu_items, $item);
+				    }
 			    }
 			}
 	    }
 	    
+	    usort($menu_items, array('Admin_Controller', 'menu_comparer'));
+
 	    return $menu_items;
+    }
+
+    private static function menu_comparer($a, $b)
+    {
+	    return strcmp($a['order'], $b['order']);
     }
 }

@@ -6,6 +6,8 @@ $module_menu_items = array(
 		'icon' => 'users',
 		'path' => 'admin/user/management',
 		'name' => lang('user_menu_management'),
-		'link' => base_url('admin/user/management')
+		'link' => base_url('admin/user/management'),
+		'order' => '300',
+		'visible' => TRUE
 	)
 );
