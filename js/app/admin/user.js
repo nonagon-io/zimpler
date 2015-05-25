@@ -45,7 +45,7 @@ angular.module("admin-user", ['generic-modal', 'admin'])
 				UIkit.pagination($(".uk-pagination").get()[0], {
 
 					items: data.total,
-					itemsOnPage: data.take,
+					itemsOnPage: pageSize,
 					currentPage: Math.floor(data.from / params.take) + 1
 				});
 
