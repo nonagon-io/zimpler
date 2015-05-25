@@ -174,7 +174,6 @@ class Ion_auth_model extends CI_Model
 		$this->load->helper("date");
 		$this->load->database();
         $this->load->dbforge();
-        $this->initialize();
 
 		$this->load->config('user/ion_auth', TRUE);
 		$this->load->helper('cookie');
@@ -251,13 +250,15 @@ class Ion_auth_model extends CI_Model
 			$this->load->library('user/bcrypt',$params);
 		}
 
+		$this->initialize();
+
 		$this->trigger_events('model_constructor');
 	}
 
     private function initialize()
     {
 	    $tables = $this->config->item('tables', 'ion_auth');
-	    
+
 	    if(!$this->db->table_exists($tables["groups"]))
 	    {
 			// Table structure for table 'groups'

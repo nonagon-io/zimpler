@@ -25,6 +25,7 @@ module.exports = function(grunt) {
 						'bower_components/lodash/lodash.min.js',
 						'bower_components/uikit/js/components/notify.min.js',
 						'bower_components/uikit/js/components/tooltip.min.js',
+						'bower_components/uikit/js/components/pagination.min.js',
 						'bower_components/javascript-detect-element-resize/jquery.resize.js',
 						'bower_components/codemirror/lib/codemirror.js'],
 						

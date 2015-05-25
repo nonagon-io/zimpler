@@ -66,4 +66,47 @@ class User_model extends CI_Model {
 
 		return $this->db->count_all_results() > 0;
 	}
+
+	public function get_total_users()
+	{
+		$this->db->from('user');
+		return $this->db->count_all_results();
+	}
+
+	public function get_list($keyword = NULL, 
+		$skip = 0, $take = 50, $order_by = 'first_name asc, last_name asc')
+	{
+		if($keyword)
+		{
+			$this->db->where('first_name like', '%' . $keyword . '%');
+			$this->db->or_where('last_name like', '%' . $keyword . '%');
+			$this->db->or_where('email like', '%' . $keyword . '%');
+		}
+
+		$result = $this->db->order_by($order_by)->
+				select('id, username, concat(first_name, \' \', last_name) as name, 
+						first_name as firstName, last_name as lastName,
+						email, last_login as lastLogin, 
+						active as status', FALSE)->
+				get('user', $take, $skip)->result();
+
+		$this->db->flush_cache();
+
+		if($keyword)
+		{
+			$this->db->where('first_name like', '%' . $keyword . '%');
+			$this->db->or_where('last_name like', '%' . $keyword . '%');
+			$this->db->or_where('email like', '%' . $keyword . '%');
+		}
+
+		$total = $this->db->from('user')->count_all_results();
+
+		return array(
+
+			'items' => $result,
+			'total' => $total,
+			'from' => count($result) > 0 ? $skip + 1 : 0,
+			'to' => $skip + count($result)
+		);
+	}
 }

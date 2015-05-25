@@ -1,0 +1,11 @@
+.n-user-list {
+
+	position: absolute;
+	top: 51px !important;
+	left: 0px;
+	right: 0px;
+	bottom: 50px;
+	background: white !important;
+	overflow: auto;
+	border-bottom: 1px solid #ccc;
+}

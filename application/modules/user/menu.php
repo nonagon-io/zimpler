@@ -4,9 +4,9 @@ $module_menu_items = array(
 
 	array(
 		'icon' => 'users',
-		'path' => 'admin/user/management',
-		'name' => lang('user_menu_management'),
-		'link' => base_url('admin/user/management'),
+		'path' => 'admin/user',
+		'name' => lang('user_menu'),
+		'link' => base_url('admin/user'),
 		'order' => '300',
 		'visible' => TRUE
 	)
