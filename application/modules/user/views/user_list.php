@@ -27,9 +27,9 @@
 			<thead>
 				<tr>
 					<th style="width: 20px" class="uk-text-center"><input type="checkbox" /></th>
-					<th style="width: 140px">Username</th>
+					<th style="width: 250px">Username</th>
 					<th>Name</th>
-					<th style="width: 140px">Email</th>
+					<th style="width: 250px">Email</th>
 					<th style="width: 200px">Last Login</th>
 					<th style="width: 80px">Status</th>
 				</tr>
@@ -51,15 +51,15 @@
 	</div>
 	<div class="n-controller">
 		<div class="uk-grid uk-grid-collapse">
-			<div class="uk-width-1-3">
+			<div class="uk-width-1-4">
 				<div ng-cloak="" class="uk-margin-small-top">
 					Displaying from {{list.from}} to {{list.to}} of {{list.total}}
 				</div>
 			</div>
-			<div class="uk-width-1-3">
+			<div class="uk-width-2-4">
 				<ul class="uk-pagination"></ul>
 			</div>
-			<div class="uk-width-1-3 uk-text-right">
+			<div class="uk-width-1-4 uk-text-right">
 				<button type="button" class="uk-button uk-button-primary ng-hide" ng-click="newItem()">
 					<i class="uk-icon-plus uk-icon-small"></i>
 				</button>
