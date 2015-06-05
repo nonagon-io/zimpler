@@ -82,6 +82,7 @@ class Navigation_model extends CI_Model
 	    {
 			$this->dbforge->add_field('nav_item_label_id	int				NOT NULL	AUTO_INCREMENT');
 			$this->dbforge->add_field('nav_item_id			int				NOT NULL');
+			$this->dbforge->add_field('nav_id				int				NOT NULL');
 			$this->dbforge->add_field('culture				varchar(5)		NOT NULL 	default \'en-us\'');
 			$this->dbforge->add_field('text					varchar(80)		NOT NULL');
 			$this->dbforge->add_key('nav_item_label_id', TRUE);
