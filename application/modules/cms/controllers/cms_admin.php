@@ -118,7 +118,15 @@ class Cms_admin extends Partial_Controller {
 
 	function pages()
 	{
-		echo 'This is pages admin';
+		$method = $this->input->server('REQUEST_METHOD');
+
+		if($method == 'GET')
+		{
+			$this->data = array();
+			$this->data['total_pages'] = 0;
+
+			$this->load->view('cms_page', $this->data);
+		}
 	}
 
 	function contents()

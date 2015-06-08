@@ -20,13 +20,17 @@ $(function() {
 		var arrangeSize = function() {
 			
 			header.css({ "width": $this.width() + "px" });
-			
-			/*
-			$this.find("thead tr").children().each(function(i, elem) {
-				
-				$(header.find("thead tr").children()[i]).css({ "width": $(elem).width() + "px" });
-			});
-			*/
+
+			var tableHeaders = $this.find("thead tr").children();
+			var fixedHeaders = header.find("thead tr").children();
+
+			var len = tableHeaders.length;
+
+			for(var i=len - 1; i>=0; i--) {
+
+				var elem = tableHeaders[i];
+				$(fixedHeaders[i]).css({ "width": ($(elem).width() + 1) + "px" });
+			}
 		}
 		
 		$(window).resize(function() {

@@ -4,18 +4,20 @@
 	<div class="n-options-header" 
 		 ng-class="{'n-drop-shadow': mainContentBodyScrollTop > 0}">
 		<div class="uk-grid uk-grid-collapse">
-			<div class="uk-width-2-3">
+			<div class="uk-width-7-10 uk-width-medium-2-3">
 				<input type="text" placeholder="Keyword" ng-model="searchKeyword" ng-keydown="detectSearch($event)"
-					   style="width: 300px"/>
+					   style="width: 250px"/>
 				<button type="button" class="uk-button uk-button-primary" ng-click="search()">
-					<i class="uk-icon-search"></i> Search
+					<i class="uk-icon-search"></i>
+					<span class="uk-hidden-small uk-hidden-medium">Search</span>
 				</button>
-				<button type="button" class="uk-button uk-button-danger" ng-click="clearSearch()"
+				<button type="button" class="uk-button uk-button-danger ng-hide" ng-click="clearSearch()"
 						ng-show="isKeywordActive">
-					<i class="uk-icon-times"></i> Clear
+					<i class="uk-icon-times"></i>
+					<span class="uk-hidden-small uk-hidden-medium">Clear</span>
 				</button>
 			</div>
-			<div class="uk-width-1-3 uk-text-right">
+			<div class="uk-width-3-10 uk-width-medium-1-3 uk-text-right">
 				<div class="uk-margin-small-top">
 					Total Users: <?= $total_users ?> 
 				</div>
@@ -48,6 +50,11 @@
 				</tr>
 			</tbody>
 		</table>
+		<div class="n-abs-fit uk-vertical-align uk-text-center uk-panel uk-panel-box" ng-show="isRefreshing">
+			<div class="uk-vertical-align-middle">
+				<i class="uk-icon-spinner uk-icon-spin"></i>
+			</div>
+		</div>
 	</div>
 	<div class="n-controller">
 		<div class="uk-grid uk-grid-collapse">
