@@ -29,10 +29,9 @@
 			<thead>
 				<tr>
 					<th style="width: 20px" class="uk-text-center"><input type="checkbox" /></th>
-					<th style="width: 250px">Username</th>
 					<th>Name</th>
-					<th style="width: 250px">Email</th>
-					<th style="width: 200px">Last Login</th>
+					<th style="width: 200px">Created</th>
+					<th style="width: 200px">Modified</th>
 					<th style="width: 80px">Status</th>
 				</tr>
 			</thead>
@@ -42,10 +41,9 @@
 					<td class="uk-text-center">
 						<input type="checkbox" ng-model="item.checked" ng-disabled="selectedItem" />
 					</td>
-					<td ng-bind="item.username" ng-click="select(item)"></td>
 					<td ng-bind="item.name" ng-click="select(item)"></td>
-					<td ng-bind="item.email" ng-click="select(item)"></td>
-					<td ng-bind="item.lastLogin * 1000 | date:'yyyy-MM-dd HH:mm:ss Z'" ng-click="select(item)"></td>
+					<td ng-bind="item.created" ng-click="select(item)"></td>
+					<td ng-bind="item.modified" ng-click="select(item)"></td>
 					<td ng-bind="item.status ? 'Active' : 'Inactive'" ng-click="select(item)"></td>
 				</tr>
 			</tbody>
