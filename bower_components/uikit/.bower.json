@@ -1,6 +1,6 @@
 {
   "name": "uikit",
-  "version": "2.18.0",
+  "version": "2.21.0",
   "homepage": "http://getuikit.com",
   "main": [
     "css/uikit.min.css",
@@ -22,14 +22,14 @@
     "index.html"
   ],
   "private": true,
-  "_release": "2.18.0",
+  "_release": "2.21.0",
   "_resolution": {
     "type": "version",
-    "tag": "2.18.0",
-    "commit": "fb8ad22a6c170d1c1be91cdaf0e06c71bd330534"
+    "tag": "2.21.0",
+    "commit": "5122a3c3abd3d0f09fae579be9d60faecb7d2bb5"
   },
   "_source": "git://github.com/uikit/bower-uikit.git",
-  "_target": "~2.18.0",
+  "_target": "~2.21.0",
   "_originalSource": "uikit",
   "_direct": true
 }

@@ -30,21 +30,21 @@ $module_menu_items = array(
 	),
 	
 	array(
-		'icon' => 'files-o',
-		'path' => 'admin/cms/pages',
-		'name' => lang('cms_menu_pages'),
-		'link' => base_url('admin/cms/pages'),
-		'order' => '103',
-		'visible' => TRUE
-	),
-	
-	array(
 		'icon' => 'file-text',
 		'path' => 'admin/cms/contents',
 		'name' => lang('cms_menu_contents'),
 		'link' => base_url('admin/cms/contents'),
+		'order' => '103',
+		'visible' => TRUE
+	),
+
+	array(
+		'icon' => 'files-o',
+		'path' => 'admin/cms/pages',
+		'name' => lang('cms_menu_pages'),
+		'link' => base_url('admin/cms/pages'),
 		'order' => '104',
 		'visible' => TRUE
 	)
-
+	
 );
