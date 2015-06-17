@@ -6,7 +6,7 @@ use \YaLinqo\Enumerable;
 /**
  * Zimpler
  *
- * An open source CMS for PHP 5.1.6 or newer
+ * An open source CMS for PHP 5.4 or newer
  *
  * @package		Zimpler
  * @author		Chonnarong Hanyawongse
@@ -75,7 +75,7 @@ class Navigation extends REST_Controller {
 	    $this->response($result);
     }
     
-    function items_get()
+    function list_get()
     {
 	    $culture = $this->get('culture');
 	    $parent_id = $this->get('parent');
@@ -122,7 +122,7 @@ class Navigation extends REST_Controller {
 	    $nav_item = array(
 		    
 		    'parent_id' => $this->post('parent'),
-		    'title' => $this->post('key'),
+		    'title' => $this->post('title'),
 		    'url' => $this->post('url'),
 		    'target' => $target,
 		    'label' => array(
@@ -160,7 +160,7 @@ class Navigation extends REST_Controller {
 		    
 		    'nav_item_id' => $id,
 		    'parent_id' => $this->post('parent'),
-		    'title' => $this->put('key'),
+		    'title' => $this->put('title'),
 		    'url' => $this->put('url'),
 		    'target' => $target,
 		    'label' => array(
@@ -234,7 +234,7 @@ class Navigation extends REST_Controller {
 	    $obj->id = $nav_item->nav_item_id;
 	    $obj->culture = $nav_item->culture;
 	    $obj->parent = $nav_item->parent_id;
-	    $obj->key = $nav_item->title;
+	    $obj->title = $nav_item->title;
 	    $obj->url = $nav_item->url;
 	    $obj->target = $target;
 	    $obj->targetKey = $targetKey;

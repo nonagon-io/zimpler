@@ -103,3 +103,19 @@ function page_title()
 	</div>
 	<?php $this->load->view("modal") ?>
 </div>
+
+<script>
+	window._fileManager = "<?= $this->setting_model->get("file_manager"); ?>";
+</script>
+
+<?php if($this->setting_model->get('file_manager') != 'disable') : ?>
+<div class="n-file-browser uk-modal">
+	<div class="uk-modal-dialog uk-modal-dialog-large">
+		<div class="uk-modal-header">
+			<h2>File Manager</h2>
+		</div>
+		<div class="uk-modal-footer">
+		</div>
+	</div>
+</div>
+<?php endif ?>

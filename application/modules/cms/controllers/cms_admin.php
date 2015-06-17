@@ -2,7 +2,7 @@
 /**
  * Zimpler
  *
- * An open source CMS for PHP 5.1.6 or newer
+ * An open source CMS for PHP 5.4 or newer
  *
  * @package		Zimpler
  * @author		Chonnarong Hanyawongse
@@ -36,6 +36,7 @@ class Cms_admin extends Partial_Controller {
 	{
 		$this->lang->load('cms/admin_siteinfo');
 		$this->load->model('cms/siteinfo_model');
+		$this->load->model('setting/setting_model');
 		
 		$method = $this->input->server('REQUEST_METHOD');
 		
@@ -131,6 +132,20 @@ class Cms_admin extends Partial_Controller {
 
 	function contents()
 	{
-		echo 'This is contents admin';
+		$this->load->model('cms/content_model');
+
+		$method = $this->input->server('REQUEST_METHOD');
+
+		if($method == 'GET')
+		{
+			$this->data = array();
+
+			$culture = $this->input->get('culture');
+			if(!$culture) $culture = 'en-us';
+
+			$this->data['culture'] = $culture;
+			$this->data['total_contents'] = $this->content_model->get_total_contents();
+			$this->load->view('cms_content', $this->data);
+		}
 	}
 }

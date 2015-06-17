@@ -1,7 +1,6 @@
-angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate'])
+angular.module("admin-cms-siteinfo", ["common", "generic-modal", "admin", "ngAnimate"])
 
-.controller("CmsSiteInfoController", ['$scope', '$window', 'submitForm', 'checkFormDirty', 
-	function($scope, $window, submitForm, checkFormDirty) {
+.controller("CmsSiteInfoController", function($scope, $window, submitForm, checkFormDirty) {
 	
 	$scope.editingData = {};
 	
@@ -48,4 +47,4 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate']
 		$window.location.href = $scope.baseUrl + "?culture=" + $(this).val();
 		$("#cultureSelection").val(selectedCulture);
 	});
-}]);
+});

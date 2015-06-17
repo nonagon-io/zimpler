@@ -1,10 +1,35 @@
 module.exports = function(grunt) {
 	
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	
 	// Project configuration.
 	grunt.initConfig({
+
+		copy: {
+
+			main: {
+			    files: [
+
+			    	{
+			    		expand: true,
+			    		cwd: 'bower_components/tinymce-dist/',
+			    		src: ['**'],
+			    		dest: 'js/lib/tinymce/'
+
+			    	}, {
+
+			    		expand: true,
+			    		cwd: 'bower_components/codemirror/',
+			    		src: ['**'],
+			    		dest: 'js/lib/codemirror/'
+			    		
+			    	}
+			    ]
+			}
+		},
+
 		uglify: {
 			my_target: {
 				files: {
@@ -26,8 +51,7 @@ module.exports = function(grunt) {
 						'bower_components/uikit/js/components/notify.min.js',
 						'bower_components/uikit/js/components/tooltip.min.js',
 						'bower_components/uikit/js/components/pagination.min.js',
-						'bower_components/javascript-detect-element-resize/jquery.resize.js',
-						'bower_components/codemirror/lib/codemirror.js'],
+						'bower_components/javascript-detect-element-resize/jquery.resize.js'],
 						
 					'js/lib/libphonenumber.js': [
 						'bower_components/intl-tel-input/lib/libphonenumber/build/utils.js'],
@@ -40,7 +64,11 @@ module.exports = function(grunt) {
 						'bower_components/codemirror/mode/javascript/javascript.js',
 						'bower_components/codemirror/mode/css/css.js',
 						'bower_components/codemirror/mode/htmlmixed/htmlmixed.js',
-						'bower_components/angular-ui-codemirror/ui-codemirror.js']
+						'bower_components/angular-ui-codemirror/ui-codemirror.js'],
+
+					'js/lib/ui-tinymce.min.js': [
+						'bower_components/angular-ui-tinymce/src/tinymce.js'
+					]
 				}
 			}
 		},

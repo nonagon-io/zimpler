@@ -74,7 +74,7 @@
 						</div>
 						<div class="uk-width-1-3 uk-text-right">
 							<button type="button" class="uk-button uk-button-success"
-									ng-click="addItem(level)"
+									ng-click="newItem(level)"
 									ng-disabled="propertiesPanel.isOpen || currentStatus == 'published'">
 								<i class="uk-icon-plus"></i>
 							</button>
@@ -91,7 +91,7 @@
 								<i class="uk-icon-bars n-handle"></i>
 							</div>
 							<div class="uk-width-7-10" ng-class="{'uk-text-danger': !item.publicTitle}">
-								{{item.publicTitle || item.key}}
+								{{item.publicTitle || item.title}}
 							</div>
 							<div class="uk-width-2-10 uk-text-right">
 								<button type="button" class="uk-button" style="margin: -5px -5px 0 0"
@@ -121,7 +121,7 @@
 						ng-repeat="item in level.items"
 						ng-class="{'uk-active': item.id == editingData.id, 'n-drilling-down': item.expanded}"
 						n-item-loaded="activateItem($event, item)">
-						<a class="n-label" ng-click="edit(item, level, $index)">{{item.publicTitle || item.key}}</a>
+						<a class="n-label" ng-click="edit(item, level, $index)">{{item.publicTitle || item.title}}</a>
 						<div class="n-tail">
 							<i class="uk-icon-plus-square-o" ng-click="expand(level, item, $event)" 
 							   ng-show="!item.expanded"></i>

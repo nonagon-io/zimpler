@@ -30,6 +30,8 @@
 				<tr>
 					<th style="width: 20px" class="uk-text-center"><input type="checkbox" /></th>
 					<th>Name</th>
+					<th>Description</th>
+					<th style="width: 200px">Group</th>
 					<th style="width: 200px">Created</th>
 					<th style="width: 200px">Modified</th>
 					<th style="width: 80px">Status</th>
@@ -42,6 +44,8 @@
 						<input type="checkbox" ng-model="item.checked" ng-disabled="selectedItem" />
 					</td>
 					<td ng-bind="item.name" ng-click="select(item)"></td>
+					<td ng-bind="item.description" ng-click="select(item)"></td>
+					<td ng-bind="item.group" ng-click="select(item)"></td>
 					<td ng-bind="item.created" ng-click="select(item)"></td>
 					<td ng-bind="item.modified" ng-click="select(item)"></td>
 					<td ng-bind="item.status ? 'Active' : 'Inactive'" ng-click="select(item)"></td>

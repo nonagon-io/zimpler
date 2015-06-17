@@ -241,7 +241,7 @@ angular.module("common", [])
 			
 			modal.show(
 				"If you continue all changes you have been made will be lost.<br/>" +
-				"Are you sure you want to continue?", "Unsafe changes detected", {
+				"Are you sure you want to continue?", "Unsaved changes detected", {
 					
 					danger: true,
 					bgclose: true,

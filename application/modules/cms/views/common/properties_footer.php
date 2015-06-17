@@ -38,12 +38,12 @@
 			<i class="uk-icon-trash"></i>
 		</button>
 		<?php endif ?>
-		<button type="submit" class="uk-button uk-button-success" ng-if="currentStatus != 'published'">
+		<button type="submit" class="uk-button uk-button-success" ng-if="editingData.status != 'published'">
 			Save <span ng-show="<?= $panel_name ?>.propertiesForm.$dirty">*</span>
 		</button>
 		<button type="button" class="uk-button" ng-click="<?= $panel_name ?>.close()">
-			<span ng-if="currentStatus == 'published'">Close</span>
-			<span ng-if="currentStatus == 'draft'">Cancel</span>
+			<span ng-if="editingData.status == 'published'">Close</span>
+			<span ng-if="editingData.status == 'draft'">Cancel</span>
 		</button>
 	</div>
 </div>

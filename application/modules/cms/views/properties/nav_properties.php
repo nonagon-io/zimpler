@@ -1,20 +1,27 @@
 <div class="uk-form-row">
-	<label class="uk-form-label" for="key">
-		Key
+	<label class="uk-form-label" for="title">
+		Private Title
+		<i class="uk-icon-button uk-icon-question" 
+		   title="The private title will help you identifying the navigation items 
+		   		  which do not have a public title for the specific language. Plus
+		   		  it will be the default title in case the title of the certain language
+		   		  is missing."
+		   data-uk-tooltip></i>
 		<i class="uk-icon-times-circle uk-text-danger" 
-		   title="Key is required"
+		   title="Private Title is required"
 		   data-uk-tooltip="{pos:'right'}"
-		   ng-show="<?= $panel_name ?>.propertiesForm.key.$error.required && 
+		   ng-show="<?= $panel_name ?>.propertiesForm.title.$error.required && 
 		   			<?= $panel_name ?>.propertiesForm.$submitted"></i>
 	</label>
 	<div class="uk-form-controls">
-		<input type="text" id="key" name="key" class="uk-width-1-1" 
-			   ng-model="editingData.key"
+		<input type="text" id="title" name="title" class="uk-width-1-1" 
+			   ng-model="editingData.title"
 			   ng-class="{'uk-form-danger': 
-			   		<?= $panel_name ?>.propertiesForm.key.$error.required && 
+			   		<?= $panel_name ?>.propertiesForm.title.$error.required && 
 			   		<?= $panel_name ?>.propertiesForm.$submitted}"
-			   placeholder="The unique key to identify the navigation item (e.g. home)"
+			   placeholder="The private title of the navigation item (e.g. Home)"
 			   ng-readonly="currentStatus == 'published'"
+			   maxlength="80"
 			   required/>
 	</div>
 </div>
@@ -35,6 +42,7 @@
 			   		<?= $panel_name ?>.propertiesForm.$submitted}"
 			   placeholder="The url of the page. Relative url indicates internal page."
 			   ng-readonly="currentStatus == 'published'"
+			   maxlength="255"
 			   required/>
 			   
 		<button type="button" class="uk-button uk-width-1-1" ng-disabled="currentStatus == 'published'">
@@ -61,7 +69,8 @@
 					   ng-model="editingData.targetKey"
 					   ng-show="editingData.target == 'new'"
 					   ng-readonly="currentStatus == 'published'"
-					   placeholder="Target Key (Optional)">
+					   placeholder="Target Key (Optional)"
+					   maxlength="30" />
 			</div>
 		</div>
 	</div>
@@ -82,7 +91,8 @@
 			   ng-class="{'uk-form-danger': 
 			   		<?= $panel_name ?>.propertiesForm.publicTitle.$error.required && 
 			   		<?= $panel_name ?>.propertiesForm.$submitted}"
-			   placeholder="The title that will be public in the selected language"
+			   placeholder="The title that will be published in the selected language"
+			   maxlength="80" 
 			   required/>
 	</div>
 </div>

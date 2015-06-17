@@ -217,7 +217,8 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 
 	$scope.mainContentBodyScrollTop = 0;
 	$scope.mainContentBodyScrollMaxReached = false;
-	
+	$scope.fileManager = window._fileManager;
+
 	$(".n-body .n-content").on("scroll", function() {
 		
 		$scope.$apply(function() {

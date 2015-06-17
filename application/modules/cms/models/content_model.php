@@ -24,7 +24,7 @@ class Content_model extends CI_Model
 	    {
 		    $this->dbforge->add_field('content_id		int				NOT NULL	AUTO_INCREMENT');
 		    $this->dbforge->add_field('content_key 		varchar(50)		NOT NULL');
-		    $this->dbforge->add_field('title 			varchar(150)	NOT NULL');
+		    $this->dbforge->add_field('name 			varchar(150)	NOT NULL');
 		    $this->dbforge->add_field('`group` 			varchar(80)		NULL 		default null');
 		    $this->dbforge->add_field('description 		varchar(250)	NULL 		default null');
 		    $this->dbforge->add_field('content_type 	varchar(15)		NOT NULL');
@@ -102,11 +102,50 @@ class Content_model extends CI_Model
 			$this->dbforge->create_table('content_list_item', TRUE);
 		}
     }
-    
-    public function get($content_key)
+
+    public function get_total_contents()
     {
-	
+		$this->db->from('content');
+		return $this->db->count_all_results();
     }
+    
+	public function get_list($culture, $keyword = NULL, 
+		$skip = 0, $take = 50, $order_by = 'first_name asc, last_name asc')
+	{
+		if($keyword)
+		{
+			$this->db->where('title like', '%' . $keyword . '%');
+			$this->db->or_where('group like', '%' . $keyword . '%');
+			$this->db->or_where('description like', '%' . $keyword . '%');
+			$this->db->or_where('content_type like', '%' . $keyword . '%');
+		}
+
+		$result = $this->db->order_by($order_by)->
+				select('content_id as id, title, group, description, 
+						content_type as contentType, last_modified as lastModified,
+						status', FALSE)->
+				get('content', $take, $skip)->result();
+
+		$this->db->flush_cache();
+
+		if($keyword)
+		{
+			$this->db->where('title like', '%' . $keyword . '%');
+			$this->db->or_where('group like', '%' . $keyword . '%');
+			$this->db->or_where('description like', '%' . $keyword . '%');
+			$this->db->or_where('content_type like', '%' . $keyword . '%');
+		}
+
+		$total = $this->db->from('content')->count_all_results();
+
+		return array(
+
+			'items' => $result,
+			'total' => $total,
+			'from' => count($result) > 0 ? $skip + 1 : 0,
+			'to' => $skip + count($result)
+		);
+	}
     
     public function get_top_revision($content_key, $culture)
     {
@@ -134,8 +173,8 @@ class Content_model extends CI_Model
 	    if(!$content)
 	    	throw new Exception('content parameter cannot be null');
 	    
-	    if(!array_key_exists('title', $content))
-	    	throw new Exception('title must be specified');
+	    if(!array_key_exists('name', $content))
+	    	throw new Exception('name must be specified');
 
 	    if(!array_key_exists('content_key', $content))
 	    	throw new Exception('content_key must be specified');
@@ -191,8 +230,8 @@ class Content_model extends CI_Model
 	    if(!array_key_exists('content_id', $content))
 	    	throw new Exception('content_id must be specified');
 
-	    if(!array_key_exists('title', $content))
-	    	throw new Exception('title must be specified');
+	    if(!array_key_exists('name', $content))
+	    	throw new Exception('name must be specified');
 	    	
 	    $this->db->flush_cache();
 	    	
@@ -237,8 +276,8 @@ class Content_model extends CI_Model
 	    
 	    $this->db->set('last_modified', date('Y-m-d H:i:s', now()));
 	    
-	    if(array_key_exists('title', $content))
-	    	$this->db->set('title', $content['title']);
+	    if(array_key_exists('name', $content))
+	    	$this->db->set('name', $content['name']);
 	    
 	    if(array_key_exists('description', $content))
 		    $this->db->set('description', $content['description']);

@@ -478,3 +478,8 @@ body {
 .gmnoprint img {
     max-width: none; 
 }
+
+.n-file-browser {
+
+	z-index: 100000;
+}

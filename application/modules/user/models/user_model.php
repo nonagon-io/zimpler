@@ -2,7 +2,7 @@
 /**
  * Zimpler
  *
- * An open source CMS for PHP 5.1.6 or newer
+ * An open source CMS for PHP 5.4 or newer
  *
  * @package		Zimpler
  * @author		Chonnarong Hanyawongse

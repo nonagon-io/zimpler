@@ -23,7 +23,6 @@ class Page_model extends CI_Model
 	    if(!$this->db->table_exists('page'))
 	    {
 		    $this->dbforge->add_field('page_id			int				NOT NULL	AUTO_INCREMENT');
-		    $this->dbforge->add_field('page_key 		varchar(150)	NOT NULL');
 		    $this->dbforge->add_field('design_id		int 			NULL 		default null');
 		    $this->dbforge->add_field('`group` 			varchar(80)		NULL 		default null');
 		    $this->dbforge->add_field('description 		varchar(250)	NULL 		default null');
@@ -39,7 +38,7 @@ class Page_model extends CI_Model
 	    {
 		    $this->dbforge->add_field('page_header_id	int				NOT NULL	AUTO_INCREMENT');
 		    $this->dbforge->add_field('page_id			int				NOT NULL');
-		    $this->dbforge->add_field('culture			varchar(5)		NOT NULL');
+		    $this->dbforge->add_field('culture			varchar(5)		NOT NULL 	default \'en-us\'');
 		    $this->dbforge->add_field('title 			varchar(255)	NOT NULL');
 		    $this->dbforge->add_key('page_header_id', TRUE);
 			$this->dbforge->create_table('page_header', TRUE);
@@ -50,7 +49,7 @@ class Page_model extends CI_Model
 	    {
 		    $this->dbforge->add_field('page_meta_id		int				NOT NULL	AUTO_INCREMENT');
 		    $this->dbforge->add_field('page_id			int				NOT NULL');
-		    $this->dbforge->add_field('culture			varchar(5)		NOT NULL');
+		    $this->dbforge->add_field('culture			varchar(5)		NOT NULL  	default \'en-us\'');
 		    $this->dbforge->add_field('name 			varchar(30)		NOT NULL');
 		    $this->dbforge->add_field('content 			varchar(255)	NOT NULL');
 		    $this->dbforge->add_key('page_meta_id', TRUE);

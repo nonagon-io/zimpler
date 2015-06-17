@@ -1,8 +1,6 @@
-angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate', 'ui.codemirror'])
+angular.module("admin-cms-designs", ["common", "generic-modal", "admin", "ngAnimate", "ui.codemirror"])
 
 .controller("CmsDesignController", 
-	['$scope', '$rootScope', '$window', '$location', '$timeout', 
-		'submitForm', 'checkFormDirty', 'propertiesPanel', 'httpEx', 'modal', 'keydownHandlers',
 	function($scope, $rootScope, $window, $location, $timeout, 
 				submitForm, checkFormDirty, propertiesPanel, httpEx, modal, keydownHandlers) {
 
@@ -31,7 +29,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 				}
 			});
 
-		} else if($event.keyCode === 70) { // "f"
+		} else if($event.keyCode === 70 && $event.ctrlKey) { // "f"
 
 			if($scope.currentView == "designer") {
 
@@ -39,6 +37,7 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 					$scope.toggle("fullScreen");
 				});
 			}
+
 		} else if($event.shiftKey && $event.keyCode == 187) { // "+"
 
 			if($scope.currentView == "designer") {
@@ -662,4 +661,4 @@ angular.module("cms-siteinfo", ['common', 'generic-modal', 'admin', 'ngAnimate',
 			}
 		}
 	};
-}]);
+});

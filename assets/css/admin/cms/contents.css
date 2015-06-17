@@ -1,0 +1,28 @@
+.n-content-list {
+
+	position: absolute;
+	top: 51px !important;
+	left: 0px;
+	right: 0px;
+	bottom: 50px;
+	background: white !important;
+	overflow: auto;
+	border-bottom: 1px solid #ccc;
+}
+
+.mce-container-body.mce-abs-layout {
+
+	overflow: visible !important;
+}
+
+.mce-textbox:focus, .mce-textbox.mce-focus {
+
+	border-color: #99baca !important;
+	outline: 0 !important;
+	background: #f5fbfe !important;
+	color: #444444 !important;
+
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	box-shadow: none !important;
+}
