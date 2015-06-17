@@ -2,6 +2,7 @@
 	"require": {
 		"ext-mysql": "*",
 		"athari/yalinqo": "1.*",
-		"jonnyw/php-phantomjs": "3.*"
+		"jonnyw/php-phantomjs": "3.*",
+		"aws/aws-sdk-php": "2.*"
 	}
 }

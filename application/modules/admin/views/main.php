@@ -101,7 +101,7 @@ function page_title()
 			</div>
 		</div>
 	</div>
-	<?php $this->load->view("modal") ?>
+	<?php $this->load->view('modal') ?>
 </div>
 
 <script>
@@ -114,7 +114,9 @@ function page_title()
 		<div class="uk-modal-header">
 			<h2>File Manager</h2>
 		</div>
+		<?php $this->load->view('file_manager') ?>
 		<div class="uk-modal-footer">
+			
 		</div>
 	</div>
 </div>

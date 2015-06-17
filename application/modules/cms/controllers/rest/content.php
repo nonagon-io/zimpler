@@ -20,13 +20,13 @@ use \YaLinqo\Enumerable;
 // ------------------------------------------------------------------------
 
 /**
- * Zimpler CMS Navigation REST Controller Class
+ * Zimpler CMS Content REST Controller Class
  *
  * @package		Zimpler
  * @subpackage	CMS Module
  * @category	Libraries
  * @author		Chonnarong Hanyawongse
- * @link		http://zimpler.com/user_guide/cms/rest/navigation.html
+ * @link		http://zimpler.com/user_guide/cms/rest/content.html
  */
 
 class Content extends REST_Controller {
@@ -37,6 +37,11 @@ class Content extends REST_Controller {
         
         $this->load->model('content_model');
         $this->load->library('user/ion_auth');
+
+		if(!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		{
+			show_404();
+		}
     }
     
     function index_get()

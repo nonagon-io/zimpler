@@ -78,6 +78,7 @@
 	<script type="text/javascript" src="<?php echo base_url('js/lib/ui-tinymce.min.js')?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('js/common.js')?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('js/app/modal.js')?>"></script>
+	<script type="text/javascript" src="<?php echo base_url('js/app/file.js')?>"></script>
 	<script type="text/javascript" src="<?php echo base_url('js/app/admin.js')?>"></script>
 	
 	<?php foreach($js_include_list as $item) : ?>
