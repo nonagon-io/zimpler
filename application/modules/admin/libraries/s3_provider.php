@@ -56,7 +56,11 @@ class S3_Provider {
 		$result = array();
 
 		$params = array(
-            'Bucket' => $this->bucket
+            'Bucket' => $this->bucket,
+            'Prefix' => '',
+            'Delimiter' => '/',
+            'EncodingType' => 'url',
+            'Marker' => ''
         );
 
         if($path)
@@ -64,19 +68,36 @@ class S3_Provider {
 			$params['Prefix'] = $path;
         }
 
-        $iterator = $this->client->getIterator('ListObjects', $params);
+        $iterator = $this->client->getIterator('ListObjects', $params, array(
+        	'return_prefixes' => TRUE
+        ));
 
         foreach ($iterator as $object) {
 
-        	$item = array(
+        	if(!array_key_exists('Prefix', $object))
+        	{
+	        	$item = array(
 
-        		'name' => $object['Key'],
-        		'size' => $object['Size'],
-        		'modified' => $object['LastModified'],
-        		'url' => $this->client->getObjectUrl($this->bucket, $object['Key'])
-        	);
+	        		'name' => $object['Key'],
+	        		'size' => $object['Size'],
+	        		'modified' => $object['LastModified'],
+	        		'url' => $this->client->getObjectUrl($this->bucket, $object['Key']),
+	        		'type' => 'file'
+	        	);
+	        }
+	        else
+	        {
+	        	$item = array(
 
-            array_push($result, $item);
+	        		'name' => $object['Prefix'],
+	        		'size' => NULL,
+	        		'modified' => NULL,
+	        		'url' => NULL,
+	        		'type' => 'folder'
+	        	);
+	        }
+
+	        array_push($result, $item);
         }
 
         return $result;

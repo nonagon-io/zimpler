@@ -51,6 +51,7 @@ module.exports = function(grunt) {
 						'bower_components/uikit/js/components/notify.min.js',
 						'bower_components/uikit/js/components/tooltip.min.js',
 						'bower_components/uikit/js/components/pagination.min.js',
+						'bower_components/uikit/js/components/grid.min.js',
 						'bower_components/javascript-detect-element-resize/jquery.resize.js'],
 						
 					'js/lib/libphonenumber.js': [

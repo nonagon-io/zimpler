@@ -1,7 +1,7 @@
 angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin-cms", "ngAnimate"])
 
 .controller("CmsContentController", 
-	function($scope, $rootScope, $locale, $location, httpEx, 
+	function($scope, $rootScope, $locale, $location, $timeout, httpEx, 
 			 submitForm, propertiesPanel, cmsConfirmPublish, cmsPublish, 
 			 cmsNewRev, cmsConfirmDelRev, cmsDelRev) {
 
@@ -22,6 +22,18 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 			var modal = UIkit.modal(".n-file-browser");
 			modal.show();
+
+			$timeout(function() {
+				var elements = $(".n-file-browser [data-uk-grid]").get();
+
+				for(var i=0; i<elements.length; i++) {
+
+					var element = elements[i];
+					var grid = UIkit.grid(element, { gutter: 20 });
+					grid.updateLayout();
+				}
+
+			}, 10);
 
 		} : null,
 		inline: false,
@@ -57,13 +69,6 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 			success(function(data, status, headers, config) {
 
 				$scope.list = data;
-
-				UIkit.pagination($(".uk-pagination").get()[0], {
-
-					items: data.total,
-					itemsOnPage: pageSize,
-					currentPage: Math.floor(data.from / params.take) + 1
-				});
 
 				$scope.isRefreshing = false;
 			});

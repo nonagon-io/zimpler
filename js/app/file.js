@@ -3,14 +3,17 @@ angular.module('file-manager', ['generic-modal', 'common'])
 .controller('FileManagerController', function($scope, $locale, modal, httpEx) {
 
 	$scope.baseUrl = '';
-	$scope.list = null;
+	$scope.files = null;
+	$scope.folders = null;
 
 	$scope.refresh = function() {
 
 		httpEx($scope, "GET", $scope.baseUrl + 'admin/rest/file/list', {}).
 			success(function(data, status, headers, config) {
 
-				$scope.list = data.list;
+				$scope.files = _.filter(data, function(item) { return item.type == "file" });
+				$scope.folders = _.filter(data, function(item) { return item.type == "folder" });
+
 			}).
 			error(function(data, status, headers, config) {
 
