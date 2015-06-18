@@ -475,6 +475,12 @@ body {
 	z-index: 1000;
 }
 
+.n-progress-mask {
+
+	background: rgba(255,255,255, 0.5);
+	z-index: 1000;
+}
+
 .gmnoprint img {
     max-width: none; 
 }
@@ -482,4 +488,26 @@ body {
 .n-file-browser {
 
 	z-index: 100000;
+}
+
+.n-file-browser .uk-modal-dialog .n-modal-body {
+
+	position: relative;
+	height: 400px;
+}
+
+.n-folder-item .uk-panel-box:hover, .n-file-item .uk-panel-box:hover {
+
+	background: #F7E8D4;
+	cursor: pointer;
+}
+
+.n-file-item.uk-active .uk-panel-box {
+
+	background: #35B3EE;
+}
+
+.n-file-item.uk-active .uk-panel-box [class*='uk-text'] {
+
+	color: white !important;
 }

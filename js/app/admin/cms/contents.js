@@ -3,7 +3,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 .controller("CmsContentController", 
 	function($scope, $rootScope, $locale, $location, $timeout, httpEx, 
 			 submitForm, propertiesPanel, cmsConfirmPublish, cmsPublish, 
-			 cmsNewRev, cmsConfirmDelRev, cmsDelRev) {
+			 cmsNewRev, cmsConfirmDelRev, cmsDelRev, fileManagerPopup) {
 
 	$scope.list = null;
 	$scope.selectedItem = null;
@@ -12,31 +12,35 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 	$scope.isRefreshing = false;
 	$scope.isKeywordActive = false;
 	$scope.currentCulture = $location.search().culture || "en-us";
+	$scope.fileManagerPopup = fileManagerPopup;
 
 	$scope.tinymceOptions = {
 
 		onChange: function(e) {
 			// put logic here for keypress and cut/paste changes
 		},
-		file_browser_callback: ($scope.fileManager != "disable") ? function() {
+		file_browser_callback: ($scope.fileManagerSetting != "disable") ? 
+			function(fieldName, url, type, win) {
 
-			var modal = UIkit.modal(".n-file-browser");
-			modal.show();
+				var fileManagerCommitCallback = function(fileItem) {
 
-			$timeout(function() {
-				var elements = $(".n-file-browser [data-uk-grid]").get();
+					var targetField = win.document.getElementById(fieldName);
+					var container = $(targetField).parents(".mce-container-body");
 
-				for(var i=0; i<elements.length; i++) {
+					var widthElem = container.find("input[aria-label='Width']");
+					var heightElem = container.find("input[aria-label='Height']");
 
-					var element = elements[i];
-					var grid = UIkit.grid(element, { gutter: 20 });
-					grid.updateLayout();
+					widthElem.val("80%");
+
+					targetField.value = fileItem.url;
+					
 				}
 
-			}, 10);
+				fileManagerPopup.open(fileManagerCommitCallback);
 
-		} : null,
+			} : null,
 		inline: false,
+		height: 300,
 		menubar: false,
 		plugins: 'advlist autolink link image lists charmap',
 		skin: 'lightgray',

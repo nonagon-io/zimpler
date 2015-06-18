@@ -44,7 +44,7 @@ function page_title()
 	
 ?>
 
-<div class="uk-grid uk-grid-preserve uk-grid-small uk-height-1-1" ng-controller="AdminController">
+<div class="uk-grid uk-grid-preserve uk-grid-small uk-height-1-1">
 	<div class="uk-width-1-10 uk-width-large-1-5 uk-height-1-1">
 		<div class="uk-panel uk-height-1-1 n-menu-panel" data-uk-sticky="">
 		    <div class="n-common">
@@ -105,18 +105,36 @@ function page_title()
 </div>
 
 <script>
-	window._fileManager = "<?= $this->setting_model->get("file_manager"); ?>";
+	window._fileManagerSetting = "<?= $this->setting_model->get("file_manager"); ?>";
 </script>
 
 <?php if($this->setting_model->get('file_manager') != 'disable') : ?>
 <div class="n-file-browser uk-modal">
 	<div class="uk-modal-dialog uk-modal-dialog-large">
+		<div class="uk-close"></div>
 		<div class="uk-modal-header">
 			<h2>File Manager</h2>
 		</div>
-		<?php $this->load->view('file_manager') ?>
+		<div class="n-modal-body">
+			<?php $this->load->view('file_manager') ?>
+		</div>
 		<div class="uk-modal-footer">
-			
+			<div class="uk-grid uk-grid-collapse">
+				<div class="uk-width-1-2">
+				</div>
+				<div class="uk-width-1-2 uk-text-right">
+					<button class="uk-button uk-button-primary"
+							ng-click="fileManagerPopup.commit()"
+							ng-disabled="!fileManager.scope.selectedItem"
+							style="width: 80px">
+						OK
+					</button>
+					<button class="uk-button" ng-click="fileManagerPopup.close()"
+							style="width: 80px">
+						Cancel
+					</button>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

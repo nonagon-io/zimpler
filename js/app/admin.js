@@ -1,4 +1,4 @@
-angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
+angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate'])
 
 .factory("keydownHandlers", function() {
 
@@ -210,14 +210,45 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 	
 }])
 
-.controller('AdminController', ['$scope', '$locale', 'keydownHandlers', 
-	function($scope, $locale, keydownHandlers) {
+.factory('fileManagerPopup', function(fileManager) {
+
+	return {
+
+		open: function(callback) {
+
+			var modal = UIkit.modal(".n-file-browser");
+			modal.show();
+
+			fileManager.updateLayout();
+
+			this._callback = callback;
+		},
+
+		close: function() {
+
+			var modal = UIkit.modal(".n-file-browser");
+			modal.hide();
+		},
+
+		commit: function() {
+
+			if(this._callback)
+				this._callback(fileManager.scope.selectedItem);
+
+			this.close();
+		}
+	}
+})
+
+.controller('AdminController', function($scope, $locale, keydownHandlers, fileManager, fileManagerPopup) {
 	
 	var mainContentBody = $(".n-body .n-content");
 
 	$scope.mainContentBodyScrollTop = 0;
 	$scope.mainContentBodyScrollMaxReached = false;
-	$scope.fileManager = window._fileManager;
+	$scope.fileManagerSetting = window._fileManagerSetting;
+	$scope.fileManager = fileManager;
+	$scope.fileManagerPopup = fileManagerPopup;
 
 	$(".n-body .n-content").on("scroll", function() {
 		
@@ -273,4 +304,4 @@ angular.module("admin", ['common', 'generic-modal', 'ngAnimate'])
 		    }
 		});
 	});
-}]);
+});
