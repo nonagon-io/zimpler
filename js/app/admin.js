@@ -1,4 +1,4 @@
-angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate'])
+angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate', 'ngFileUpload'])
 
 .factory("keydownHandlers", function() {
 

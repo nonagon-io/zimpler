@@ -109,33 +109,5 @@ function page_title()
 </script>
 
 <?php if($this->setting_model->get('file_manager') != 'disable') : ?>
-<div class="n-file-browser uk-modal">
-	<div class="uk-modal-dialog uk-modal-dialog-large">
-		<div class="uk-close"></div>
-		<div class="uk-modal-header">
-			<h2>File Manager</h2>
-		</div>
-		<div class="n-modal-body">
-			<?php $this->load->view('file_manager') ?>
-		</div>
-		<div class="uk-modal-footer">
-			<div class="uk-grid uk-grid-collapse">
-				<div class="uk-width-1-2">
-				</div>
-				<div class="uk-width-1-2 uk-text-right">
-					<button class="uk-button uk-button-primary"
-							ng-click="fileManagerPopup.commit()"
-							ng-disabled="!fileManager.scope.selectedItem"
-							style="width: 80px">
-						OK
-					</button>
-					<button class="uk-button" ng-click="fileManagerPopup.close()"
-							style="width: 80px">
-						Cancel
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+	<?php $this->load->view('file_manager_modal') ?>
 <?php endif ?>

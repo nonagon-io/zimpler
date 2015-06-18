@@ -494,6 +494,12 @@ body {
 
 	position: relative;
 	height: 400px;
+	margin: -15px -20px;
+}
+
+.n-file-browser .uk-modal-dialog .n-modal-body .n-file-manager .n-files-zone {
+
+	padding: 15px 20px;
 }
 
 .n-folder-item .uk-panel-box:hover, .n-file-item .uk-panel-box:hover {
@@ -510,4 +516,52 @@ body {
 .n-file-item.uk-active .uk-panel-box [class*='uk-text'] {
 
 	color: white !important;
+}
+
+.n-file-item img {
+
+	min-height: 120px;
+	max-height: 150px;
+}
+
+.n-file-item label, .n-folder-item label {
+
+	text-overflow: ellipsis;
+	overflow: hidden;
+	display: inline-block;
+	white-space: nowrap;
+	width: 100%;
+}
+
+.n-file-item.n-uploading img {
+
+	opacity: 0.5;
+}
+
+.n-drop-zone {
+
+	display: none;
+	background: rgba(255,255,255,0.9);
+	padding: 20px;
+}
+
+.n-drop-zone .n-decor {
+
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	right: 20px;
+	bottom: 20px;
+	border-radius: 5px;
+	border: 2px dashed #ddd;
+}
+
+.n-drop-zone .n-decor * {
+
+	pointer-events: none;
+}
+
+.n-file-drop-accept {
+
+	
 }

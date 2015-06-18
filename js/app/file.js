@@ -1,4 +1,4 @@
-angular.module('file-manager', ['generic-modal', 'common'])
+angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 
 .factory('fileManager', ['$q', '$sce', function($q, $sce) {
 
@@ -25,6 +25,11 @@ angular.module('file-manager', ['generic-modal', 'common'])
 	$scope.paths = [];
 	$scope.isRefreshing = false;
 	$scope.selectedItem = null;
+	$scope.upload = {
+
+		uploadList: [],
+		rejectedList: []
+	};
 
 	$scope.refresh = function(givenPath) {
 
@@ -87,7 +92,7 @@ angular.module('file-manager', ['generic-modal', 'common'])
 
 	$scope.preview = function(item) {
 
-		
+
 	}
 
 	$scope.updateLayout = function() {
@@ -104,4 +109,26 @@ angular.module('file-manager', ['generic-modal', 'common'])
 
 		}, 10);
 	}
+
+	$scope.$watch("upload.uploadList", function() {
+
+		$timeout(function() {
+			$scope.updateLayout();
+		}, 100);
+	})
+
+	var checkFileTransfer = function(e) {
+
+	    var dt = e.originalEvent.dataTransfer;
+	    if(dt.types != null && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : 
+	    	dt.types.contains('application/x-moz-file'))) {
+
+	        $(".n-drop-zone").show();
+	    }
+	};
+
+	$(".n-file-manager").on('dragover', checkFileTransfer);
+	$(".n-drop-zone").on("dragover", checkFileTransfer);
+	$(".n-drop-zone").on('dragleave', function(e) { $(".n-drop-zone").hide(); });
+	$(".n-drop-zone").on('drop', function(e) { $(".n-drop-zone").hide(); });
 });
