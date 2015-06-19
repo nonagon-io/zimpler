@@ -27,6 +27,7 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 	$scope.isRefreshing = false;
 	$scope.selectedItem = null;
 	$scope.upload = {};
+	$scope.initialized = false;
 
 	$scope.refresh = function(givenPath) {
 
@@ -57,7 +58,6 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 				$scope.updateLayout();
 				$scope.isRefreshing = false;
 				$scope.selectedItem = null;
-
 			}).
 			error(function(data, status, headers, config) {
 
@@ -85,7 +85,9 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 		});
 	}
 
-	$scope.deleteFolder = function(folderItem) {
+	$scope.deleteFolder = function($event, folderItem) {
+
+		$event.stopPropagation();
 
 		$scope.confirmDelete(folderItem, function() {
 
@@ -145,6 +147,8 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 				var grid = UIkit.grid(element, { gutter: 20, animation: false });
 				grid.updateLayout();
 			}
+
+			$scope.initialized = true;
 
 		}, 10);
 	}

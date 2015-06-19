@@ -108,6 +108,6 @@ function page_title()
 	window._fileManagerSetting = "<?= $this->setting_model->get("file_manager"); ?>";
 </script>
 
-<?php if($this->setting_model->get('file_manager') != 'disable') : ?>
-	<?php $this->load->view('file_manager_modal') ?>
+<?php if($this->setting_model->get('file/file_manager') != 'disable') : ?>
+	<?php $this->load->view('file/file_manager_modal') ?>
 <?php endif ?>
