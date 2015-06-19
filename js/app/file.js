@@ -22,14 +22,11 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 	$scope.baseUrl = '';
 	$scope.files = null;
 	$scope.folders = null;
+	$scope.path = "";
 	$scope.paths = [];
 	$scope.isRefreshing = false;
 	$scope.selectedItem = null;
-	$scope.upload = {
-
-		uploadList: [],
-		rejectedList: []
-	};
+	$scope.upload = {};
 
 	$scope.refresh = function(givenPath) {
 
@@ -37,7 +34,7 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 
 		var params = {
 
-			path: givenPath ? givenPath : $scope.paths.join("")
+			path: givenPath ? givenPath.join("") : $scope.paths.join("")
 		}
 
 		httpEx($scope, "GET", $scope.baseUrl + 'admin/rest/file/list', params).
@@ -51,8 +48,11 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 						return item.type == "folder"; 
 					});
 
-				if(givenPath)
+				if(givenPath) {
+
 					$scope.paths = givenPath;
+					$scope.path = $scope.paths.join("");
+				}
 
 				$scope.updateLayout();
 				$scope.isRefreshing = false;
@@ -71,10 +71,49 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 			});
 	};
 
+	$scope.deleteUpload = function(uploadItem) {
+
+		$scope.confirmDelete(uploadItem, function() {
+
+		});
+	}
+
+	$scope.deleteFile = function(fileItem) {
+
+		$scope.confirmDelete(fileItem, function() {
+
+		});
+	}
+
+	$scope.deleteFolder = function(folderItem) {
+
+		$scope.confirmDelete(folderItem, function() {
+
+		});
+	}
+
+	$scope.confirmDelete = function(item, proceed) {
+
+		modal.show(
+			"Are you sure you want to delete \"" + item.name + "\"?<br/>", 
+			"Confirm deletion", {
+				
+				danger: true,
+				bgclose: true,
+				icon: "exclamation-circle"
+			})
+			.ok(function() {
+				
+				proceed();
+			});
+	}
+
 	$scope.drillDown = function(folder) {
 
-		$scope.paths.push(folder.name);
-		$scope.refresh();
+		var paths = angular.copy($scope.paths);
+		paths.push(folder.name);
+
+		$scope.refresh(paths);
 	};
 
 	$scope.drillUp = function() {
@@ -110,7 +149,14 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 		}, 10);
 	}
 
-	$scope.$watch("upload.uploadList", function() {
+	$scope.$watch(function() { 
+
+		if($scope.upload[$scope.path])
+			return $scope.upload[$scope.path].uploadList;
+
+		return null;
+
+	}, function() {
 
 		$timeout(function() {
 			$scope.updateLayout();

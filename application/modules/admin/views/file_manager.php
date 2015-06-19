@@ -5,8 +5,8 @@
 	<div class="n-files-zone n-abs-fit uk-overflow-container">
 		<div data-uk-grid="{gutter: 20}" 
 			 class="n-folder-list uk-grid-width-1-1 uk-grid-width-small-1-3 uk-grid-width-medium-1-5 uk-grid-width-large-1-8">
-			<div class="n-folder-item" ng-click="drillUp()" ng-if="paths.length > 0">
-				<div class="uk-panel-box uk-panel-box-primary uk-text-center">
+			<div class="n-folder-item" ng-if="paths.length > 0">
+				<div class="uk-panel-box uk-panel-box-primary uk-text-center" ng-click="drillUp()">
 					<div class="uk-text-center">
 						<i class="uk-icon-folder-open uk-icon-large"></i>
 					</div>
@@ -15,8 +15,13 @@
 					</div>
 				</div>
 			</div>
-			<div ng-repeat="item in folders" class="n-folder-item" ng-click="drillDown(item)">
-				<div class="uk-panel-box uk-panel-box-primary">
+			<div ng-repeat="item in folders" class="n-folder-item">
+				<div class="uk-panel-box uk-panel-box-primary" ng-click="drillDown(item)">
+					<?php if(isset($item_deletable) && $item_deletable) : ?>
+					<a class="n-delete uk-button uk-button-danger" ng-click="deleteFolder(item)">
+						<i class="uk-icon-trash"></i>
+					</a>
+					<?php endif ?>
 					<div class="uk-text-center">
 						<i class="uk-icon-folder uk-icon-large"></i>
 					</div>
@@ -27,13 +32,18 @@
 			</div>
 		</div>
 		<hr/>
-		<div ng-if="upload.uploadList.length">
+		<div ng-if="upload[path].uploadList.length">
 			<h2 class="uk-text-muted"><i>Uploading...</i></h2>
 			<div data-uk-grid="{gutter: 20}" 
 				 class="n-upload-list uk-grid-width-1-1 uk-grid-width-small-1-3 uk-grid-width-medium-1-5 uk-grid-width-large-1-8">
-				<div ng-repeat="item in upload.uploadList" class="n-file-item n-uploading" ng-click="select(item)"
+				<div ng-repeat="item in upload[path].uploadList" class="n-upload-item n-uploading"
 					 ng-class="{'uk-active': selectedItem == item}">
-					<div class="uk-panel-box uk-text-center">
+					<div class="uk-panel-box uk-text-center" ng-click="select(item)">
+						<?php if(isset($item_deletable) && $item_deletable) : ?>
+						<a class="n-delete uk-button uk-button-danger" ng-click="deleteUpload(item)">
+							<i class="uk-icon-trash"></i>
+						</a>
+						<?php endif ?>
 						<img ngf-src="item"
 						     ngf-default-src="'placeholder.jpg'"
 						     ngf-accept="'image/*'" /> 
@@ -53,9 +63,13 @@
 		</div>
 		<div data-uk-grid="{gutter: 20}" 
 			 class="n-file-list uk-grid-width-1-1 uk-grid-width-small-1-3 uk-grid-width-medium-1-5 uk-grid-width-large-1-8">
-			<div ng-repeat="item in files" class="n-file-item" ng-click="select(item)" ng-dblclick="preview(item)"
-				 ng-class="{'uk-active': selectedItem == item}">
-				<div class="uk-panel-box uk-text-center">
+			<div ng-repeat="item in files" class="n-file-item" ng-class="{'uk-active': selectedItem == item}">
+				<div class="uk-panel-box uk-text-center" ng-click="select(item)" ng-dblclick="preview(item)">
+					<?php if(isset($item_deletable) && $item_deletable) : ?>
+					<a class="n-delete uk-button uk-button-danger" ng-click="deleteFile(item)">
+						<i class="uk-icon-trash"></i>
+					</a>
+					<?php endif ?>
 					<img ng-src="{{item.url}}" />
 					<div class="uk-margin-small-top uk-text-small uk-text-primary uk-text-center">
 						<label>{{item.name}}</label>
@@ -80,8 +94,8 @@
 
 	<div class="n-drop-zone n-abs-fit"
 		 ngf-drop="true"
-	     ng-model="upload.uploadList"
-	     ng-model-rejected="upload.rejectedList"
+	     ng-model="upload[path].uploadList"
+	     ng-model-rejected="upload[path].rejectedList"
 	     ngf-change="fileDropped($files, $event, $rejectedFiles)"
 	     ngf-multiple="true"
 	     ngf-capture="'camera'"

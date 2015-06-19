@@ -502,10 +502,19 @@ body {
 	padding: 15px 20px;
 }
 
-.n-folder-item .uk-panel-box:hover, .n-file-item .uk-panel-box:hover {
+.n-folder-item .uk-panel-box:hover, 
+.n-upload-item .uk-panel-box:hover, 
+.n-file-item .uk-panel-box:hover {
 
 	background: #F7E8D4;
 	cursor: pointer;
+}
+
+.n-folder-item .uk-panel-box:hover .n-delete, 
+.n-upload-item .uk-panel-box:hover .n-delete, 
+.n-file-item .uk-panel-box:hover .n-delete {
+
+	opacity: 1;
 }
 
 .n-file-item.uk-active .uk-panel-box {
@@ -518,19 +527,37 @@ body {
 	color: white !important;
 }
 
-.n-file-item img {
+.n-file-item img,
+.n-upload-item img {
 
 	min-height: 120px;
 	max-height: 150px;
 }
 
-.n-file-item label, .n-folder-item label {
+.n-file-item label, 
+.n-upload-item label,
+.n-folder-item label {
 
 	text-overflow: ellipsis;
 	overflow: hidden;
 	display: inline-block;
 	white-space: nowrap;
 	width: 100%;
+}
+
+.n-file-item .n-delete, 
+.n-upload-item .n-delete, 
+.n-folder-item .n-delete {
+
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	opacity: 0;
+
+    -webkit-transition: opacity 0.3s ease-in-out;
+    -moz-transition: opacity 0.3s ease-in-out;
+    -o-transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
 }
 
 .n-file-item.n-uploading img {
