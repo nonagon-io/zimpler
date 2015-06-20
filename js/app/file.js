@@ -38,7 +38,7 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 			path: givenPath ? givenPath.join("") : $scope.paths.join("")
 		}
 
-		httpEx($scope, "GET", $scope.baseUrl + 'admin/rest/file/list', params).
+		httpEx($scope, "GET", $scope.baseUrl + 'file/rest/file/list', params).
 			success(function(data, status, headers, config) {
 
 				$scope.files = _.filter(data, function(item) { 
