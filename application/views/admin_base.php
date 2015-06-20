@@ -63,7 +63,8 @@
 	
 	<base href="<?php echo current_url() ?>/" />
 </head>
-<body class="uk-height-1-1" ng-app="root" ng-controller="AdminController">
+<body class="uk-height-1-1" ng-app="root" ng-controller="AdminController"
+	  ng-init="baseUrl = '<?= base_url('') ?>'">
 	
 	<?php $this->load->view("admin/header") ?>
 

@@ -1,6 +1,5 @@
-<div class="n-file-manager n-abs-fit" 
-	 ng-controller="FileManagerController"
-	 ng-init="baseUrl = '<?= base_url(''); ?>'; refresh();">
+<div class="n-file-manager n-abs-fit" ng-controller="FileManagerController"
+	 ng-init="refresh();">
 
 	<div class="ng-hide" ng-show="initialized">
 		<div class="n-files-zone n-abs-fit uk-overflow-container">

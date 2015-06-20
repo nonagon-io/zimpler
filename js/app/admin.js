@@ -240,10 +240,11 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 	}
 })
 
-.controller('AdminController', function($scope, $locale, keydownHandlers, fileManager, fileManagerPopup) {
+.controller('AdminController', function($scope, $locale, $interval, $http, keydownHandlers, fileManager, fileManagerPopup) {
 	
 	var mainContentBody = $(".n-body .n-content");
 
+	$scope.baseUrl = null;
 	$scope.mainContentBodyScrollTop = 0;
 	$scope.mainContentBodyScrollMaxReached = false;
 	$scope.fileManagerSetting = window._fileManagerSetting;
@@ -304,4 +305,13 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 		    }
 		});
 	});
+
+	$interval(function() {
+
+		$http({
+			method: "GET", 
+			url: $scope.baseUrl + "admin/rest/checkin"
+		});
+
+	}, 180000);
 });

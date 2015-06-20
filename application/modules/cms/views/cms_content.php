@@ -1,6 +1,4 @@
-<div class="n-content n-abs-fit uk-form" 
-	 ng-controller="CmsContentController" 
-	 ng-init="baseUrl = '<?= base_url() ?>';">
+<div class="n-content n-abs-fit uk-form" ng-controller="CmsContentController">
 	<div class="n-options-header" 
 		 ng-class="{'n-drop-shadow': mainContentBodyScrollTop > 0}">
 		<div class="uk-grid uk-grid-collapse">

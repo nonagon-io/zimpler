@@ -19,7 +19,6 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 
 	fileManager.scope = $scope;
 
-	$scope.baseUrl = '';
 	$scope.files = null;
 	$scope.folders = null;
 	$scope.path = "";
