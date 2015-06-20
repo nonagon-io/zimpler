@@ -245,6 +245,7 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 	var mainContentBody = $(".n-body .n-content");
 
 	$scope.baseUrl = null;
+	$scope.csrf = null;
 	$scope.mainContentBodyScrollTop = 0;
 	$scope.mainContentBodyScrollMaxReached = false;
 	$scope.fileManagerSetting = window._fileManagerSetting;

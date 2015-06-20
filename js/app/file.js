@@ -15,7 +15,7 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 
 }])
 
-.controller('FileManagerController', function($scope, $locale, $timeout, modal, httpEx, fileManager) {
+.controller('FileManagerController', function($scope, $locale, $timeout, modal, httpEx, fileManager, Upload) {
 
 	fileManager.scope = $scope;
 
@@ -164,6 +164,52 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 		$timeout(function() {
 			$scope.updateLayout();
 		}, 100);
+
+		var performUpload = function(uploadItem) {
+
+			uploadItem.uploader = Upload.upload({
+				url: $scope.baseUrl + "file/rest/file/upload",
+				file: uploadItem,
+				fileFormDataName: "file",
+				withCredentials: true,
+				fields: $scope.csrf,
+				sendFieldsAs: "form"
+			}).
+			progress(function(evt) {
+
+				var percent = parseInt(100.0 * evt.loaded / evt.total);
+				console.log('progress: ' + percent + '% file :'+ evt.config.file.name);
+				uploadItem.progressPercent = percent;
+
+			}).
+			success(function(data, status, headers, config) {
+
+				$scope.upload[$scope.path].uploadList = 
+					_.filter($scope.upload[$scope.path].uploadList,
+						function(item) {
+
+							return item != uploadItem;
+						});
+			}).
+			error(function(data, status, headers, config) {
+
+				uploadItem.uploadError = true;
+			});
+		};
+
+		if($scope.upload[$scope.path]) {
+
+			var list = $scope.upload[$scope.path].uploadList;
+			for(var i=0; i<list.length; i++) {
+
+				var uploadItem = list[i];
+
+				if(!uploadItem.uploader) {
+
+					performUpload(uploadItem);
+				}
+			}
+		}
 	})
 
 	var checkFileTransfer = function(e) {

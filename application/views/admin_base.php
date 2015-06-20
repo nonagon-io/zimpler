@@ -64,8 +64,19 @@
 	<base href="<?php echo current_url() ?>/" />
 </head>
 <body class="uk-height-1-1" ng-app="root" ng-controller="AdminController"
-	  ng-init="baseUrl = '<?= base_url('') ?>'">
-	
+	  ng-init="baseUrl = '<?= base_url('') ?>'; <?=
+
+		 'csrf = {' .
+			'\'' . $this->security->get_csrf_token_name() . '\': ' .
+			'\'' . $this->security->get_csrf_hash() . '\'' .
+			'}';
+	  ?>">
+
+	<?php if($this->config->item("csrf_protection")) : ?>
+	<div ng-init=''>
+	</div>
+	<?php endif ?>
+
 	<?php $this->load->view("admin/header") ?>
 
 	<?php echo $content; ?>

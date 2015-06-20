@@ -3,16 +3,8 @@
 	  name="<?= $panel_name ?>.propertiesForm" 
 	  ng-submit="<?= $panel_name ?>.save($event, {alsoClose:true})"
 	  action="<?= $action ?>" novalidate>
-	<input type="hidden" 
-		   name="<?php echo $this->security->get_csrf_token_name(); ?>" 
-		   value="<?php echo $this->security->get_csrf_hash();?>" />
 	<?php if($this->config->item("csrf_protection")) : ?>
 	<input type="hidden" 
-		   ng-init='<?php 
-			   echo 'csrf = {' .
-			   		'"' . $this->security->get_csrf_token_name() . '": ' .
-			   		'"' . $this->security->get_csrf_hash() . '"' .
-			   		'}'; ?>'
 		   name="<?php echo $this->security->get_csrf_token_name(); ?>" 
 		   value="<?php echo $this->security->get_csrf_hash();?>" />
 	<?php endif ?>

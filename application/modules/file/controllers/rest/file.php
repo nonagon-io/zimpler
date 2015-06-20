@@ -53,4 +53,9 @@ class File extends REST_Controller {
     		$this->response($result);
         }
     }
+
+    function upload_post()
+    {
+
+    }
 }
