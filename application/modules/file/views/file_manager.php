@@ -4,36 +4,38 @@
 
 	<div class="ng-hide" ng-show="initialized">
 		<div class="n-files-zone n-abs-fit uk-overflow-container">
-			<div data-uk-grid="{gutter: 20}" 
-				 class="n-folder-list uk-grid-width-1-1 uk-grid-width-small-1-3 
-				 		uk-grid-width-medium-1-5 uk-grid-width-large-1-8">
-				<div class="n-folder-item" ng-if="paths.length > 0">
-					<div class="uk-panel-box uk-panel-box-primary uk-text-center" ng-click="drillUp()">
-						<div class="uk-text-center">
-							<i class="uk-icon-folder-open uk-icon-large"></i>
+			<div ng-if="folders.length > 1 || paths.length > 0">
+				<div data-uk-grid="{gutter: 20}" 
+					 class="n-folder-list uk-grid-width-1-1 uk-grid-width-small-1-3 
+					 		uk-grid-width-medium-1-5 uk-grid-width-large-1-8">
+					<div class="n-folder-item" ng-if="paths.length > 0">
+						<div class="uk-panel-box uk-panel-box-primary uk-text-center" ng-click="drillUp()">
+							<div class="uk-text-center">
+								<i class="uk-icon-folder-open uk-icon-large"></i>
+							</div>
+							<div class="uk-margin-small-top uk-text-small uk-text-primary uk-text-center">
+								<label>..</label>
+							</div>
 						</div>
-						<div class="uk-margin-small-top uk-text-small uk-text-primary uk-text-center">
-							<label>..</label>
+					</div>
+					<div ng-repeat="item in folders" class="n-folder-item">
+						<div class="uk-panel-box uk-panel-box-primary" ng-click="drillDown(item)">
+							<?php if(isset($item_deletable) && $item_deletable) : ?>
+							<a class="n-delete uk-button uk-button-danger" ng-click="deleteFolder($event, item)">
+								<i class="uk-icon-trash"></i>
+							</a>
+							<?php endif ?>
+							<div class="uk-text-center">
+								<i class="uk-icon-folder uk-icon-large"></i>
+							</div>
+							<div class="uk-margin-small-top uk-text-small uk-text-primary uk-text-center">
+								<label>{{item.name}}</label>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div ng-repeat="item in folders" class="n-folder-item">
-					<div class="uk-panel-box uk-panel-box-primary" ng-click="drillDown(item)">
-						<?php if(isset($item_deletable) && $item_deletable) : ?>
-						<a class="n-delete uk-button uk-button-danger" ng-click="deleteFolder($event, item)">
-							<i class="uk-icon-trash"></i>
-						</a>
-						<?php endif ?>
-						<div class="uk-text-center">
-							<i class="uk-icon-folder uk-icon-large"></i>
-						</div>
-						<div class="uk-margin-small-top uk-text-small uk-text-primary uk-text-center">
-							<label>{{item.name}}</label>
-						</div>
-					</div>
-				</div>
+				<hr/>
 			</div>
-			<hr/>
 			<div ng-if="upload[path].uploadList.length">
 				<h2 class="uk-text-muted"><i>Uploading...</i></h2>
 				<div data-uk-grid="{gutter: 20}" 
@@ -122,6 +124,8 @@
 	     ngf-hide-on-drop-not-available="true">
 		<div class="n-decor uk-vertical-align uk-text-center">
 			<div class="uk-vertical-align-middle">
+				<i class="uk-icon-folder-open uk-icon-large"></i>
+				<h3>/{{path}}</h3>
 				<h1 class="uk-text-muted">Drop files here</h1>
 			</div>
 		</div>

@@ -33,6 +33,8 @@ body {
 	background: #333;
 	border-radius: 0px;
 	overflow: auto;
+
+	-webkit-overflow-scrolling: touch;
 }
 
 .n-menu-panel .n-common {
@@ -47,6 +49,8 @@ body {
 	bottom: 0px;
 	width: 100%;
 	overflow: auto;
+
+	-webkit-overflow-scrolling: touch;
 }
 
 .n-menu-panel ul li a > i {
@@ -106,6 +110,7 @@ body {
 	overflow-y: auto;
 	
 	border-bottom: 1px solid #ccc;
+	-webkit-overflow-scrolling: touch;
 }
 
 .n-view-host .n-body .n-list tr.uk-active {
@@ -300,6 +305,7 @@ body {
 	z-index: 0;
 	
 	padding: 70px 15px;
+	-webkit-overflow-scrolling: touch;
 }
 
 .n-properties-panel > .n-footer {
@@ -410,6 +416,8 @@ body {
     -moz-transition: bottom 0.3s ease-in-out;
     -o-transition: bottom 0.3s ease-in-out;
     transition: bottom 0.3s ease-in-out;
+
+    -webkit-overflow-scrolling: touch;
 }
 
 .n-content.n-semi-collapse {
@@ -482,7 +490,13 @@ body {
 }
 
 .gmnoprint img {
+
     max-width: none; 
+}
+
+.uk-overflow-container {
+
+	-webkit-overflow-scrolling: touch;
 }
 
 .n-file-browser {
@@ -502,12 +516,19 @@ body {
 	padding: 15px 20px;
 }
 
+.n-folder-item .uk-panel-box, 
+.n-file-browser .n-upload-item .uk-panel-box, 
+.n-file-browser .n-file-item .uk-panel-box {
+
+	cursor: pointer;
+}
+
+
 .n-folder-item .uk-panel-box:hover, 
-.n-upload-item .uk-panel-box:hover, 
-.n-file-item .uk-panel-box:hover {
+.n-file-browser .n-upload-item .uk-panel-box:hover, 
+.n-file-browser .n-file-item .uk-panel-box:hover {
 
 	background: #F7E8D4;
-	cursor: pointer;
 }
 
 .n-folder-item .uk-panel-box:hover .n-delete, 
