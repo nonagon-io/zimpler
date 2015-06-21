@@ -152,6 +152,14 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 		}, 10);
 	}
 
+	$scope.getProgressStyle = function(uploadItem) {
+
+		return {
+
+			width: uploadItem.progressPercent + "%"
+		};
+	}
+
 	$scope.$watch(function() { 
 
 		if($scope.upload[$scope.path])
@@ -167,18 +175,27 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 
 		var performUpload = function(uploadItem) {
 
+			var formData = null;
+
+			if($scope.csrf) {
+				formData = $scope.csrf;
+			} else {
+				formData = {};
+			}
+
+			formData.path = $scope.path;
+
 			uploadItem.uploader = Upload.upload({
 				url: $scope.baseUrl + "file/rest/file/upload",
 				file: uploadItem,
 				fileFormDataName: "file",
 				withCredentials: true,
-				fields: $scope.csrf,
+				fields: formData,
 				sendFieldsAs: "form"
 			}).
 			progress(function(evt) {
 
 				var percent = parseInt(100.0 * evt.loaded / evt.total);
-				console.log('progress: ' + percent + '% file :'+ evt.config.file.name);
 				uploadItem.progressPercent = percent;
 
 			}).
@@ -190,6 +207,8 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 
 							return item != uploadItem;
 						});
+
+				$scope.files.push(data);
 			}).
 			error(function(data, status, headers, config) {
 

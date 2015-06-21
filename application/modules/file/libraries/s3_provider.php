@@ -41,6 +41,8 @@ class S3_Provider {
         $CI =& get_instance();
 
         $CI->load->model('setting/setting_model');
+        $CI->load->helper('date');
+
         $this->bucket = $CI->setting_model->get('file_manager::s3::bucket');
 
         $this->client = S3Client::factory(array(
@@ -102,4 +104,33 @@ class S3_Provider {
 
         return $result;
 	}
+
+    public function store_file($path = '', $file)
+    {
+        $this->client->putObject(array(
+            'Bucket' => $this->bucket,
+            'Key' => $path . $file->file_name,
+            'SourceFile' => $file->full_path,
+            'ACL' => 'public-read'
+        ));
+
+        $this->client->waitUntil('ObjectExists', array(
+            'Bucket' => $this->bucket,
+            'Key' => $path . $file->file_name
+        ));
+
+        $time = time();
+        $last_modified = standard_date('DATE_ATOM', $time);
+
+        $item = array(
+
+            'name' => $file->file_name,
+            'size' => $file->file_size * 1024,
+            'modified' => $last_modified,
+            'url' => $this->client->getObjectUrl($this->bucket, $file->file_name),
+            'type' => 'file'
+        );
+
+        return $item;
+    }
 }

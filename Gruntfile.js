@@ -86,6 +86,7 @@ module.exports = function(grunt) {
 						'bower_components/uikit/css/components/htmleditor.almost-flat.min.css',
 						'bower_components/uikit/css/components/notify.almost-flat.min.css',
 						'bower_components/uikit/css/components/tooltip.almost-flat.min.css',
+						'bower_components/uikit/css/components/progress.almost-flat.min.css',
 						'bower_components/intl-tel-input/build/css/intlTelInput.css',
 						'bower_components/codemirror/lib/codemirror.css',
 						'bower_components/angular-gridster/dist/angular-gridster.min.css',

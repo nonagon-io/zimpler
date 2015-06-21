@@ -21,6 +21,18 @@ $config['site_title'] = 'Zimpler';
 */
 $config['allow_signup']	= 'false';
 
+/*
+|--------------------------------------------------------------------------
+| Upload temporary path.
+|--------------------------------------------------------------------------
+|
+| The temporary path the file will be uploaded into.
+|
+*/
+
+$config['upload_path'] = 'upload';
+
+
 // Skip CSRF on API request.
 if (isset($_SERVER["REQUEST_URI"]) &&
    (isset($_SERVER['REQUEST_METHOD']) && ($_SERVER['REQUEST_METHOD'] == 'POST') ))

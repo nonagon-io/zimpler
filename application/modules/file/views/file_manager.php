@@ -62,7 +62,9 @@
 								<label>{{item.size | filesize}}</label>
 							</div>
 							<div class="uk-margin-small-top uk-text-small uk-text-muted uk-text-center">
-								<label>{{item.lastModified | date : 'medium'}}</label>
+								<div class="uk-progress uk-progress-mini">
+								    <div class="uk-progress-bar" ng-style="getProgressStyle(item)"></div>
+								</div>
 							</div>
 						</div>
 					</div>

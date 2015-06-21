@@ -56,6 +56,40 @@ class File extends REST_Controller {
 
     function upload_post()
     {
+        $upload_path = './' . $this->config->item('upload_path');
 
+        if(!file_exists($upload_path))
+            mkdir($upload_path);
+
+        $config['upload_path'] = $upload_path;
+        $config['allowed_types'] = '*';
+        $config['max_size'] = '10000';
+        $config['max_width']  = '1024';
+        $config['max_height']  = '768';
+
+        $this->load->library('upload');
+        $this->upload->initialize($config);
+
+        $path = $this->post('path');
+
+        if (!$this->upload->do_upload('file'))
+        {
+            $error = array('error' => $this->upload->display_errors());
+            $this->response($error);
+        }
+        else
+        {
+            $data = $this->upload->data();
+            $file_manager = $this->setting_model->get('file_manager');
+
+            $result = null;
+
+            if($file_manager === 's3')
+            {
+                $result = $this->s3_provider->store_file($path, (object)$data);
+            }
+
+            $this->response($result);
+        }
     }
 }
