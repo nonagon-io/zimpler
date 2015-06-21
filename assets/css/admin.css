@@ -518,15 +518,14 @@ body {
 
 .n-folder-item .uk-panel-box, 
 .n-file-browser .n-upload-item .uk-panel-box, 
-.n-file-browser .n-file-item .uk-panel-box {
+.n-file-browser .n-file-item .uk-panel-box { 
 
 	cursor: pointer;
 }
 
-
 .n-folder-item .uk-panel-box:hover, 
-.n-file-browser .n-upload-item .uk-panel-box:hover, 
-.n-file-browser .n-file-item .uk-panel-box:hover {
+.n-file-browser .n-upload-item:not(.uk-active) .uk-panel-box:hover, 
+.n-file-browser .n-file-item:not(.uk-active) .uk-panel-box:hover {
 
 	background: #F7E8D4;
 }
@@ -538,9 +537,17 @@ body {
 	opacity: 1;
 }
 
+.n-folder-item .uk-panel-box *,
+.n-upload-item .uk-panel-box *,
+.n-file-item .uk-panel-box * {
+
+	pointer-events: none;
+}
+
 .n-file-item.uk-active .uk-panel-box {
 
 	background: #35B3EE;
+	cursor: default;
 }
 
 .n-file-item.uk-active .uk-panel-box [class*='uk-text'] {

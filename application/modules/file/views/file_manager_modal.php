@@ -5,7 +5,8 @@
 			<h2>File Manager</h2>
 		</div>
 		<div class="n-modal-body">
-			<?php $this->load->view('file_manager', array('item_deletable' => FALSE)) ?>
+			<?php $this->load->view('file_manager', 
+				array('item_deletable' => FALSE, 'item_selectable' => TRUE)) ?>
 		</div>
 		<div class="uk-modal-footer">
 			<div class="uk-grid uk-grid-collapse">
