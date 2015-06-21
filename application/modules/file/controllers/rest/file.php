@@ -56,6 +56,9 @@ class File extends REST_Controller {
 
     function upload_post()
     {
+        $this->load->library('upload');
+        $this->load->helper('file');
+
         $upload_path = './' . $this->config->item('upload_path');
 
         if(!file_exists($upload_path))
@@ -67,7 +70,6 @@ class File extends REST_Controller {
         $config['max_width']  = '1024';
         $config['max_height']  = '768';
 
-        $this->load->library('upload');
         $this->upload->initialize($config);
 
         $path = $this->post('path');
@@ -87,9 +89,45 @@ class File extends REST_Controller {
             if($file_manager === 's3')
             {
                 $result = $this->s3_provider->store_file($path, (object)$data);
+                delete_files($data['full_path']);
             }
 
             $this->response($result);
+        }
+    }
+
+    function index_delete()
+    {
+        $this->load->helper('file');
+
+        $upload_path = './' . $this->config->item('upload_path');
+        $file_name = $this->delete('file');
+        $temp_path = $upload_path . $file_name;
+
+        $path = $this->delete('path');
+
+        if(file_exists($temp_path))
+        {
+            delete_files($temp_path);
+        }
+
+        $file_manager = $this->setting_model->get('file_manager');
+
+        if($file_manager === 's3')
+        {
+            $this->s3_provider->delete_file($path, $file_name);
+        }
+    }
+
+    function folder_delete()
+    {
+        $path = $this->delete('path');
+
+        $file_manager = $this->setting_model->get('file_manager');
+
+        if($file_manager === 's3')
+        {
+            $this->s3_provider->delete_folder($path);
         }
     }
 }

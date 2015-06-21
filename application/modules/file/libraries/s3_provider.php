@@ -78,9 +78,15 @@ class S3_Provider {
 
         	if(!array_key_exists('Prefix', $object))
         	{
+                $keys = explode('/', $object['Key']);
+                $pure_key = $keys[count($keys) - 1];
+
+                if($pure_key == '')
+                    $pure_key = $object['Key'];
+
 	        	$item = array(
 
-	        		'name' => $object['Key'],
+	        		'name' => $pure_key,
 	        		'size' => $object['Size'],
 	        		'modified' => $object['LastModified'],
 	        		'url' => $this->client->getObjectUrl($this->bucket, $object['Key']),
@@ -89,9 +95,15 @@ class S3_Provider {
 	        }
 	        else
 	        {
+                $prefixes = explode('/', $object['Prefix']);
+                $last_prefix = $prefixes[count($prefixes) - 1];
+
+                if($last_prefix == '')
+                    $last_prefix = $object['Prefix'];
+
 	        	$item = array(
 
-	        		'name' => $object['Prefix'],
+	        		'name' => $last_prefix,
 	        		'size' => NULL,
 	        		'modified' => NULL,
 	        		'url' => NULL,
@@ -127,10 +139,23 @@ class S3_Provider {
             'name' => $file->file_name,
             'size' => $file->file_size * 1024,
             'modified' => $last_modified,
-            'url' => $this->client->getObjectUrl($this->bucket, $file->file_name),
+            'url' => $this->client->getObjectUrl($this->bucket, $path . $file->file_name),
             'type' => 'file'
         );
 
         return $item;
+    }
+
+    public function delete_file($path = '', $file_name)
+    {
+        $this->client->deleteObject(array(
+            'Bucket' => $this->bucket,
+            'Key' => $path . $file_name
+        ));
+    }
+
+    public function delete_folder($path)
+    {
+        $this->client->deleteMatchingObjects($this->bucket, $path);
     }
 }

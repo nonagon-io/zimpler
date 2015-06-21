@@ -81,6 +81,21 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 
 		$scope.confirmDelete(fileItem, function() {
 
+			var params = {
+
+				file: fileItem.name,
+				path: $scope.path
+			}
+
+			httpEx($scope, "DELETE", $scope.baseUrl + 'file/rest/file', params).
+				success(function(data, status, headers, config) {
+
+					$scope.files = _.filter($scope.files, function(item) { 
+							return item != fileItem
+						});
+
+					$scope.updateLayout();
+				});
 		});
 	}
 
@@ -90,6 +105,20 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 
 		$scope.confirmDelete(folderItem, function() {
 
+			var params = {
+
+				path: $scope.path + folderItem.name
+			}
+
+			httpEx($scope, "DELETE", $scope.baseUrl + 'file/rest/file/folder', params).
+				success(function(data, status, headers, config) {
+
+					$scope.folders = _.filter($scope.folders, function(item) { 
+							return item != folderItem
+						});
+
+					$scope.updateLayout();
+				});
 		});
 	}
 

@@ -537,9 +537,9 @@ body {
 	opacity: 1;
 }
 
-.n-folder-item .uk-panel-box *,
-.n-upload-item .uk-panel-box *,
-.n-file-item .uk-panel-box * {
+.n-folder-item .uk-panel-box *:not(a),
+.n-upload-item .uk-panel-box *:not(a),
+.n-file-item .uk-panel-box *:not(a) {
 
 	pointer-events: none;
 }
