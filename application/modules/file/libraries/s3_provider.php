@@ -64,14 +64,13 @@ class S3_Provider {
         }
     }
 
-	public function list_files($path = null)
+	public function list_files($path = null, $delimiter = '/', $resultAs = 'front')
 	{
 		$result = array();
 
 		$params = array(
             'Bucket' => $this->bucket,
             'Prefix' => '',
-            'Delimiter' => '/',
             'EncodingType' => 'url',
             'Marker' => ''
         );
@@ -79,6 +78,11 @@ class S3_Provider {
         if($path)
         {
 			$params['Prefix'] = $path . '/';
+        }
+
+        if($delimiter)
+        {
+            $params['Delimiter'] = $delimiter;
         }
 
         $iterator = $this->client->getIterator('ListObjects', $params, array(
@@ -122,7 +126,14 @@ class S3_Provider {
 	        	);
 	        }
 
-	        array_push($result, $item);
+            if($resultAs == 'front')
+            {
+                array_push($result, $item);
+            }
+            else
+            {
+                array_push($result, $object);
+            }
         }
 
         return $result;
@@ -219,5 +230,40 @@ class S3_Provider {
             'Bucket' => $this->bucket,
             'Key' => $path . '/' . $file
         ));
+    }
+
+    public function move_folder($path, $folder, $target)
+    {
+        //echo($target . PHP_EOL);
+
+        $sourceBucket = $this->bucket;
+
+        if($path)
+        {
+            $sourcePrefix = $path . '/' . $folder;
+        }
+        else
+        {
+            $sourcePrefix = $folder;
+        }
+
+        $files = $this->list_files($sourcePrefix, null, 'original');
+        foreach($files as $file)
+        {
+            $source = "{$sourceBucket}/{$file['Key']}";
+            $targetKey = $target . '/' . $folder . str_replace($sourcePrefix, '', $file['Key']);
+
+            // print_r($targetKey);
+            // echo(PHP_EOL);
+
+            $this->client->copyObject(array(
+                'Bucket'     => $this->bucket,
+                'Key'        => $targetKey,
+                'CopySource' => $source,
+                'ACL' => 'public-read'
+            ));
+        }
+
+        $this->delete_folder($sourcePrefix);
     }
 }

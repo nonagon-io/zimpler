@@ -127,12 +127,20 @@ class File extends REST_Controller {
         $path = $this->post('path');
         $file = $this->post('file');
         $target = $this->post('target');
+        $type = $this->post('type');
 
         $file_manager = $this->setting_model->get('file_manager');
 
         if($file_manager === 's3')
         {
-            $this->s3_provider->move_file($path, $file, $target);
+            if($type == 'file')
+            {
+                $this->s3_provider->move_file($path, $file, $target);
+            }
+            else
+            {
+                $this->s3_provider->move_folder($path, $file, $target);
+            }
         }
     }
 

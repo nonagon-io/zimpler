@@ -69,8 +69,13 @@
 					</div>
 					<div ng-repeat="item in folders" class="n-folder-item">
 						<div class="uk-panel-box uk-panel-box-primary" ng-click="drillDown(item)"
-							 data-drop="true" data-jqyoui-options="{hoverClass: 'n-droppable-hover'}" 
-							 jqyoui-droppable="{onDrop: 'onFileDrop(item)'}">
+							 data-drop="true" data-jqyoui-options="{hoverClass: 'n-droppable-hover', revert: 'invalid'}" 
+							 jqyoui-droppable="{onDrop: 'onFileDrop(item)'}"
+							 data-drag="true" 
+							 jqyoui-draggable="{animate: true, 
+							 					onStart: 'onDragStart(item)', 
+							 					onStop: 'onDragStop(item)'}">
+
 							<?php if(isset($item_deletable) && $item_deletable) : ?>
 							<a class="n-delete uk-button uk-button-danger" ng-click="deleteFolder($event, item)">
 								<i class="uk-icon-trash"></i>

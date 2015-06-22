@@ -170,6 +170,8 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 
 	$scope.drillDown = function(folder) {
 
+		if(folder == $scope.draggingItem) return;
+
 		var paths = angular.copy($scope.paths);
 		paths.push(folder.name);
 
@@ -357,7 +359,11 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 
 		if(target) {
 
-			targetPath = $scope.path + "/" + target.name;
+			if($scope.path) {
+				targetPath = $scope.path + "/" + target.name;
+			} else {
+				targetPath = target.name;
+			}
 
 		} else {
 
@@ -373,36 +379,42 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 					return item != $scope.draggingItem
 				});
 
-			var params = null;
+		} else {
 
-			if($scope.csrf) {
-				params = $scope.csrf;
-			} else {
-				params = {};
-			}
-
-			params.file = $scope.draggingItem.name;
-			params.path = $scope.path;
-			params.target = targetPath;
-
-			httpEx($scope, "POST", $scope.baseUrl + 'file/rest/file/move', params).
-				error(function(data, status, headers, config) {
-
-					var message = 
-						"Could not move the file due to the communication error.<br/>";
-
-					modal.show(message, "Communication Error", {
-
-						cancelTitle: null
-
-					}).ok(function() {
-
-						$scope.refresh();
-					});
+			$scope.folders = _.filter($scope.folders, function(item) { 
+					return item != $scope.draggingItem
 				});
 		}
 
-		console.debug(target, $scope.draggingItem);
+		var params = null;
+
+		if($scope.csrf) {
+			params = $scope.csrf;
+		} else {
+			params = {};
+		}
+
+		params.file = $scope.draggingItem.name;
+		params.path = $scope.path;
+		params.target = targetPath;
+		params.type = $scope.draggingItem.type;
+
+		httpEx($scope, "POST", $scope.baseUrl + 'file/rest/file/move', params).
+			error(function(data, status, headers, config) {
+
+				var message = 
+					"Could not move the " + $scope.draggingItem.type + 
+					" due to the communication error.<br/>";
+
+				modal.show(message, "Communication Error", {
+
+					cancelTitle: null
+
+				}).ok(function() {
+
+					$scope.refresh();
+				});
+			});
 
 		$scope.updateLayout();
 	}
