@@ -39,6 +39,17 @@
 
 		<div class="n-files-zone n-abs-fit uk-overflow-container">
 			<div ng-if="folders.length > 0 || paths.length > 0">
+				<ul class="uk-breadcrumb" ng-if="paths.length > 0">
+					<li><a ng-click="drillUp('/')">Root</a></li>
+					<li ng-repeat="name in paths">
+						<a ng-click='drillUp(paths.length - ($index + 1))' ng-if="!$last">
+							{{name}}
+						</a>
+						<span ng-if="$last">
+							{{name}}
+						</span>
+					</li>
+				</ul>
 				<div data-uk-grid="{gutter: 20}" 
 					 class="n-folder-list uk-grid-width-1-1 uk-grid-width-small-1-3 
 					 		uk-grid-width-medium-1-5 uk-grid-width-large-1-8">

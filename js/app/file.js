@@ -27,7 +27,7 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 	$scope.selectedItem = null;
 	$scope.upload = {};
 	$scope.initialized = false;
-	
+
 	$scope.newFolderName = '';
 	$scope.newFolderNameValid = false;
 	$scope.newFolderNameFresh = false;
@@ -171,10 +171,25 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 		$scope.refresh(paths);
 	};
 
-	$scope.drillUp = function() {
+	$scope.drillUp = function(arg) {
 
 		var paths = angular.copy($scope.paths);
-		paths.pop();
+
+		if(!arg) {
+
+			paths.pop();
+
+		} else if(arg == '/') {
+
+			paths = [];
+
+		} else if(!isNaN(arg)) {
+
+			for(var i=0; i<arg; i++) {
+
+				paths.pop();
+			}
+		}
 
 		$scope.refresh(paths);
 	}
