@@ -112,16 +112,6 @@
 	width: 40px;
 }
 
-.n-tool-button {
-
-	width: 40px;
-}
-
-.n-tool-button.uk-active {
-
-	background: #fffbe8;
-}
-
 .n-device-preview {
 
 	-webkit-transition: all .2s ease-out;

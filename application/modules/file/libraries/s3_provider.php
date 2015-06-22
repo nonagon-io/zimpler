@@ -51,6 +51,17 @@ class S3_Provider {
                 'secret' => $_SERVER['AWS_SECRET_ACCESS_KEY']
             )
         ));
+
+        // Ensure bucket exists.
+        if(!$this->client->doesBucketExist($this->bucket))
+        {
+            $this->client->createBucket(array(
+
+                'Bucket' => $this->bucket
+            ));
+
+            $this->client->waitUntil('BucketExists]', array('Bucket' => $this->bucket));
+        }
     }
 
 	public function list_files($path = null)

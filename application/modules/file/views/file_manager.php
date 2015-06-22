@@ -3,20 +3,21 @@
 		<div class="n-options-header uk-form" 
 			 ng-class="{'n-drop-shadow': fileScrollTop > 0}">
 			<div class="uk-grid uk-grid-collapse">
-				<div class="uk-width-7-10 uk-width-medium-2-3">
-					<input type="text" placeholder="Keyword" ng-model="searchKeyword" ng-keydown="detectSearch($event)"
-						   style="width: 250px"/>
-					<button type="button" class="uk-button uk-button-primary" ng-click="search()">
-						<i class="uk-icon-search"></i>
-						<span class="uk-hidden-small uk-hidden-medium">Search</span>
-					</button>
-					<button type="button" class="uk-button uk-button-danger ng-hide" ng-click="clearSearch()"
-							ng-show="isKeywordActive">
-						<i class="uk-icon-times"></i>
-						<span class="uk-hidden-small uk-hidden-medium">Clear</span>
-					</button>
+				<div class="uk-width-1-2 uk-width-medium-2-3">
+					<div class="uk-button-group">
+						<button type="button" class="uk-button n-tool-button"
+								ng-class="{'uk-active': viewMode == 'tile'}"
+								ng-click="switchToTileMode()">
+							<i class="uk-icon-th"></i>
+						</button>
+						<button type="button" class="uk-button n-tool-button"
+								ng-class="{'uk-active': viewMode == 'columns'}"
+								ng-click="switchToColumnsMode()">
+							<i class="uk-icon-columns"></i>
+						</button>
+					</div>
 				</div>
-				<div class="uk-width-3-10 uk-width-medium-1-3 uk-text-right">
+				<div class="uk-width-1-2 uk-width-medium-1-3 uk-text-right">
 					<button class="uk-button" ng-click="newFolder()">
 						<i class="uk-icon-plus"></i> New Folder
 					</button>
@@ -38,8 +39,9 @@
 		</div>
 
 		<div class="n-files-zone n-abs-fit uk-overflow-container">
-			<div ng-if="folders.length > 0 || paths.length > 0">
-				<ul class="uk-breadcrumb" ng-if="paths.length > 0">
+			<div class="n-folder-container" ng-if="folders.length > 0 || paths.length > 0"
+				 ng-class="{'n-snap-left n-overflow-container': viewMode == 'columns'}">
+				<ul class="uk-breadcrumb" ng-if="paths.length > 0 &amp;&amp; viewMode == 'tile'">
 					<li><a ng-click="drillUp('/')">Root</a></li>
 					<li ng-repeat="name in paths">
 						<a ng-click='drillUp(paths.length - ($index + 1))' ng-if="!$last">
@@ -79,72 +81,89 @@
 						</div>
 					</div>
 				</div>
-				<hr/>
+				<hr ng-if="viewMode != 'columns'" />
 			</div>
-			<div ng-if="upload[path].uploadList.length">
-				<h2 class="uk-text-muted"><i>Uploading...</i></h2>
+			<div ng-class="{'n-blank-left': viewMode == 'columns'}">
+				<ul class="uk-breadcrumb" ng-if="paths.length > 0 &amp;&amp; viewMode == 'columns'">
+					<li><a ng-click="drillUp('/')">Root</a></li>
+					<li ng-repeat="name in paths">
+						<a ng-click='drillUp(paths.length - ($index + 1))' ng-if="!$last">
+							{{name}}
+						</a>
+						<span ng-if="$last">
+							{{name}}
+						</span>
+					</li>
+				</ul>
+				<div ng-if="upload[path].uploadList.length">
+					<h2 class="uk-text-muted"><i>Uploading...</i></h2>
+					<div data-uk-grid="{gutter: 20}" 
+						 class="n-upload-list uk-grid-width-1-1"
+						 ng-class="{'uk-grid-width-small-1-3 uk-grid-width-large-1-5': viewMode == 'tile',
+									'uk-grid-width-medium-1-2 uk-grid-width-large-1-4': viewMode == 'columns'}">
+						<div ng-repeat="item in upload[path].uploadList" class="n-upload-item n-uploading"
+							 ng-class="{'uk-active': selectedItem == item}">
+							<div class="uk-panel-box uk-text-center" 
+								 <?php if(isset($item_selectable) && $item_selectable) : ?>
+								 ng-click="select(item)" 
+								 <?php endif ?>>
+
+								<?php if(isset($item_deletable) && $item_deletable) : ?>
+								<a class="n-delete uk-button uk-button-danger" ng-click="deleteUpload(item)">
+									<i class="uk-icon-trash"></i>
+								</a>
+								<?php endif ?>
+								<img ngf-src="item"
+								     ngf-default-src="'placeholder.jpg'"
+								     ngf-accept="'image/*'" /> 
+								<div class="uk-margin-small-top uk-text-small uk-text-primary uk-text-center">
+									<label>{{item.name}}</label>
+								</div>
+								<div class="uk-margin-small-top uk-text-small uk-text-center">
+									<label>{{item.size | filesize}}</label>
+								</div>
+								<div class="uk-margin-small-top uk-text-small uk-text-muted uk-text-center"
+									 ng-hide="item.uploadError">
+									<div class="uk-progress uk-progress-mini">
+									    <div class="uk-progress-bar" ng-style="getProgressStyle(item)"></div>
+									</div>
+								</div>
+								<div ng-if="item.uploadError">
+									<i class="uk-icon-times-circle uk-text-danger"></i>
+									<span class="uk-text-small uk-text-danger">{{item.errorMessage}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr/>
+				</div>
 				<div data-uk-grid="{gutter: 20}" 
-					 class="n-upload-list uk-grid-width-1-1 uk-grid-width-small-1-3 
-					 		uk-grid-width-medium-1-5 uk-grid-width-large-1-8">
-					<div ng-repeat="item in upload[path].uploadList" class="n-upload-item n-uploading"
-						 ng-class="{'uk-active': selectedItem == item}">
+					 class="n-file-list uk-grid-width-1-1"
+					 ng-class="{'uk-grid-width-small-1-3 uk-grid-width-large-1-5': viewMode == 'tile',
+								'uk-grid-width-medium-1-2 uk-grid-width-large-1-4': viewMode == 'columns'}">
+					<div ng-repeat="item in files" class="n-file-item" ng-class="{'uk-active': selectedItem == item}">
 						<div class="uk-panel-box uk-text-center" 
+							 data-drag="true" jqyoui-draggable="{animate: true}"
+							 data-jqyoui-options="{revert: 'invalid'}"
 							 <?php if(isset($item_selectable) && $item_selectable) : ?>
 							 ng-click="select(item)" 
-							 <?php endif ?>>
-
+							 <?php endif ?>
+							 ng-dblclick="preview(item)">
 							<?php if(isset($item_deletable) && $item_deletable) : ?>
-							<a class="n-delete uk-button uk-button-danger" ng-click="deleteUpload(item)">
+							<a class="n-delete uk-button uk-button-danger" ng-click="deleteFile(item)">
 								<i class="uk-icon-trash"></i>
 							</a>
 							<?php endif ?>
-							<img ngf-src="item"
-							     ngf-default-src="'placeholder.jpg'"
-							     ngf-accept="'image/*'" /> 
+							<img ng-src="{{item.url}}" />
 							<div class="uk-margin-small-top uk-text-small uk-text-primary uk-text-center">
 								<label>{{item.name}}</label>
 							</div>
 							<div class="uk-margin-small-top uk-text-small uk-text-center">
 								<label>{{item.size | filesize}}</label>
 							</div>
-							<div class="uk-margin-small-top uk-text-small uk-text-muted uk-text-center"
-								 ng-hide="item.uploadError">
-								<div class="uk-progress uk-progress-mini">
-								    <div class="uk-progress-bar" ng-style="getProgressStyle(item)"></div>
-								</div>
+							<div class="uk-margin-small-top uk-text-small uk-text-muted uk-text-center">
+								<label>{{item.modified | date : 'medium'}}</label>
 							</div>
-							<div ng-if="item.uploadError">
-								<i class="uk-icon-times-circle uk-text-danger"></i>
-								<span class="uk-text-small uk-text-danger">{{item.errorMessage}}</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<hr/>
-			</div>
-			<div data-uk-grid="{gutter: 20}" 
-				 class="n-file-list uk-grid-width-1-1 uk-grid-width-small-1-3 
-				 		uk-grid-width-medium-1-5 uk-grid-width-large-1-8">
-				<div ng-repeat="item in files" class="n-file-item" ng-class="{'uk-active': selectedItem == item}">
-					<div class="uk-panel-box uk-text-center" 
-						 <?php if(isset($item_selectable) && $item_selectable) : ?>
-						 ng-click="select(item)" 
-						 <?php endif ?>
-						 ng-dblclick="preview(item)">
-						<?php if(isset($item_deletable) && $item_deletable) : ?>
-						<a class="n-delete uk-button uk-button-danger" ng-click="deleteFile(item)">
-							<i class="uk-icon-trash"></i>
-						</a>
-						<?php endif ?>
-						<img ng-src="{{item.url}}" />
-						<div class="uk-margin-small-top uk-text-small uk-text-primary uk-text-center">
-							<label>{{item.name}}</label>
-						</div>
-						<div class="uk-margin-small-top uk-text-small uk-text-center">
-							<label>{{item.size | filesize}}</label>
-						</div>
-						<div class="uk-margin-small-top uk-text-small uk-text-muted uk-text-center">
-							<label>{{item.modified | date : 'medium'}}</label>
 						</div>
 					</div>
 				</div>

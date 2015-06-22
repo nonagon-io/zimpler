@@ -1,4 +1,4 @@
-angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
+angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDragDrop'])
 
 .factory('fileManager', ['$q', '$sce', function($q, $sce) {
 
@@ -27,6 +27,8 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 	$scope.selectedItem = null;
 	$scope.upload = {};
 	$scope.initialized = false;
+
+	$scope.viewMode = "tile";
 
 	$scope.newFolderName = '';
 	$scope.newFolderNameValid = false;
@@ -283,6 +285,57 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 		modal.hide();
 	}
 
+	$scope.switchToTileMode = function() {
+
+		$scope.viewMode = "tile";
+		$(".n-folder-container").css("height", "auto");
+
+		$timeout(function() {
+			$scope.updateLayout();
+		}, 100);
+	}
+
+	$scope.switchToColumnsMode = function() {
+
+		$scope.viewMode = "columns";
+		$scope.updateColumnsModeLayout();
+	}
+
+	$scope.updateColumnsModeLayout = function() {
+
+		var cumulativeMarginLeft = 0;
+		var cumulativeMarginTop = 0;
+		var elem = $(".n-files-zone");
+
+		do {
+
+			cumulativeMarginLeft += Math.max(0, parseInt(elem.css("margin-left")));
+			cumulativeMarginTop += Math.max(0, parseInt(elem.css("margin-top")));
+
+			elem = elem.parent();
+
+		} while(!elem.is("html"));
+
+		cumulativeMarginLeft += Math.max(0, parseInt(elem.css("margin-left")));
+		cumulativeMarginTop += Math.max(0, parseInt(elem.css("margin-top")));
+
+		var containerLeft = $(".n-files-zone").offset().left - cumulativeMarginLeft;
+		var containerTop = $(".n-files-zone").offset().top - cumulativeMarginTop;
+		$(".n-folder-container").css("left", containerLeft + "px");
+		$(".n-folder-container").css("top", containerTop + "px");
+
+		$timeout(function() {
+			
+			var containerHeight = $(".n-files-zone").outerHeight() - 
+				parseInt($(".n-folder-container").css("padding-top")) -
+				parseInt($(".n-folder-container").css("padding-bottom"));
+
+			$(".n-folder-container").css("height", containerHeight + "px");
+
+			$scope.updateLayout();
+		}, 100);
+	}
+
 	$scope.$watch("newFolderName", function(newValue) {
 
 		var regexp = /^[a-zA-Z0-9-_]+$/;
@@ -406,5 +459,11 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 		$scope.$apply(function() {
 			$scope.fileScrollTop = $(".n-files-zone").scrollTop();
 		});
+	});
+
+	$(window).on("resize", function() {
+
+		if($scope.viewMode == "columns")
+			$scope.updateColumnsModeLayout();
 	});
 });

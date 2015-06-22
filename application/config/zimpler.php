@@ -30,7 +30,7 @@ $config['allow_signup']	= 'false';
 |
 */
 
-$config['upload_path'] = 'upload';
+$config['upload_path'] = 'uploads';
 
 
 // Skip CSRF on API request.

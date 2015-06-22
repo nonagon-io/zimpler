@@ -1,5 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 	
+require_once FCPATH . '/vendor/eventviva/php-image-resize/src/ImageResize.php';
+use \Eventviva\ImageResize;
+
 /**
  * Zimpler
  *
@@ -82,14 +85,14 @@ class File extends REST_Controller {
         else
         {
             $data = $this->upload->data();
-            $file_manager = $this->setting_model->get('file_manager');
 
             $result = null;
 
+            $file_manager = $this->setting_model->get('file_manager');
             if($file_manager === 's3')
             {
                 $result = $this->s3_provider->store_file($path, (object)$data);
-                delete_files($data['full_path']);
+                unlink($upload_path . '/' . $data['file_name']);
             }
 
             $this->response($result);

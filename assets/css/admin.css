@@ -634,3 +634,33 @@ body {
 
 	
 }
+
+.n-tool-button {
+
+	width: 40px;
+}
+
+.n-tool-button.uk-active {
+
+	background: #fffbe8;
+}
+
+.n-file-manager .n-snap-left {
+
+	position: fixed;
+	width: 150px;
+	bottom: 0px;
+	padding: 20px 0 20px 20px;
+	background: #555;
+	overflow: auto;
+}
+
+.n-file-manager .n-snap-left .n-folder-item {
+
+	width: 150px !important;
+}
+
+.n-file-manager .n-blank-left {
+
+	padding-left: 170px;
+}
