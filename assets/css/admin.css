@@ -664,3 +664,13 @@ body {
 
 	padding-left: 170px;
 }
+
+.n-folder-item .n-droppable-hover {
+
+	background: #fffbe8;
+}
+
+.n-file-item .ui-draggable-dragging {
+
+	opacity: 0.8;
+}

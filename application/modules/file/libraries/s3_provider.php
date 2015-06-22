@@ -192,4 +192,32 @@ class S3_Provider {
     {
         $this->client->deleteMatchingObjects($this->bucket, $path . '/');
     }
+
+    public function move_file($path, $file, $target)
+    {
+        $sourceBucket = $this->bucket;
+
+        if($path)
+        {
+            $sourceKeyname = $path . '/' . $file;
+        }
+        else
+        {
+            $sourceKeyname = $file;
+        }
+
+        $source = "{$sourceBucket}/{$sourceKeyname}";
+
+        $this->client->copyObject(array(
+            'Bucket'     => $this->bucket,
+            'Key'        => $target . '/' . $file,
+            'CopySource' => $source,
+            'ACL' => 'public-read'
+        ));
+
+        $this->client->deleteObject(array(
+            'Bucket' => $this->bucket,
+            'Key' => $path . '/' . $file
+        ));
+    }
 }

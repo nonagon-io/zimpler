@@ -37,6 +37,9 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 	$scope.newFolderServerError = false;
 	$scope.newFolderCreating = false;
 
+	$scope.parentFolderDropBox = [];
+	$scope.draggingItem = null;
+
 	$scope.refresh = function(givenPath) {
 
 		$scope.isRefreshing = true;
@@ -73,7 +76,7 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 					"Could not initialize file manager. Please review the following error:" + 
 					"<br/><br/>" + data.error;
 
-				modal.show(message, "Could not initialize file manager");
+				modal.show(message, "Communication Error", { okOnly: true });
 				$scope.isRefreshing = false;
 
 			});
@@ -334,6 +337,74 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 
 			$scope.updateLayout();
 		}, 100);
+	}
+
+	$scope.onDragStart = function(event, draggable, item) {
+
+		$scope.draggingItem = item;
+	}
+
+	$scope.onDragStop = function(event, draggable, item) {
+
+		$timeout(function() {
+			$scope.draggingItem = null;
+		}, 100);
+	}
+
+	$scope.onFileDrop = function(event, draggable, target) {
+
+		var targetPath = null;
+
+		if(target) {
+
+			targetPath = $scope.path + "/" + target.name;
+
+		} else {
+
+			var path = angular.copy($scope.paths);
+			path.pop();
+
+			targetPath = path.join('/');
+		}
+
+		if($scope.draggingItem.type == "file") {
+
+			$scope.files = _.filter($scope.files, function(item) { 
+					return item != $scope.draggingItem
+				});
+
+			var params = null;
+
+			if($scope.csrf) {
+				params = $scope.csrf;
+			} else {
+				params = {};
+			}
+
+			params.file = $scope.draggingItem.name;
+			params.path = $scope.path;
+			params.target = targetPath;
+
+			httpEx($scope, "POST", $scope.baseUrl + 'file/rest/file/move', params).
+				error(function(data, status, headers, config) {
+
+					var message = 
+						"Could not move the file due to the communication error.<br/>";
+
+					modal.show(message, "Communication Error", {
+
+						cancelTitle: null
+
+					}).ok(function() {
+
+						$scope.refresh();
+					});
+				});
+		}
+
+		console.debug(target, $scope.draggingItem);
+
+		$scope.updateLayout();
 	}
 
 	$scope.$watch("newFolderName", function(newValue) {

@@ -41,6 +41,7 @@ angular.module('generic-modal', [])
 			$this.cancelTitle = "Cancel";
 			$this.bgclose = false;
 			$this.danger = false;
+			$this.okOnly = false;
 			
 			if(options) {
 				
@@ -55,6 +56,9 @@ angular.module('generic-modal', [])
 				
 				if(options.danger)
 					$this.danger = options.danger;
+
+				if(options.okOnly)
+					$this.okOnly = options.okOnly;
 				
 				if(options.icon) {
 					

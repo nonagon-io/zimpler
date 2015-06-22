@@ -56,7 +56,9 @@
 					 class="n-folder-list uk-grid-width-1-1 uk-grid-width-small-1-3 
 					 		uk-grid-width-medium-1-5 uk-grid-width-large-1-8">
 					<div class="n-folder-item" ng-if="paths.length > 0">
-						<div class="uk-panel-box uk-panel-box-primary uk-text-center" ng-click="drillUp()">
+						<div class="uk-panel-box uk-panel-box-primary uk-text-center" ng-click="drillUp()"
+							 data-drop="true" data-jqyoui-options="{hoverClass: 'n-droppable-hover'}" 
+							 jqyoui-droppable="{onDrop: 'onFileDrop()'}" />
 							<div class="uk-text-center">
 								<i class="uk-icon-folder-open uk-icon-large"></i>
 							</div>
@@ -66,7 +68,9 @@
 						</div>
 					</div>
 					<div ng-repeat="item in folders" class="n-folder-item">
-						<div class="uk-panel-box uk-panel-box-primary" ng-click="drillDown(item)">
+						<div class="uk-panel-box uk-panel-box-primary" ng-click="drillDown(item)"
+							 data-drop="true" data-jqyoui-options="{hoverClass: 'n-droppable-hover'}" 
+							 jqyoui-droppable="{onDrop: 'onFileDrop(item)'}">
 							<?php if(isset($item_deletable) && $item_deletable) : ?>
 							<a class="n-delete uk-button uk-button-danger" ng-click="deleteFolder($event, item)">
 								<i class="uk-icon-trash"></i>
@@ -143,8 +147,11 @@
 								'uk-grid-width-medium-1-2 uk-grid-width-large-1-4': viewMode == 'columns'}">
 					<div ng-repeat="item in files" class="n-file-item" ng-class="{'uk-active': selectedItem == item}">
 						<div class="uk-panel-box uk-text-center" 
-							 data-drag="true" jqyoui-draggable="{animate: true}"
-							 data-jqyoui-options="{revert: 'invalid'}"
+							 data-drag="true" 
+							 jqyoui-draggable="{animate: true, 
+							 					onStart: 'onDragStart(item)', 
+							 					onStop: 'onDragStop(item)'}"
+							 data-jqyoui-options="{revert: 'invalid'}" ng-model="item"
 							 <?php if(isset($item_selectable) && $item_selectable) : ?>
 							 ng-click="select(item)" 
 							 <?php endif ?>

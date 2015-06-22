@@ -11,7 +11,7 @@
 	        <button type="button" class="n-ok uk-button" 
 	        		ng-class="{'uk-button-danger': modal.danger, 'uk-button-primary': !modal.danger}"
 	        		style="width:100px" ng-click="ok()">{{modal.okTitle}}</button>
-            <button type="button" class="n-cancel uk-button" 
+            <button type="button" class="n-cancel uk-button" ng-if="!modal.okOnly"
             		style="width:100px" ng-click="cancel()">{{modal.cancelTitle}}</button>
         </div>
     </div>
