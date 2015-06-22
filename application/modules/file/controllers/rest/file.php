@@ -67,7 +67,7 @@ class File extends REST_Controller {
         $config['upload_path'] = $upload_path;
         $config['allowed_types'] = '*';
         $config['max_size'] = '10000';
-        $config['max_width']  = '1024';
+        $config['max_width']  = '1280';
         $config['max_height']  = '768';
 
         $this->upload->initialize($config);
@@ -117,6 +117,23 @@ class File extends REST_Controller {
         {
             $this->s3_provider->delete_file($path, $file_name);
         }
+    }
+
+    function folder_post()
+    {
+        $path = $this->post('path');
+        $folder_name = $this->post('folderName');
+
+        $file_manager = $this->setting_model->get('file_manager');
+
+        $result = null;
+
+        if($file_manager === 's3')
+        {
+            $result = $this->s3_provider->add_folder($path, $folder_name);
+        }
+
+        $this->response($result);
     }
 
     function folder_delete()

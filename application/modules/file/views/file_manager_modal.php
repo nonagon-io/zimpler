@@ -11,19 +11,7 @@
 		<div class="uk-modal-footer">
 			<div class="uk-grid uk-grid-collapse">
 				<div class="uk-width-1-2">
-					<button class="uk-button uk-button-success"
-							ngf-select
-						    ng-model="fileManager.scope.upload[fileManager.scope.path].uploadList"
-						    ng-model-rejected="fileManager.scope.upload[fileManager.scope.path].rejectedList"
-						    ngf-multiple="true"
-						    ngf-capture="'camera'"
-						    accept="video/*, audio/*, image/*, .docx, .xlsx, .pptx, .pdf, .txt, .md, .zip"
-						    ngf-keep="true"
-						    ngf-keep-distinct="true"
-						    ngf-reset-on-click="true"
-						    ngf-reset-model-on-click="true">Upload</button>
 					&nbsp;
-					Or drop the files on above panel.
 				</div>
 				<div class="uk-width-1-2 uk-text-right">
 					<button class="uk-button uk-button-primary"

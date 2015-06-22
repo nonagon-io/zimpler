@@ -67,7 +67,7 @@ class S3_Provider {
 
         if($path)
         {
-			$params['Prefix'] = $path;
+			$params['Prefix'] = $path . '/';
         }
 
         $iterator = $this->client->getIterator('ListObjects', $params, array(
@@ -96,7 +96,7 @@ class S3_Provider {
 	        else
 	        {
                 $prefixes = explode('/', $object['Prefix']);
-                $last_prefix = $prefixes[count($prefixes) - 1];
+                $last_prefix = $prefixes[count($prefixes) - 2];
 
                 if($last_prefix == '')
                     $last_prefix = $object['Prefix'];
@@ -119,16 +119,18 @@ class S3_Provider {
 
     public function store_file($path = '', $file)
     {
+        $key = $path . '/' . $file->file_name;
+
         $this->client->putObject(array(
             'Bucket' => $this->bucket,
-            'Key' => $path . $file->file_name,
+            'Key' => $key,
             'SourceFile' => $file->full_path,
             'ACL' => 'public-read'
         ));
 
         $this->client->waitUntil('ObjectExists', array(
             'Bucket' => $this->bucket,
-            'Key' => $path . $file->file_name
+            'Key' => $key
         ));
 
         $time = time();
@@ -139,7 +141,7 @@ class S3_Provider {
             'name' => $file->file_name,
             'size' => $file->file_size * 1024,
             'modified' => $last_modified,
-            'url' => $this->client->getObjectUrl($this->bucket, $path . $file->file_name),
+            'url' => $this->client->getObjectUrl($this->bucket, $key),
             'type' => 'file'
         );
 
@@ -150,12 +152,33 @@ class S3_Provider {
     {
         $this->client->deleteObject(array(
             'Bucket' => $this->bucket,
-            'Key' => $path . $file_name
+            'Key' => $path . '/' . $file_name
         ));
+    }
+
+    public function add_folder($path = '', $folder_name)
+    {
+        $this->client->putObject(array( 
+           'Bucket' => $this->bucket,
+           'Key' => $path . '/' . $folder_name . '/',
+           'Body' => '',
+           'ACL' => 'public-read'
+        ));
+
+        $item = array(
+
+            'name' => $folder_name,
+            'size' => NULL,
+            'modified' => NULL,
+            'url' => NULL,
+            'type' => 'folder'
+        );
+
+        return $item;
     }
 
     public function delete_folder($path)
     {
-        $this->client->deleteMatchingObjects($this->bucket, $path);
+        $this->client->deleteMatchingObjects($this->bucket, $path . '/');
     }
 }

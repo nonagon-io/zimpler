@@ -27,6 +27,13 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 	$scope.selectedItem = null;
 	$scope.upload = {};
 	$scope.initialized = false;
+	
+	$scope.newFolderName = '';
+	$scope.newFolderNameValid = false;
+	$scope.newFolderNameFresh = false;
+	$scope.newFolderNameDuplicated = false;
+	$scope.newFolderServerError = false;
+	$scope.newFolderCreating = false;
 
 	$scope.refresh = function(givenPath) {
 
@@ -34,7 +41,7 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 
 		var params = {
 
-			path: givenPath ? givenPath.join("") : $scope.paths.join("")
+			path: givenPath ? givenPath.join("/") : $scope.paths.join("/")
 		}
 
 		httpEx($scope, "GET", $scope.baseUrl + 'file/rest/file/list', params).
@@ -51,7 +58,7 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 				if(givenPath) {
 
 					$scope.paths = givenPath;
-					$scope.path = $scope.paths.join("");
+					$scope.path = $scope.paths.join("/");
 				}
 
 				$scope.updateLayout();
@@ -72,9 +79,27 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 
 	$scope.deleteUpload = function(uploadItem) {
 
-		$scope.confirmDelete(uploadItem, function() {
+		var proceed = function() {
 
-		});
+			$scope.upload[$scope.path].uploadList = 
+				_.filter($scope.upload[$scope.path].uploadList,
+					function(item) {
+
+						return item != uploadItem;
+					});
+		}
+
+		if(uploadItem.uploadError) {
+
+			proceed();
+
+		} else {
+
+			$scope.confirmDelete(uploadItem, function() {
+
+				uploadItem.uploader.abort();
+			});
+		}
 	}
 
 	$scope.deleteFile = function(fileItem) {
@@ -107,7 +132,7 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 
 			var params = {
 
-				path: $scope.path + folderItem.name
+				path: $scope.path + '/' + folderItem.name
 			}
 
 			httpEx($scope, "DELETE", $scope.baseUrl + 'file/rest/file/folder', params).
@@ -189,6 +214,82 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 		};
 	}
 
+	$scope.newFolder = function() {
+
+		var modal = UIkit.modal(".n-create-folder-dialog");
+		modal.show();
+
+		$scope.newFolderNameDuplicated = false;
+		$scope.newFolderNameValid = false;
+		$scope.newFolderNameFresh = true;
+		$scope.newFolderName = "";
+
+		$(".n-create-folder-dialog input[type=text]").focus();
+	}
+
+	$scope.commitNewFolder = function() {
+
+		$scope.newFolderName = $scope.newFolderName.trim();
+
+		var params = null;
+
+		if($scope.csrf) {
+			params = $scope.csrf;
+		} else {
+			params = {};
+		}
+
+		$scope.newFolderCreating = true;
+
+		params.path = $scope.path;
+		params.folderName = $scope.newFolderName;
+	    
+		httpEx($scope, "POST", $scope.baseUrl + 'file/rest/file/folder', params).
+			success(function(data, status, headers, config) {
+
+				$scope.newFolderCreating = false;
+
+				$scope.folders.push(data);
+				$scope.updateLayout();
+
+				var modal = UIkit.modal(".n-create-folder-dialog");
+				modal.hide();
+			}).
+			error(function(data, status, headers, config) {
+
+				$scope.newFolderCreating = false;
+				$scope.newFolderServerError = true;
+			});
+	}
+
+	$scope.cancelNewFolder = function() {
+
+		var modal = UIkit.modal(".n-create-folder-dialog");
+		modal.hide();
+	}
+
+	$scope.$watch("newFolderName", function(newValue) {
+
+		var regexp = /^[a-zA-Z0-9-_]+$/;
+
+		if (newValue.search(regexp) == -1) {
+		    $scope.newFolderNameValid = false;
+		} else {
+		    $scope.newFolderNameValid = true;
+		}
+
+		if($scope.newFolderNameValid) {
+
+			// Also check if it is duplicated.
+			var isDuplicated = _.any($scope.folders, function(item) { 
+					return item.name == newValue.trim(); 
+				});
+
+			$scope.newFolderNameValid = !isDuplicated;
+			$scope.newFolderNameDuplicated = isDuplicated;
+		}
+	});
+
 	$scope.$watch(function() { 
 
 		if($scope.upload[$scope.path])
@@ -230,14 +331,24 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 			}).
 			success(function(data, status, headers, config) {
 
-				$scope.upload[$scope.path].uploadList = 
-					_.filter($scope.upload[$scope.path].uploadList,
-						function(item) {
+				if(!data.error) {
 
-							return item != uploadItem;
-						});
+					$scope.upload[$scope.path].uploadList = 
+						_.filter($scope.upload[$scope.path].uploadList,
+							function(item) {
 
-				$scope.files.push(data);
+								return item != uploadItem;
+							});
+
+					$scope.files.push(data);
+
+				} else {
+
+					uploadItem.uploadError = true;
+					uploadItem.errorMessage = data.error.replace(/<\/?[^>]+(>|$)/g, "");
+
+					$scope.updateLayout();
+				}
 			}).
 			error(function(data, status, headers, config) {
 
@@ -258,7 +369,7 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 				}
 			}
 		}
-	})
+	});
 
 	var checkFileTransfer = function(e) {
 
@@ -274,4 +385,11 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload'])
 	$(".n-drop-zone").on("dragover", checkFileTransfer);
 	$(".n-drop-zone").on('dragleave', function(e) { $(".n-drop-zone").hide(); });
 	$(".n-drop-zone").on('drop', function(e) { $(".n-drop-zone").hide(); });
+
+	$(".n-files-zone").on("scroll", function(e) {
+
+		$scope.$apply(function() {
+			$scope.fileScrollTop = $(".n-files-zone").scrollTop();
+		});
+	});
 });

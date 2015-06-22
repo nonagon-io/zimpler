@@ -1,8 +1,7 @@
 <div class="n-content n-abs-fit uk-form" 
 	 ng-controller="UserListController" 
 	 ng-init="restBaseUrl = '<?= base_url('/user/rest') ?>'; currentUserId = <?= $current_user_id ?>;">
-	<div class="n-options-header" 
-		 ng-class="{'n-drop-shadow': mainContentBodyScrollTop > 0}">
+	<div class="n-options-header">
 		<div class="uk-grid uk-grid-collapse">
 			<div class="uk-width-7-10 uk-width-medium-2-3">
 				<input type="text" placeholder="Keyword" ng-model="searchKeyword" ng-keydown="detectSearch($event)"
