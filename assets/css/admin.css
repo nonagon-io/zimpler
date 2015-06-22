@@ -674,3 +674,14 @@ body {
 
 	opacity: 0.8;
 }
+
+.uk-modal-dialog .n-create-folder-dialog {
+
+	opacity: 1;
+}
+
+.uk-modal-dialog .n-create-folder-dialog > .uk-modal-dialog .n-modal-body {
+
+	height: auto;
+	margin: 15px 20px;
+}

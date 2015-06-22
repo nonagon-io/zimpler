@@ -18,7 +18,7 @@
 					</div>
 				</div>
 				<div class="uk-width-1-2 uk-width-medium-1-3 uk-text-right">
-					<button class="uk-button" ng-click="newFolder()">
+					<button class="uk-button" ng-click="newFolder($event)">
 						<i class="uk-icon-plus"></i> New Folder
 					</button>
 					<button class="uk-button uk-button-success"
@@ -244,12 +244,12 @@
 					</div>
 					<div class="uk-width-1-2 uk-text-right">
 						<button class="uk-button uk-button-primary"
-								ng-click="commitNewFolder()"
+								ng-click="commitNewFolder($event)"
 								ng-disabled="!newFolderNameValid || newFolderCreating"
 								style="width: 80px">
 							OK
 						</button>
-						<button class="uk-button" ng-click="cancelNewFolder()"
+						<button class="uk-button" ng-click="cancelNewFolder($event)"
 								style="width: 80px">
 							Cancel
 						</button>

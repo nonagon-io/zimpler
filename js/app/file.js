@@ -236,20 +236,30 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 		};
 	}
 
-	$scope.newFolder = function() {
+	$scope.newFolder = function($event) {
 
-		var modal = UIkit.modal(".n-create-folder-dialog");
-		modal.show();
+		var modalContainer = $($event.target).parents('.n-file-browser').get().length;
+
+		if(!modalContainer) {
+
+			var modal = UIkit.modal(".n-create-folder-dialog");
+			modal.show();
+
+			$(".n-create-folder-dialog input[type=text]").focus();
+
+		} else {
+
+			$(".n-create-folder-dialog").show();
+			$(".n-create-folder-dialog input[type=text]").focus();
+		}
 
 		$scope.newFolderNameDuplicated = false;
 		$scope.newFolderNameValid = false;
 		$scope.newFolderNameFresh = true;
 		$scope.newFolderName = "";
-
-		$(".n-create-folder-dialog input[type=text]").focus();
 	}
 
-	$scope.commitNewFolder = function() {
+	$scope.commitNewFolder = function($event) {
 
 		$scope.newFolderName = $scope.newFolderName.trim();
 
@@ -274,8 +284,17 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 				$scope.folders.push(data);
 				$scope.updateLayout();
 
-				var modal = UIkit.modal(".n-create-folder-dialog");
-				modal.hide();
+				var modalContainer = $($event.target).parents('.n-file-browser').get().length;
+
+				if(!modalContainer) {
+
+					var modal = UIkit.modal(".n-create-folder-dialog");
+					modal.hide();
+
+				} else {
+
+					$(".n-create-folder-dialog").hide();
+				}
 			}).
 			error(function(data, status, headers, config) {
 
@@ -284,10 +303,19 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 			});
 	}
 
-	$scope.cancelNewFolder = function() {
+	$scope.cancelNewFolder = function($event) {
 
-		var modal = UIkit.modal(".n-create-folder-dialog");
-		modal.hide();
+		var modalContainer = $($event.target).parents('.n-file-browser').get().length;
+
+		if(!modalContainer) {
+
+			var modal = UIkit.modal(".n-create-folder-dialog");
+			modal.hide();
+
+		} else {
+
+			$(".n-create-folder-dialog").hide();
+		}
 	}
 
 	$scope.switchToTileMode = function() {
@@ -350,7 +378,7 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 
 		$timeout(function() {
 			$scope.draggingItem = null;
-		}, 100);
+		}, 1000);
 	}
 
 	$scope.onFileDrop = function(event, draggable, target) {
