@@ -415,6 +415,17 @@
 				</div>
 			</div>
 		</div>
+
+		<?php
+
+		foreach($additional_setting_panels as $item)
+		{
+			$data = $item['load']($this);
+			$this->load->view($item['view'], $data);
+		}
+
+		?>
+
 	</div>
 	<div class="n-footer ng-hide" ng-show="mainForm.$dirty">
 		<div class="n-scroll-for-more ng-hide" 

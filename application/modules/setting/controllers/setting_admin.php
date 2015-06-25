@@ -34,6 +34,35 @@ class Setting_admin extends Partial_Controller {
 		$this->load->model("setting/setting_model");
 	}
 
+	function read_module_setting_panels()
+	{
+	    $this->load->helper("file");
+	    $dirs = get_dir_file_info(APPPATH.'modules', TRUE);
+	    
+	    $setting_panels = array();
+	    
+	    foreach($dirs as $dir)
+	    {
+		    $settings = get_file_info($dir['server_path'].'/settings.php');
+		    
+		    if($settings)
+		    {
+			    unset($module_setting_panels);
+			    require_once($settings['server_path']);
+			    
+			    if(isset($module_setting_panels))
+			    {
+				    foreach($module_setting_panels as $item)
+				    {
+			    		array_push($setting_panels, $item);
+				    }
+			    }
+			}
+	    }
+
+	    return $setting_panels;
+	}
+
 	function general()
 	{
 		$method = $this->input->server('REQUEST_METHOD');
@@ -91,11 +120,13 @@ class Setting_admin extends Partial_Controller {
 			$this->data["smtp_server"] = $this->setting_model->get("email::smtp::server");
 			$this->data["smtp_port"] = $this->setting_model->get("email::smtp::port");
 			$this->data["smtp_timeout"] = $this->setting_model->get("email::smtp::timeout");
+
+			$this->data["additional_setting_panels"] = $this->read_module_setting_panels();
 			
 			$this->load->view("setting_general", $this->data);
 		}
 		
-		else if($method == 'POST' || $method == 'PUT')
+		else if($method == 'POST')
 		{
 			$this->setting_model->set("content_approval", $this->input->post("approvalOption"));
 			
