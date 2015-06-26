@@ -89,18 +89,27 @@ class Cms_admin extends Partial_Controller {
 	{
 		$this->lang->load('cms/admin_navigation');
 		$this->load->model('cms/navigation_model');
+		$this->load->model('cms/language_model');
+		$this->load->model('setting/setting_model');
 
 		$method = $this->input->server('REQUEST_METHOD');
 		
 		if($method == 'GET')
 		{
 			$nav = $this->navigation_model->get_hierarchy('en-us');
+
+			$lang_values = $this->setting_model->get('cms_enabled_languages');
+			$enabled_languages = explode(',', $lang_values);
+
+			sort($enabled_languages, SORT_LOCALE_STRING);
 			
 			$culture = $this->input->get('culture');
 			if(!$culture) $culture = 'en-us';
 
 			$this->data = array();
 			$this->data['culture'] = $culture;
+			$this->data['languages'] = $this->language_model->get_list();
+			$this->data['enabled_languages'] = $enabled_languages;
 			$this->data['nav'] = $nav;
 			$this->load->view('cms_navigation', $this->data);
 		}
@@ -133,6 +142,8 @@ class Cms_admin extends Partial_Controller {
 	function contents()
 	{
 		$this->load->model('cms/content_model');
+		$this->load->model('cms/language_model');
+		$this->load->model('setting/setting_model');
 
 		$method = $this->input->server('REQUEST_METHOD');
 
@@ -143,7 +154,16 @@ class Cms_admin extends Partial_Controller {
 			$culture = $this->input->get('culture');
 			if(!$culture) $culture = 'en-us';
 
+			$lang_values = $this->setting_model->get('cms_enabled_languages');
+			$enabled_languages = explode(',', $lang_values);
+
+			print_r($enabled_languages);
+
+			sort($enabled_languages, SORT_LOCALE_STRING);
+
 			$this->data['culture'] = $culture;
+			$this->data['languages'] = $this->language_model->get_list();
+			$this->data['enabled_languages'] = $enabled_languages;
 			$this->data['total_contents'] = $this->content_model->get_total_contents();
 			$this->load->view('cms_content', $this->data);
 		}

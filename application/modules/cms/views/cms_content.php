@@ -17,8 +17,12 @@
 			</div>
 			<div class="uk-width-3-10 uk-width-medium-1-3 uk-text-right">
 				<select id="cultureSelection" name="culture">
-					<option value="en-us" <?= $culture == 'en-us' ? 'selected' : '' ?>>English</option>
-					<option value="th-th" <?= $culture == 'th-th' ? 'selected' : '' ?>>Thai</option>
+					<?php foreach($enabled_languages as $code) : ?>
+					<option value="<?= $code ?>" <?= $culture == $code ? 'selected' : '' ?>>
+						<?= explode(' (', $languages[$code])[0] . 
+							(isset(explode('-', $code)[1]) ? ' (' . strtoupper(explode('-', $code)[1]) . ')' : '') ?>
+					</option>
+					<?php endforeach ?>
 				</select>
 			</div>
 		</div>

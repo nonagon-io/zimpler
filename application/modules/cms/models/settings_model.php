@@ -37,7 +37,8 @@ class Settings_model extends CI_Model
 
 		foreach($languages as $key => $value)
 		{
-			array_push($codes, $key);
+			if($key && $key !== '_empty_' && $value->selected === TRUE)
+				array_push($codes, $key);
 		}
 
 		$enabled_languages = implode(',', $codes);

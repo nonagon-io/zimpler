@@ -12,8 +12,12 @@
 				ng-disabled="!(<?= $panel_name ?>.propertiesForm.$valid)"
 				ng-click="<?= $panel_name ?>.save()"
 				ng-change="<?= $panel_name ?>.fire('culture-changed', editingData.culture)">
-			<option value="en-us">English</option>
-			<option value="th-th">Thai</option>
+			<?php foreach($enabled_languages as $code) : ?>
+			<option value="<?= $code ?>">
+				<?= explode(' (', $languages[$code])[0] . 
+					(isset(explode('-', $code)[1]) ? ' (' . strtoupper(explode('-', $code)[1]) . ')' : '') ?>
+			</option>
+			<?php endforeach ?>
 		</select>
 	</div>
 </div>
