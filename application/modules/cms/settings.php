@@ -11,8 +11,11 @@ $module_setting_panels = array(
 		},
 		'save' => function($ci) {
 
+			$languages = $ci->input->post('cms_enabled_languages');
+			$languages = json_decode($languages);
+
 			$ci->load->model('cms/settings_model');
-			return $ci->settings_model->save_settings($ci->input);
+			return $ci->settings_model->save_settings($languages);
 		}
 	)
 );

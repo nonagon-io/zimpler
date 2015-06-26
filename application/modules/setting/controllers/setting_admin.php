@@ -36,7 +36,7 @@ class Setting_admin extends Partial_Controller {
 
 	function read_module_setting_panels()
 	{
-	    $this->load->helper("file");
+	    $this->load->helper('file');
 	    $dirs = get_dir_file_info(APPPATH.'modules', TRUE);
 	    
 	    $setting_panels = array();
@@ -170,6 +170,14 @@ class Setting_admin extends Partial_Controller {
 				$this->setting_model->set("email::smtp::server", $server);
 				$this->setting_model->set("email::smtp::port", $port);
 				$this->setting_model->set("email::smtp::timeout", $timeout);
+			}
+
+			// Invoke other settings panel save process.
+			$panels = $this->read_module_setting_panels();
+
+			foreach($panels as $panel)
+			{
+				$panel['save']($this);
 			}
 		}
 		
