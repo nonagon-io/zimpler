@@ -187,6 +187,13 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 		
 		$scope.editingData = null;
 		$scope.selectedItem = null;
+
+		$timeout(function() {
+
+			$scope.propertiesPanel.propertiesForm.$setPristine();
+			$scope.propertiesPanel.propertiesForm.$setUntouched();
+
+		}, 1);
 	});
 
 	$(".uk-pagination").on("select.uk.pagination", function(e, pageIndex) {

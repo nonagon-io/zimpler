@@ -6,8 +6,8 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 })
 
 .factory("propertiesPanel", 
-	['$http', '$sce', '$window', 'checkFormDirty',
-	function($http, $sce, $window, checkFormDirty) {
+	['$http', '$timeout', '$sce', '$window', 'checkFormDirty',
+	function($http, $timeout, $sce, $window, checkFormDirty) {
 	
 	return {
 		
@@ -114,19 +114,20 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 						$this.scope.$apply();
 				});
 			
-			setTimeout(function() {
+			$timeout(function() {
 				
 				$this.propertiesBody.find(':input:visible:enabled:first').focus();
+
+				$this.scope.propertiesPanel.propertiesForm.$setPristine();
+				$this.scope.propertiesPanel.propertiesForm.$setUntouched();
 				
 			}, 300);
 			
-			setTimeout(function() {
+			$timeout(function() {
 				
 				bodyScroll();
 				
 			}, 1);
-			
-			$this.scope.propertiesPanel.propertiesForm.$setPristine(); 
 		},
 		
 		close: function(option) {
@@ -143,9 +144,10 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 				
 				$this.fire("close");
 				
-				setTimeout(function() {
+				$timeout(function() {
 					
 					$this.scope.$apply(function() {
+
 						$this.scope.propertiesPanel.propertiesForm.$setPristine();
 						$this.scope = null;
 
