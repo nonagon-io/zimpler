@@ -7,7 +7,7 @@
 		   		  is missing."
 		   data-uk-tooltip></i>
 		<i class="uk-icon-times-circle uk-text-danger" 
-		   title="Name is required"
+		   title="Private Title is required"
 		   data-uk-tooltip="{pos:'right'}"
 		   ng-show="<?= $panel_name ?>.propertiesForm.title.$error.required && 
 		   			<?= $panel_name ?>.propertiesForm.$submitted"></i>
@@ -91,6 +91,20 @@
 </div>
 <hr/>
 <div ng-show="editingData.type == 'html'">
+	<div class="uk-form-row">
+		<label class="uk-form-label" for="type">
+			Public Title ({{editingData.cultureFullName}})
+		</label>
+		<div class="uk-form-controls">
+			<select id="type=" name="type" class="uk-width-1-1"
+					ng-model="editingData.type"
+					ng-disabled="currentStatus == 'published'">
+				<option value="html">HTML</option>
+				<option value="label">Label</option>
+				<option value="list">List</option>
+			</select>
+		</div>
+	</div>
 	<div class="uk-form-row">
 		<div class="uk-form-controls">
 			<textarea ui-tinymce="tinymceOptions" ng-model="editingData.html"></textarea>

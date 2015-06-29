@@ -166,17 +166,17 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 				
 				if(method == "POST") {
 					
-					$scope.editingData = data.user;
-					$scope.editingData.headerTitle = data.user.username;
+					$scope.editingData = data.content;
+					$scope.editingData.headerTitle = data.content.title;
 					
 				} else {
 
-					$scope.selectedItem.name = 
-						data.user.firstName + " " + data.user.lastName;
+					$scope.selectedItem.headerTitle = data.content.title;
 
-					$scope.selectedItem.firstName = data.user.firstName;
-					$scope.selectedItem.lastName = data.user.lastName;
-					$scope.selectedItem.email = data.user.email;
+					$scope.selectedItem.group = data.content.group;
+					$scope.selectedItem.type = data.content.type;
+					$scope.selectedItem.modified = data.content.modified;
+					$scope.selectedItem.status = data.content.status;
 				}
 				
 				callback(true);
@@ -194,6 +194,12 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 			$scope.propertiesPanel.propertiesForm.$setUntouched();
 
 		}, 1);
+	});
+
+	$scope.propertiesPanel.on("culture-changed", function(data) {
+
+		$scope.editingData.cultureFullName =  
+			$scope.propertiesPanel.dom(".n-culture-selection option:selected").html();
 	});
 
 	$(".uk-pagination").on("select.uk.pagination", function(e, pageIndex) {

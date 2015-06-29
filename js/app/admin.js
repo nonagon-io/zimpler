@@ -19,6 +19,11 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 		widthClasses: "uk-width-1-1 uk-width-medium-2-3 uk-width-large-6-10",
 		scope: null,
 		observers: {},
+
+		dom: function(selector) {
+
+			return $(selector);
+		},
 		
 		on: function(event, delegate) {
 			

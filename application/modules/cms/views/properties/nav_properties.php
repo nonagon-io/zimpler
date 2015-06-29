@@ -77,7 +77,7 @@
 </div>
 <div class="uk-form-row">
 	<label class="uk-form-label" for="label">
-		Public Title (English)
+		Public Title - {{currentCultureFullName}}
 		<i class="uk-icon-times-circle uk-text-danger" 
 		   title="Public Title is required"
 		   data-uk-tooltip="{pos:'right'}"

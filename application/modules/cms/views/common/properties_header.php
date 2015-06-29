@@ -8,7 +8,7 @@
 		<div class="uk-display-inline-block" style="margin-top: 3px; margin-right: 5px;">
 			Rev. {{editingData.revision}}
 		</div>
-		<select class="uk-align-right uk-vertical-align-middle" ng-model="editingData.culture"
+		<select class="n-culture-selection uk-align-right uk-vertical-align-middle" ng-model="editingData.culture"
 				ng-disabled="!(<?= $panel_name ?>.propertiesForm.$valid)"
 				ng-click="<?= $panel_name ?>.save()"
 				ng-change="<?= $panel_name ?>.fire('culture-changed', editingData.culture)">

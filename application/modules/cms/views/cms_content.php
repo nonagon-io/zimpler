@@ -81,7 +81,7 @@
 		
 		$data = array(
 			'panel_name' => 'propertiesPanel',
-			'action' => base_url('/user/rest/user'),
+			'action' => base_url('/cms/rest/content'),
 			'allow_delete' => TRUE);
 
 		$data['header'] = $this->load->view("cms/common/properties_header", $data, TRUE);
