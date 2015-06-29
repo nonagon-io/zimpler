@@ -44,7 +44,7 @@ angular.module("admin-cms-siteinfo", ["common", "generic-modal", "admin", "ngAni
 	var selectedCulture = $("#cultureSelection").val();
 	$("#cultureSelection").on("change", function() {
 		
-		$window.location.href = $scope.baseUrl + "?culture=" + $(this).val();
+		$window.location.href = $scope.baseUrl + "admin/cms/siteinfo?culture=" + $(this).val();
 		$("#cultureSelection").val(selectedCulture);
 	});
 });
