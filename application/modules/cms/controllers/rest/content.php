@@ -29,10 +29,6 @@ use \YaLinqo\Enumerable;
  * @link		http://zimpler.com/user_guide/cms/rest/content.html
  */
 
-
-
-// TODO: Need to be redone.
-
 class Content extends REST_Controller {
 
     function __construct()
@@ -78,25 +74,197 @@ class Content extends REST_Controller {
 	    $this->response($result);
     }
     
-    function new_post()
+    function index_post()
     {
-	    $result = $this->content_model->create_new_revision();
-	    $this->response($result);
+		$title = $this->post('title');
+		$key = $this->post('key');
+		$type = $this->post('type');
+		$group = $this->post('group');
+		$description = $this->post('description');
+		$culture = $this->post('culture');
+		
+		$content = array(
+			
+			'title' => $title,
+			'content_key' => $key,
+			'content_type' => $type,
+			'group' => $group,
+			'description' => $description
+		);
+
+		if($type == 'html')
+		{
+			$publicTitle = $this->post("publicTitle");
+			$html = $this->post("html");
+
+			$content['content_html'] = array(
+
+				'title' => $publicTitle,
+				'html' => $html,
+				'culture' => $culture
+			);
+		}
+		else if($type == 'label')
+		{
+			$label = $this->post("label");
+
+			$content['content_label'] = array(
+
+				'label' => $label,
+				'culture' => $culture
+			);
+		}
+		else if($type == 'list')
+		{
+			$content['content_list'] = array(
+
+				'culture' => $culture
+			);
+		}
+
+		$result = $this->content_model->add_content($content);
+
+		$content = array(
+				
+			'id' => $result['content_id'],
+			'key' => $result['content_key'],
+			'title' => $result['title'],
+			'group' => $result['group'],
+			'type' => $result['content_type'],
+			'description' => $result['description']
+		);
+
+		if($content['type'] == 'html')
+		{
+			$content['culture'] = $result['content_html']['culture'];
+			$content['publicTitle'] = $result['content_html']['title'];
+			$content['html'] = $result['content_html']['html'];
+			$content['status'] = $result['content_html']['status'];
+		}
+		else if($content['type'] == 'label')
+		{
+			$content['culture'] = $result['content_label']['culture'];
+			$content['label'] = $result['content_label']['label'];
+			$content['status'] = $result['content_label']['status'];
+		}
+		else if($content['type'] == 'list')
+		{
+			$content['culture'] = $result['content_list']['culture'];
+			$content['list'] = $result['content_list']['list'];
+			$content['status'] = $result['content_list']['status'];
+		}
+
+		$this->response(array(
+
+			'content' => $content
+		));
+    }
+
+    function index_put()
+    {
+    	$id = $this->put('id');
+		$title = $this->put('title');
+		$key = $this->put('key');
+		$type = $this->put('type');
+		$group = $this->put('group');
+		$description = $this->put('description');
+		$culture = $this->put('culture');
+		
+		$content = array(
+			
+			'content_id' => $id,
+			'title' => $title,
+			'content_key' => $key,
+			'content_type' => $type,
+			'group' => $group,
+			'description' => $description
+		);
+
+		if($type == 'html')
+		{
+			$publicTitle = $this->post("publicTitle");
+			$html = $this->post("html");
+
+			$content['content_html'] = array(
+
+				'title' => $publicTitle,
+				'html' => $html,
+				'culture' => $culture
+			);
+		}
+		else if($type == 'label')
+		{
+			$label = $this->post("label");
+
+			$content['content_label'] = array(
+
+				'label' => $label,
+				'culture' => $culture
+			);
+		}
+		else if($type == 'list')
+		{
+			$content['content_list'] = array(
+
+				'culture' => $culture
+			);
+		}
+
+		$result = $this->content_model->update_content($content);
+
+		$content = array(
+				
+			'id' => $result['content_id'],
+			'key' => $result['content_key'],
+			'title' => $result['title'],
+			'group' => $result['group'],
+			'type' => $result['content_type'],
+			'description' => $result['description']
+		);
+
+		if($content['type'] == 'html')
+		{
+			$content['culture'] = $result['content_html']['culture'];
+			$content['publicTitle'] = $result['content_html']['title'];
+			$content['html'] = $result['content_html']['html'];
+			$content['status'] = $result['content_html']['status'];
+		}
+		else if($content['type'] == 'label')
+		{
+			$content['culture'] = $result['content_label']['culture'];
+			$content['label'] = $result['content_label']['label'];
+			$content['status'] = $result['content_label']['status'];
+		}
+		else if($content['type'] == 'list')
+		{
+			$content['culture'] = $result['content_list']['culture'];
+			$content['list'] = $result['content_list']['list'];
+			$content['status'] = $result['content_list']['status'];
+		}
+
+		$this->response(array(
+
+			'content' => $content
+		));
     }
     
     function list_get()
     {
 	    $culture = $this->get('culture');
-	    
-	    $nav_items = $this->content_model->get($culture);
-	    
-	    $nav_items = from($nav_items)->select(function($nav_item) {
+		$skip = $this->get('skip');
+		$take = $this->get('take');
+		$keyword = $this->get('keyword');
+
+	    $result = $this->content_model->get_list($culture, $keyword, $skip, $take);
+
+	    $content_items = from($result['items'])->select(function($content_item) {
 		    
-		    return Navigation::get_front_nav_item($nav_item);
+		    return Content::get_front_content_item($content_item);
 		    
 	    })->toArray();
-	    
-	    $this->response($nav_items);
+
+	    $result->items = $content_items;
+	    $this->response($result);
     }
     
     function item_get()
@@ -213,40 +381,19 @@ class Content extends REST_Controller {
 	    $this->content_model->delete_revision($content_key, $culture, $revision);
     }
     
-    public static function get_front_nav_item($nav_item)
+    public static function get_front_content_item($content_item)
     {
-	    $nav_item = json_decode(json_encode($nav_item), FALSE);
-	    
-	    $target = $nav_item->target;
-	    $targetKey = '';
-	    
-	    switch($target)
-	    {
-		    case '_self':
-				$target = 'normal';
-				break;
-				
-			case '_blank':
-				$target = 'new';
-				$targetKey = '';
-				break;
-				
-			default:
-			
-				$target = 'new';
-				$targetKey = $target;
-				break;
-	    }
+	    $content_item = json_decode(json_encode($content_item), FALSE);
 
 	    $obj = new StdClass();
-	    $obj->id = $nav_item->nav_item_id;
-	    $obj->culture = $nav_item->culture;
-	    $obj->parent = $nav_item->parent_id;
-	    $obj->key = $nav_item->title;
-	    $obj->url = $nav_item->url;
-	    $obj->target = $target;
-	    $obj->targetKey = $targetKey;
-	    $obj->publicTitle = $nav_item->text;
+	    $obj->id = $content_item->content_id;
+	    $obj->culture = $content_item->culture;
+	    $obj->preview = $content_item->preview;
+	    $obj->group = $content_item->group;
+	    $obj->type = $content_item->content_type;
+	    $obj->description = $content_item->description;
+	    $obj->modified = $content_item->last_modified;
+	    $obj->status = $content_item->status;
 	    
 	    return $obj;
     }

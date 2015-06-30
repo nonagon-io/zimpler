@@ -110,7 +110,7 @@ class Content_model extends CI_Model
     }
     
 	public function get_list($culture, $keyword = NULL, 
-		$skip = 0, $take = 50, $order_by = 'first_name asc, last_name asc')
+		$skip = 0, $take = 50, $order_by = 'title asc')
 	{
 		if($keyword)
 		{
@@ -120,11 +120,13 @@ class Content_model extends CI_Model
 			$this->db->or_where('content_type like', '%' . $keyword . '%');
 		}
 
-		$result = $this->db->order_by($order_by)->
-				select('content_id as id, title, group, description, 
-						content_type as contentType, last_modified as lastModified,
-						status', FALSE)->
-				get('content', $take, $skip)->result();
+		$this->db->order_by($order_by)->
+				select('a.content_id, a.title, a.group, a.description, 
+						a.content_type, a.last_modified,
+						b.culture, b.status')->
+				from('content');
+
+		$result = $this->db->get('content', $take, $skip)->result();
 
 		$this->db->flush_cache();
 
@@ -173,8 +175,8 @@ class Content_model extends CI_Model
 	    if(!$content)
 	    	throw new Exception('content parameter cannot be null');
 	    
-	    if(!array_key_exists('name', $content))
-	    	throw new Exception('name must be specified');
+	    if(!array_key_exists('title', $content))
+	    	throw new Exception('title must be specified');
 
 	    if(!array_key_exists('content_key', $content))
 	    	throw new Exception('content_key must be specified');
@@ -203,7 +205,7 @@ class Content_model extends CI_Model
 		}
 		
 	    $this->db->trans_start();
-	    	
+	    
 	    $content['date_created'] = date('Y-m-d H:i:s', now());
 	    $content['last_modified'] = date('Y-m-d H:i:s', now());
 	    $content['status'] = 'active';
@@ -213,13 +215,27 @@ class Content_model extends CI_Model
 	    
 	    switch($content['content_type'])
 	    {
-		    case 'label': $this->add_label_content($content_id, $content_label); break;
-		    case 'html': $this->add_html_content($content_id, $content_html); break;
-		    case 'list': $this->add_list_content($content_id, $content_list); break;
+		    case 'label': 
+		    	$content_details = $this->add_label_content($content_id, $content_label); 
+		    	$content['content_label'] = $content_details;
+		    	break;
+		    case 'html': 
+		    	$content_details = $this->add_html_content($content_id, $content_html); 
+		    	$content['content_html'] = $content_details;
+		    	break;
+		    case 'list': 
+		    	$content_details = $this->add_list_content($content_id, $content_list); 
+		    	$content['content_list'] = $content_details;
+		    	break;
+
 		    default: throw new Exception('Unsupported content_type'); break;
 	    }
 	    
 	    $this->db->trans_complete();
+
+	    $content['content_id'] = $content_id;
+
+	    return $content;
     }
     
     public function update_content($content)
@@ -230,8 +246,8 @@ class Content_model extends CI_Model
 	    if(!array_key_exists('content_id', $content))
 	    	throw new Exception('content_id must be specified');
 
-	    if(!array_key_exists('name', $content))
-	    	throw new Exception('name must be specified');
+	    if(!array_key_exists('title', $content))
+	    	throw new Exception('title must be specified');
 	    	
 	    $this->db->flush_cache();
 	    	
@@ -258,7 +274,7 @@ class Content_model extends CI_Model
 	    // Check if content exists.
 		$query = $this->db->get_where('content', array('content_id' => $content_id));
 		if($query->num_rows() == 0)
-			throw new Exception('content with the given content_id does not exists');
+			throw new Exception('content with the given content_id: ' . $content_id . ' does not exists');
 			
 		$existing_content = $query->row();
 		$existing_content = json_decode(json_encode($existing_content), true);
@@ -268,9 +284,19 @@ class Content_model extends CI_Model
 	    	
 	    switch($existing_content['content_type'])
 	    {
-		    case 'label': $this->update_label_content($content_id, $content_label); break;
-		    case 'html': $this->update_html_content($content_id, $content_html); break;
-		    case 'list': $this->update_list_content($content_id, $content_list); break;
+		    case 'label': 
+		    	$content_details = $this->update_label_content($content_id, $content_label); 
+		    	$content['content_label'] = $content_details;
+		    	break;
+		    case 'html': 
+		    	$content_details = $this->update_html_content($content_id, $content_html); 
+		    	$content['content_html'] = $content_details;
+		    	break;
+		    case 'list': 
+		    	$content_details = $this->update_list_content($content_id, $content_list); 
+		    	$content['content_list'] = $content_details;
+		    	break;
+
 		    default: throw new Exception('Unsupported content_type'); break;
 	    }
 	    
@@ -286,6 +312,8 @@ class Content_model extends CI_Model
 		$this->db->update('content');
 	    
 	    $this->db->trans_complete();
+
+	    return $content;
     }
     
     private function add_label_content($content_id, $content_label)
@@ -306,6 +334,9 @@ class Content_model extends CI_Model
 	    $content_label['status'] = 'draft';
 	    
 	    $this->db->insert('content_label', $content_label);
+	    $content_label['content_label_id'] = $this->db->insert_id();
+
+	    return $content_label;
     }
     
     private function update_label_content($content_id, $content_label)
@@ -352,6 +383,8 @@ class Content_model extends CI_Model
 			$this->db->where('content_label_id', $content_label_id);
 			$this->db->update('content_label', $existing_content_label);
 		}
+
+		return $existing_content_label;
     }
     
     private function add_html_content($content_id, $content_html)
@@ -375,6 +408,9 @@ class Content_model extends CI_Model
 	    $content_html['status'] = 'draft';
 	    
 	    $this->db->insert('content_html', $content_html);
+	    $content_html['content_html_id'] = $this->db->insert_id();
+
+	    return $content_html;
     }
     
     private function update_html_content($content_id, $content_html)
@@ -415,12 +451,12 @@ class Content_model extends CI_Model
 		    
 			// If the content_html with the given content_id and culture already published, just skip.
 			if($existing_content_html['status'] == 'published')
-				return;
+				throw new Exception('content is already published, please create new revision');
 				
 			$existing_content_html['last_modified'] = date('Y-m-d H:i:s', now());
 			$existing_content_html['html'] = $content_html['html'];
 			
-			if(!array_key_exists('title', $content_html))
+			if(array_key_exists('title', $content_html))
 				$existing_content_html['title'] = $content_html['title'];
 				
 			$content_html_id = $existing_content_html['content_html_id'];
@@ -428,6 +464,8 @@ class Content_model extends CI_Model
 			$this->db->where('content_html_id', $content_html_id);
 			$this->db->update('content_html', $existing_content_html);
 		}
+
+		return $existing_content_html;	
     }
     
     private function add_list_content($content_id, $content_list)
@@ -469,6 +507,10 @@ class Content_model extends CI_Model
 			    $this->db->insert('content_list_item', $content_list_item);
 		    }
 	    }
+
+	    $content_list['content_list_id'] = $content_list_id;
+
+	    return $content_list;
     }
     
     private function update_list_content($content_id, $content_list)
@@ -520,6 +562,8 @@ class Content_model extends CI_Model
 			$this->db->where('content_list_id', $content_list_id);
 			$this->db->update('content_list', $existing_content_list);
 		}
+
+		return $existing_content_list;
     }
     
     public function add_list_item($content_list_item)

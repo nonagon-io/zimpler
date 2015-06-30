@@ -12,6 +12,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 	$scope.isRefreshing = false;
 	$scope.isKeywordActive = false;
 	$scope.currentCulture = $location.search().culture || "en-us";
+	$scope.currentCultureFullName = $("#cultureSelection option:selected").html().trim();
 	$scope.fileManagerPopup = fileManagerPopup;
 
 	$scope.tinymceOptions = {
@@ -198,9 +199,11 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 	$scope.propertiesPanel.on("culture-changed", function(data) {
 
-		$scope.editingData.cultureFullName =  
-			$scope.propertiesPanel.dom(".n-culture-selection option:selected").html();
-	});
+		var name = $scope.propertiesPanel.dom(
+			".n-culture-selection option:selected").html().trim();
+
+		$scope.currentCultureFullName = name;
+	});	
 
 	$(".uk-pagination").on("select.uk.pagination", function(e, pageIndex) {
 

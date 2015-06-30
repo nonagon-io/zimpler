@@ -50,6 +50,56 @@
 	</div>
 </div>
 <div class="uk-form-row">
+	<label class="uk-form-label" for="type">
+		Content Type
+	</label>
+	<div class="uk-form-controls">
+		<select id="type=" name="type" class="uk-width-1-1"
+				ng-model="editingData.type"
+				ng-disabled="currentStatus == 'published'">
+			<option value="html">Composition</option>
+			<option value="label">Label</option>
+			<option value="list">List</option>
+		</select>
+	</div>
+</div>
+<hr/>
+<div ng-show="editingData.type == 'html'">
+	<div class="uk-form-row">
+		<label class="uk-form-label" for="publicTitle">
+			Public Title - {{currentCultureFullName}}
+		</label>
+		<div class="uk-form-controls">
+			<input type="text" id="publicTitle" name="publicTitle" class="uk-width-1-1" 
+				   ng-model="editingData.publicTitle"
+				   placeholder="The title of content in the selected language"
+				   maxlength="80" />
+		</div>
+	</div>
+	<div class="uk-form-row">
+		<label class="uk-form-label" for="html">
+			Content - {{currentCultureFullName}}
+		</label>
+		<div class="uk-form-controls">
+			<textarea ui-tinymce="tinymceOptions" ng-model="editingData.html"></textarea>
+		</div>
+	</div>
+</div>
+<div ng-show="editingData.type == 'label'">
+	<div class="uk-form-row">
+		<label class="uk-form-label" for="label">
+			Label - {{currentCultureFullName}}
+		</label>
+		<div class="uk-form-controls">
+			<input type="text" id="label" name="label" class="uk-width-1-1" 
+				   ng-model="editingData.label"
+				   placeholder="The label in the selected language"
+				   maxlength="80" />
+		</div>
+	</div>
+</div>
+<hr/>
+<div class="uk-form-row">
 	<label class="uk-form-label" for="group">
 		Group
 	</label>
@@ -73,41 +123,5 @@
 			   ng-model="editingData.description"
 			   placeholder="The description of the content (optional)"
 			   maxlength="250" />
-	</div>
-</div>
-<div class="uk-form-row">
-	<label class="uk-form-label" for="type">
-		Content Type
-	</label>
-	<div class="uk-form-controls">
-		<select id="type=" name="type" class="uk-width-1-1"
-				ng-model="editingData.type"
-				ng-disabled="currentStatus == 'published'">
-			<option value="html">HTML</option>
-			<option value="label">Label</option>
-			<option value="list">List</option>
-		</select>
-	</div>
-</div>
-<hr/>
-<div ng-show="editingData.type == 'html'">
-	<div class="uk-form-row">
-		<label class="uk-form-label" for="type">
-			Public Title ({{editingData.cultureFullName}})
-		</label>
-		<div class="uk-form-controls">
-			<select id="type=" name="type" class="uk-width-1-1"
-					ng-model="editingData.type"
-					ng-disabled="currentStatus == 'published'">
-				<option value="html">HTML</option>
-				<option value="label">Label</option>
-				<option value="list">List</option>
-			</select>
-		</div>
-	</div>
-	<div class="uk-form-row">
-		<div class="uk-form-controls">
-			<textarea ui-tinymce="tinymceOptions" ng-model="editingData.html"></textarea>
-		</div>
 	</div>
 </div>
