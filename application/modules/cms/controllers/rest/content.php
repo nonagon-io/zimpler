@@ -263,7 +263,7 @@ class Content extends REST_Controller {
 		    
 	    })->toArray();
 
-	    $result->items = $content_items;
+	    $result['items'] = $content_items;
 	    $this->response($result);
     }
     
@@ -387,6 +387,7 @@ class Content extends REST_Controller {
 
 	    $obj = new StdClass();
 	    $obj->id = $content_item->content_id;
+	    $obj->title = $content_item->title;
 	    $obj->culture = $content_item->culture;
 	    $obj->preview = $content_item->preview;
 	    $obj->group = $content_item->group;

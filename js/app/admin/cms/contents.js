@@ -3,7 +3,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 .controller("CmsContentController", 
 	function($scope, $rootScope, $locale, $location, $timeout, httpEx, 
 			 submitForm, propertiesPanel, cmsConfirmPublish, cmsPublish, 
-			 cmsNewRev, cmsConfirmDelRev, cmsDelRev, fileManagerPopup) {
+			 cmsNewRev, cmsConfirmDelRev, cmsDelRev, fileManagerPopup, checkFormDirty) {
 
 	$scope.list = null;
 	$scope.selectedItem = null;
@@ -117,13 +117,18 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 					$scope.editingData = angular.copy(item);
 					$scope.editingData.headerTitle = item.username;
+
+					$timeout(function() {
+						$scope.propertiesPanel.propertiesForm.$setPristine();
+						$scope.propertiesPanel.propertiesForm.$setUntouched();
+					}, 1);
 				});
 				
 		} else {
 			
 			$scope.selectedItem = item;
 			$scope.propertiesPanel.open($scope,
-				"uk-width-1-1 uk-width-medium-2-3 uk-width-large-1-3");
+				"uk-width-1-1 uk-width-medium-2-3 uk-width-large-1-2");
 			
 			$scope.editingData = angular.copy(item);
 			$scope.editingData.headerTitle = item.username;

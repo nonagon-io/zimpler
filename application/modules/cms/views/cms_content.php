@@ -45,7 +45,7 @@
 					<td class="uk-text-center">
 						<input type="checkbox" ng-model="item.checked" ng-disabled="selectedItem" />
 					</td>
-					<td ng-bind="item.name" ng-click="select(item)"></td>
+					<td ng-bind="item.title" ng-click="select(item)"></td>
 					<td ng-bind="item.group" ng-click="select(item)"></td>
 					<td ng-bind="item.type" ng-click="select(item)"></td>
 					<td ng-bind="item.modified" ng-click="select(item)"></td>

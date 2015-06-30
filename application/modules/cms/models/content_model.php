@@ -120,13 +120,21 @@ class Content_model extends CI_Model
 			$this->db->or_where('content_type like', '%' . $keyword . '%');
 		}
 
-		$this->db->order_by($order_by)->
+		$result = $this->db->order_by($order_by)->
 				select('a.content_id, a.title, a.group, a.description, 
 						a.content_type, a.last_modified,
-						b.culture, b.status')->
-				from('content');
+						b.culture, b.status', FALSE)->
+				select(
+					"CASE ".
+    				"	WHEN a.content_type = 'html' THEN b.title ".
+    				"	WHEN a.content_type = 'label' THEN c.label ".
+    				"	WHEN a.content_type = 'list' THEN d.title ".
+  					"END AS preview", FALSE)->
 
-		$result = $this->db->get('content', $take, $skip)->result();
+				join('content_html b', 'a.content_id = b.content_id', 'left')->
+				join('content_label c', 'a.content_id = c.content_id', 'left')->
+				join('content_list d', 'a.content_id = d.content_id', 'left')->
+				get('content a', $take, $skip)->result();
 
 		$this->db->flush_cache();
 
