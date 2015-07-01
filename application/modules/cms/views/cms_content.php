@@ -45,11 +45,11 @@
 					<td class="uk-text-center">
 						<input type="checkbox" ng-model="item.checked" ng-disabled="selectedItem" />
 					</td>
-					<td ng-bind="item.title" ng-click="select(item)"></td>
+					<td ng-bind="item.publicTitle" ng-click="select(item)"></td>
 					<td ng-bind="item.group" ng-click="select(item)"></td>
 					<td ng-bind="item.type" ng-click="select(item)"></td>
 					<td ng-bind="item.modified" ng-click="select(item)"></td>
-					<td ng-bind="item.status ? 'Active' : 'Inactive'" ng-click="select(item)"></td>
+					<td ng-bind="item.status" ng-click="select(item)"></td>
 				</tr>
 			</tbody>
 		</table>

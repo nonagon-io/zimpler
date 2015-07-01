@@ -387,9 +387,11 @@ class Content extends REST_Controller {
 
 	    $obj = new StdClass();
 	    $obj->id = $content_item->content_id;
+	    $obj->key = $content_item->content_key;
 	    $obj->title = $content_item->title;
 	    $obj->culture = $content_item->culture;
-	    $obj->preview = $content_item->preview;
+	    $obj->publicTitle = $content_item->public_title;
+	    $obj->html = $content_item->public_html;
 	    $obj->group = $content_item->group;
 	    $obj->type = $content_item->content_type;
 	    $obj->description = $content_item->description;

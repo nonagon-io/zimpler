@@ -114,39 +114,126 @@ class Content_model extends CI_Model
 	{
 		if($keyword)
 		{
-			$this->db->where('title like', '%' . $keyword . '%');
-			$this->db->or_where('group like', '%' . $keyword . '%');
-			$this->db->or_where('description like', '%' . $keyword . '%');
-			$this->db->or_where('content_type like', '%' . $keyword . '%');
+			$this->db->where('a.title like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->where('b.title like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->where('c.label like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->where('d.title like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->or_where('group like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->or_where('description like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->or_where('content_type like', '%' . $this->db->escape_like_str($keyword) . '%');
 		}
 
-		$result = $this->db->order_by($order_by)->
-				select('a.content_id, a.title, a.group, a.description, 
-						a.content_type, a.last_modified,
-						b.culture, b.status', FALSE)->
-				select(
-					"CASE ".
-    				"	WHEN a.content_type = 'html' THEN b.title ".
-    				"	WHEN a.content_type = 'label' THEN c.label ".
-    				"	WHEN a.content_type = 'list' THEN d.title ".
-  					"END AS preview", FALSE)->
+		$result = $this->db->order_by($order_by)
+			->select('a.content_id, a.content_key, a.title, a.group, a.description, 
+					a.content_type, a.last_modified', FALSE)
 
-				join('content_html b', 'a.content_id = b.content_id', 'left')->
-				join('content_label c', 'a.content_id = c.content_id', 'left')->
-				join('content_list d', 'a.content_id = d.content_id', 'left')->
-				get('content a', $take, $skip)->result();
+			->select(
+				"CASE ".
+				"	WHEN a.content_type = 'html' THEN b.title ".
+				"	WHEN a.content_type = 'label' THEN c.label ".
+				"	WHEN a.content_type = 'list' THEN d.title ".
+				"END AS public_title", FALSE)
+
+			->select(
+				"CASE ".
+				"	WHEN a.content_type = 'html' THEN b.html ".
+				"	WHEN a.content_type = 'label' THEN '' ".
+				"	WHEN a.content_type = 'list' THEN '' ".
+				"END AS public_html", FALSE)
+
+			->select(
+				"CASE ".
+				"	WHEN a.content_type = 'html' THEN b.culture ".
+				"	WHEN a.content_type = 'label' THEN b.culture ".
+				"	WHEN a.content_type = 'list' THEN b.culture ".
+				"END AS culture", FALSE)
+
+			->select(
+				"CASE ".
+				"	WHEN a.content_type = 'html' THEN b.status ".
+				"	WHEN a.content_type = 'label' THEN b.status ".
+				"	WHEN a.content_type = 'list' THEN b.status ".
+				"END AS status", FALSE)
+
+			->join('(select content_id, culture, max(revision) as maxrev ' .
+				   'from content_html where culture = ' . 
+				   	$this->db->escape($culture) . ' group by content_id, culture) as mb',
+				   'mb.content_id = a.content_id', 'left')
+
+			->join('content_html b', 
+				   'b.content_id = mb.content_id and ' .
+				   'b.culture = mb.culture and ' .
+				   'b.revision = mb.maxrev', 'left')
+
+			->join('(select content_id, culture, max(revision) as maxrev ' .
+				   'from content_label where culture = ' . 
+				    $this->db->escape($culture) . ' group by content_id, culture) as mc',
+				   'mc.content_id = a.content_id', 'left')
+
+			->join('content_label c', 
+				   'c.content_id = mc.content_id and ' .
+				   'c.culture = mc.culture and ' .
+				   'c.revision = mc.maxrev', 'left')
+
+			->join('(select content_id, culture, max(revision) as maxrev ' .
+				   'from content_list where culture = ' . 
+				    $this->db->escape($culture) . ' group by content_id, culture) as md',
+				   'md.content_id = a.content_id', 'left')
+
+			->join('content_list d', 
+				   'd.content_id = md.content_id and ' .
+				   'd.culture = md.culture and ' .
+				   'd.revision = md.maxrev', 'left')
+
+			->get('content a', $take, $skip)->result();
 
 		$this->db->flush_cache();
 
 		if($keyword)
 		{
-			$this->db->where('title like', '%' . $keyword . '%');
-			$this->db->or_where('group like', '%' . $keyword . '%');
-			$this->db->or_where('description like', '%' . $keyword . '%');
-			$this->db->or_where('content_type like', '%' . $keyword . '%');
+			$this->db->where('a.title like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->where('b.title like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->where('c.label like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->where('d.title like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->or_where('group like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->or_where('description like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->or_where('content_type like', '%' . $this->db->escape_like_str($keyword) . '%');
 		}
 
-		$total = $this->db->from('content')->count_all_results();
+		$total = $this->db
+			->from('content a')
+
+			->join('(select content_id, culture, max(revision) as maxrev ' .
+				   'from content_html where culture = ' . 
+				   	$this->db->escape($culture) . ' group by content_id, culture) as mb',
+				   'mb.content_id = a.content_id', 'left')
+
+			->join('content_html b', 
+				   'b.content_id = mb.content_id and ' .
+				   'b.culture = mb.culture and ' .
+				   'b.revision = mb.maxrev', 'left')
+
+			->join('(select content_id, culture, max(revision) as maxrev ' .
+				   'from content_label where culture = ' . 
+				    $this->db->escape($culture) . ' group by content_id, culture) as mc',
+				   'mc.content_id = a.content_id', 'left')
+
+			->join('content_label c', 
+				   'c.content_id = mc.content_id and ' .
+				   'c.culture = mc.culture and ' .
+				   'c.revision = mc.maxrev', 'left')
+
+			->join('(select content_id, culture, max(revision) as maxrev ' .
+				   'from content_list where culture = ' . 
+				    $this->db->escape($culture) . ' group by content_id, culture) as md',
+				   'md.content_id = a.content_id', 'left')
+
+			->join('content_list d', 
+				   'd.content_id = md.content_id and ' .
+				   'd.culture = md.culture and ' .
+				   'd.revision = md.maxrev', 'left')
+
+			->count_all_results();
 
 		return array(
 

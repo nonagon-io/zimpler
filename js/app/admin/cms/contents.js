@@ -64,7 +64,8 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 		var params = {
 
 			skip: page * pageSize,
-			take: pageSize
+			take: pageSize,
+			culture: $scope.currentCulture
 		};
 
 		if(keyword)
