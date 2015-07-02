@@ -116,6 +116,7 @@ class Content_model extends CI_Model
 		{
 			$this->db->where('a.title like', '%' . $this->db->escape_like_str($keyword) . '%');
 			$this->db->or_where('b.title like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->or_where('b.html like', '%' . $this->db->escape_like_str($keyword) . '%');
 			$this->db->or_where('c.label like', '%' . $this->db->escape_like_str($keyword) . '%');
 			$this->db->or_where('d.title like', '%' . $this->db->escape_like_str($keyword) . '%');
 			$this->db->or_where('group like', '%' . $this->db->escape_like_str($keyword) . '%');
@@ -186,6 +187,7 @@ class Content_model extends CI_Model
 		{
 			$this->db->where('a.title like', '%' . $this->db->escape_like_str($keyword) . '%');
 			$this->db->or_where('b.title like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->or_where('b.html like', '%' . $this->db->escape_like_str($keyword) . '%');
 			$this->db->or_where('c.label like', '%' . $this->db->escape_like_str($keyword) . '%');
 			$this->db->or_where('d.title like', '%' . $this->db->escape_like_str($keyword) . '%');
 			$this->db->or_where('group like', '%' . $this->db->escape_like_str($keyword) . '%');
