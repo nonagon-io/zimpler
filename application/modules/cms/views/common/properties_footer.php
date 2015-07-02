@@ -43,7 +43,7 @@
 		</button>
 		<button type="button" class="uk-button" ng-click="<?= $panel_name ?>.close()">
 			<span ng-if="editingData.status == 'published'">Close</span>
-			<span ng-if="editingData.status == 'draft'">Cancel</span>
+			<span ng-if="editingData.status == 'draft' || !editingData.status">Cancel</span>
 		</button>
 	</div>
 </div>

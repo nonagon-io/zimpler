@@ -46,14 +46,13 @@ class Content extends REST_Controller {
     
     function index_get()
     {
-	    $top_rev = $this->content_model->get_top_revision();
-	    
-	    $result = array(
-		    'rev' => $top_rev,
-		    'status' => $this->content_model->get_status($top_rev)
-		);
+    	$key = $this->get('key');
+    	$culture = $this->get('culture');
+
+	    $top_rev = $this->content_model->get_top_revision($key, $culture);
+	    $result = $this->content_model->get($key, $culture, $top_rev);
 		
-		$this->response($result);
+		$this->response($this->get_front_content($result));
     }
 
     function index_delete()
@@ -182,8 +181,8 @@ class Content extends REST_Controller {
 
 		if($type == 'html')
 		{
-			$publicTitle = $this->post("publicTitle");
-			$html = $this->post("html");
+			$publicTitle = $this->put("publicTitle");
+			$html = $this->put("html");
 
 			$content['content_html'] = array(
 
@@ -194,7 +193,7 @@ class Content extends REST_Controller {
 		}
 		else if($type == 'label')
 		{
-			$label = $this->post("label");
+			$label = $this->put("label");
 
 			$content['content_label'] = array(
 
@@ -212,39 +211,9 @@ class Content extends REST_Controller {
 
 		$result = $this->content_model->update_content($content);
 
-		$content = array(
-				
-			'id' => $result['content_id'],
-			'key' => $result['content_key'],
-			'title' => $result['title'],
-			'group' => $result['group'],
-			'type' => $result['content_type'],
-			'description' => $result['description']
-		);
-
-		if($content['type'] == 'html')
-		{
-			$content['culture'] = $result['content_html']['culture'];
-			$content['publicTitle'] = $result['content_html']['title'];
-			$content['html'] = $result['content_html']['html'];
-			$content['status'] = $result['content_html']['status'];
-		}
-		else if($content['type'] == 'label')
-		{
-			$content['culture'] = $result['content_label']['culture'];
-			$content['label'] = $result['content_label']['label'];
-			$content['status'] = $result['content_label']['status'];
-		}
-		else if($content['type'] == 'list')
-		{
-			$content['culture'] = $result['content_list']['culture'];
-			$content['list'] = $result['content_list']['list'];
-			$content['status'] = $result['content_list']['status'];
-		}
-
 		$this->response(array(
 
-			'content' => $content
+			'content' => Content::get_front_content($result)
 		));
     }
     
@@ -380,6 +349,44 @@ class Content extends REST_Controller {
     {
 	    $this->content_model->delete_revision($content_key, $culture, $revision);
     }
+
+    public static function get_front_content($content)
+    {
+    	$content = json_decode(json_encode($content), FALSE);
+
+    	$obj = new StdClass();
+
+    	$obj->id = $content->content_id;
+    	$obj->key = $content->content_key;
+    	$obj->title = $content->title;
+
+    	if($content->content_type == 'html' && $content->content_html)
+    	{
+    		$obj->publicTitle = $content->content_html->title;
+    		$obj->html = $content->content_html->html;
+    		$obj->culture = $content->content_html->culture;
+    		$obj->status = $content->content_html->status;
+    	}
+    	else if($content->content_type == 'label' && $content->content_label)
+    	{
+    		$obj->label = $content->content_label->label;
+    		$obj->culture = $content->content_label->culture;
+    		$obj->status = $content->content_label->status;
+    	}
+    	else if($content->content_type == 'list' && $content->content_list)
+    	{
+    		$obj->publicTitle = $content->content_list->title;
+    		$obj->culture = $content->content_list->culture;
+    		$obj->status = $content->content_list->status;
+    	}
+
+	    $obj->group = $content->group;
+	    $obj->type = $content->content_type;
+	    $obj->description = $content->description;
+	    $obj->modified = human_to_unix($content->last_modified);
+
+    	return $obj;
+    }
     
     public static function get_front_content_item($content_item)
     {
@@ -391,13 +398,12 @@ class Content extends REST_Controller {
 	    $obj->title = $content_item->title;
 	    $obj->culture = $content_item->culture;
 	    $obj->publicTitle = $content_item->public_title;
-	    $obj->html = $content_item->public_html;
 	    $obj->group = $content_item->group;
 	    $obj->type = $content_item->content_type;
 	    $obj->description = $content_item->description;
-	    $obj->modified = $content_item->last_modified;
+	    $obj->modified = human_to_unix($content_item->last_modified);
 	    $obj->status = $content_item->status;
-	    
+
 	    return $obj;
     }
 }

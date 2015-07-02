@@ -36,7 +36,7 @@
 					<th style="width: 100px">Group</th>
 					<th style="width: 100px">Type</th>
 					<th style="width: 200px">Modified</th>
-					<th style="width: 80px">Status</th>
+					<th style="width: 80px; text-align: center">Status</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -45,17 +45,23 @@
 					<td class="uk-text-center">
 						<input type="checkbox" ng-model="item.checked" ng-disabled="selectedItem" />
 					</td>
-					<td ng-bind="item.publicTitle" ng-click="select(item)"></td>
+					<td ng-click="select(item)">
+						<div ng-bind="item.publicTitle || item.title"
+							 ng-class="{'uk-text-danger': !item.publicTitle}"></div>
+						<div ng-bind="item.description" class="uk-text-muted uk-text-small"></div>
+					</td>
 					<td ng-bind="item.group" ng-click="select(item)"></td>
 					<td ng-bind="item.type" ng-click="select(item)"></td>
-					<td ng-bind="item.modified" ng-click="select(item)"></td>
-					<td ng-bind="item.status" ng-click="select(item)"></td>
+					<td ng-bind="item.modified * 1000 | date:'yyyy-MM-dd hh:mm:ss a'" ng-click="select(item)"></td>
+					<td ng-bind="item.status || 'n/a'" ng-click="select(item)"
+						ng-class="{'uk-text-muted': !item.status}" 
+						style="text-align: center; text-transform: capitalize"></td>
 				</tr>
 			</tbody>
 		</table>
-		<div class="n-abs-fit uk-vertical-align uk-text-center uk-panel uk-panel-box" ng-show="isRefreshing">
+		<div class="n-abs-fit uk-vertical-align uk-text-center n-progress-panel" ng-show="isRefreshing">
 			<div class="uk-vertical-align-middle">
-				<i class="uk-icon-spinner uk-icon-spin"></i>
+				<i class="uk-icon-spinner uk-icon-spin uk-icon-medium"></i>
 			</div>
 		</div>
 	</div>

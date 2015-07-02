@@ -75,8 +75,18 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 			success(function(data, status, headers, config) {
 
 				$scope.list = data;
-
 				$scope.isRefreshing = false;
+
+				if($scope.selectedItem) {
+
+					var newSelectedItem = _.filter($scope.list.items, function(item) {
+
+						return item.id == $scope.selectedItem.id;
+					})[0];
+
+					$scope.selectedItem = newSelectedItem;
+				}
+
 			});
 	}
 
@@ -101,6 +111,38 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 	$scope.select = function(item) {
 
+		var proceedLoadContent = function() {
+
+			$scope.isLoadingEditingData = true;
+
+			var params = {
+
+				key: item.key,
+				culture: $scope.currentCulture
+			}
+
+			httpEx($scope, "GET", $scope.baseUrl + "cms/rest/content", params).
+				success(function(data, status, headers, config) {
+
+					if(!data.culture)
+						data.culture = $scope.currentCulture;
+
+					$scope.editingData = data;
+					$scope.editingData.headerTitle = data.title;
+
+					$timeout(function() {
+						$scope.propertiesPanel.propertiesForm.$setPristine();
+						$scope.propertiesPanel.propertiesForm.$setUntouched();
+					}, 1);
+
+					$scope.isLoadingEditingData = false;
+				}).
+				error(function(data, status, headers, config) {
+
+					$scope.isLoadingEditingData = false;
+				});
+		}
+
 		var checkedItems = $.grep($scope.list.items, function(item, i) {
 			
 			return item.checked;
@@ -116,8 +158,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 					
 					$scope.selectedItem = item;
 
-					$scope.editingData = angular.copy(item);
-					$scope.editingData.headerTitle = item.username;
+					proceedLoadContent();
 
 					$timeout(function() {
 						$scope.propertiesPanel.propertiesForm.$setPristine();
@@ -131,9 +172,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 			$scope.propertiesPanel.open($scope,
 				"uk-width-1-1 uk-width-medium-2-3 uk-width-large-1-2");
 			
-			$scope.editingData = angular.copy(item);
-			$scope.editingData.headerTitle = item.username;
-			$scope.editingData.allowDelete = (item.id != $scope.currentUserId);
+			proceedLoadContent();
 		}
 	}
 
@@ -180,7 +219,9 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 					$scope.selectedItem.headerTitle = data.content.title;
 
+					$scope.selectedItem.publicTitle = data.content.publicTitle;
 					$scope.selectedItem.group = data.content.group;
+					$scope.selectedItem.description = data.content.description;
 					$scope.selectedItem.type = data.content.type;
 					$scope.selectedItem.modified = data.content.modified;
 					$scope.selectedItem.status = data.content.status;
@@ -209,6 +250,31 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 			".n-culture-selection option:selected").html().trim();
 
 		$scope.currentCultureFullName = name;
+
+		$("#cultureSelection").val(data);
+		$scope.currentCulture = data;
+		$scope.refresh();
+
+		var params = {
+
+			key: $scope.editingData.key,
+			culture: $scope.editingData.culture
+		}
+
+		httpEx($scope, "GET", $scope.baseUrl + "cms/rest/content", params).
+			success(function(data, status, headers, config) {
+
+				if(!data.culture)
+					data.culture = $scope.editingData.culture;
+
+				$scope.editingData = data;
+				$scope.editingData.headerTitle = data.title;
+
+				$timeout(function() {
+					$scope.propertiesPanel.propertiesForm.$setPristine();
+					$scope.propertiesPanel.propertiesForm.$setUntouched();
+				}, 1);
+			});
 	});	
 
 	$(".uk-pagination").on("select.uk.pagination", function(e, pageIndex) {

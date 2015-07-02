@@ -119,6 +119,11 @@ body {
 	color: white;
 }
 
+.n-view-host .n-body .n-list tr.uk-active .uk-text-muted {
+
+	color: white !important;
+}
+
 .n-view-host .n-body .n-list tr.uk-active input[type=checkbox] {
 	
 	border-color: white;
@@ -481,6 +486,28 @@ body {
 	background: #efefef;
 	color: #bbb;
 	z-index: 1000;
+
+    -webkit-transition: opacity 0.3s ease-in-out;
+    -moz-transition: opacity 0.3s ease-in-out;
+    -o-transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.n-progress-panel.n-properties-panel-progress {
+
+	background: #e5e5e5 !important;
+}
+
+.n-progress-panel.ng-hide {
+
+	opacity: 0;
+	display: block;
+	pointer-events: none;
+}
+
+.n-progress-panel.n-properties-panel-progress .uk-icon-spinner {
+
+	color: #999;
 }
 
 .n-progress-mask {

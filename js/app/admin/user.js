@@ -91,6 +91,7 @@ angular.module("admin-user", ['generic-modal', 'admin'])
 
 					$scope.editingData = angular.copy(item);
 					$scope.editingData.headerTitle = item.username;
+					$scope.editingData.allowDelete = (item.id != $scope.currentUserId);
 				});
 				
 		} else {

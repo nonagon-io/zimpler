@@ -136,13 +136,6 @@ class Content_model extends CI_Model
 
 			->select(
 				"CASE ".
-				"	WHEN a.content_type = 'html' THEN b.html ".
-				"	WHEN a.content_type = 'label' THEN '' ".
-				"	WHEN a.content_type = 'list' THEN '' ".
-				"END AS public_html", FALSE)
-
-			->select(
-				"CASE ".
 				"	WHEN a.content_type = 'html' THEN b.culture ".
 				"	WHEN a.content_type = 'label' THEN b.culture ".
 				"	WHEN a.content_type = 'list' THEN b.culture ".
@@ -244,7 +237,7 @@ class Content_model extends CI_Model
 		);
 	}
     
-    public function get_top_revision($content_key, $culture)
+    public function get_top_revision($content_key, $culture, $status = NULL)
     {
 	    $content = $this->db->get_where('content', array('content_key' => $content_key))->row();
 	    if(!$content)
@@ -252,17 +245,45 @@ class Content_model extends CI_Model
 	    
 	    // Get the latest content revision.
 	    $this->db->select_max('revision', 'latest_revision');
-	    $query = $this->db->get_where('content_' . $content->content_type, 
-	    	array('content_id' => $content->content_id, 'culture' => $culture));
+
+	    $where_cause = array('content_id' => $content->content_id, 'culture' => $culture);
+
+	    if($status)
+	    {
+	    	$where_cause['status'] = $status;
+	    }
+
+	    $query = $this->db->get_where('content_' . $content->content_type, $where_cause);
 	    	
 	    $top_rev = $query->row()->latest_revision;
 	    	
 	    if(!$top_rev)
 	    {
-		    throw new Exception('content with the given content_key does not have details data');
+		    return 0;
 	    }
 	    
 	    return $top_rev;
+    }
+
+    public function get($content_key, $culture, $revision = NULL)
+    {
+    	$content = $this->db->where('content_key', $content_key)->get('content')->row();
+
+    	if(!$content)
+    		return NULL;
+
+    	if($revision === NULL)
+    		$revision = $this->get_top_revision($content_key, $culture, 'published');
+
+    	$content_details = $this->db
+    		->where('content_id', $content->content_id)
+    		->where('culture', $culture)
+    		->where('revision', $revision)
+    		->get('content_' . $content->content_type)->row();
+
+    	$content->{'content_' . $content->content_type} = $content_details;
+
+    	return $content;
     }
  
     public function add_content($content)
@@ -298,6 +319,12 @@ class Content_model extends CI_Model
 		    $content_list = $content['content_label'];
 		    unset($content['content_label']);
 		}
+
+		if(!$content['group'])
+			$content['group'] = NULL;
+
+		if(!$content['description'])
+			$content['description'] = NULL;
 		
 	    $this->db->trans_start();
 	    
@@ -373,7 +400,13 @@ class Content_model extends CI_Model
 			
 		$existing_content = $query->row();
 		$existing_content = json_decode(json_encode($existing_content), true);
-		
+
+		if(!$content['group'])
+			$content['group'] = NULL;
+
+		if(!$content['description'])
+			$content['description'] = NULL;
+
 		// Update content.
 	    $this->db->trans_start();
 	    	
@@ -394,8 +427,16 @@ class Content_model extends CI_Model
 
 		    default: throw new Exception('Unsupported content_type'); break;
 	    }
+
+	    $last_modified = date('Y-m-d H:i:s', now());
 	    
-	    $this->db->set('last_modified', date('Y-m-d H:i:s', now()));
+	    $this->db->set('last_modified', $last_modified);
+	    $this->db->set('title', $content['title']);
+	    $this->db->set('content_key', $content['content_key']);
+	    $this->db->set('content_type', $content['content_type']);
+
+	    if(array_key_exists('group', $content))
+	    	$this->db->set('group', $content['group']);
 	    
 	    if(array_key_exists('name', $content))
 	    	$this->db->set('name', $content['name']);
@@ -407,6 +448,8 @@ class Content_model extends CI_Model
 		$this->db->update('content');
 	    
 	    $this->db->trans_complete();
+
+	    $content['last_modified'] = $last_modified;
 
 	    return $content;
     }
@@ -455,7 +498,7 @@ class Content_model extends CI_Model
 	    if(!$query->row()->latest_revision)
 	    {
 		    // New culture entry.
-		    add_label_content($content_id, $content_html);
+		    return add_label_content($content_id, $content_html);
 		}
 	    else
 	    {
@@ -495,6 +538,12 @@ class Content_model extends CI_Model
 	    	
 	    $this->db->flush_cache();
 
+	    if(!$content_html['title'])
+	    	$content_html['title'] = NULL;
+
+	    if(!$content_html['html'])
+	    	$content_html['html'] = NULL;
+
 	    $content_html['content_id'] = $content_id;
 	    $content_html['revision'] = 1;
 	    $content_html['date_created'] = date('Y-m-d H:i:s', now());
@@ -520,7 +569,13 @@ class Content_model extends CI_Model
 	    	throw new Exception('content_html::culture must be specified');
 	    	
 		$this->db->flush_cache();
-	    	
+
+	    if(!$content_html['title'])
+	    	$content_html['title'] = NULL;
+
+	    if(!$content_html['html'])
+	    	$content_html['html'] = NULL;
+
 	    // Get the latest content revision.
 	    $this->db->select_max('revision', 'latest_revision');
 	    $query = $this->db->get_where('content_html', 
@@ -529,7 +584,7 @@ class Content_model extends CI_Model
 	    if(!$query->row()->latest_revision)
 	    {
 		    // New culture entry.
-		    $this->add_html_content($content_id, $content_html);
+		    return $this->add_html_content($content_id, $content_html);
 	    }
 	    else
 	    {
@@ -626,7 +681,7 @@ class Content_model extends CI_Model
 	    if(!$query->row()->latest_revision)
 	    {
 		    // New culture entry.
-		    add_list_content($content_id, $content_html);
+		    return add_list_content($content_id, $content_html);
 	    }
 	    else
 	    {
