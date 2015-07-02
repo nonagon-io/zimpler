@@ -2,6 +2,7 @@
 	  ng-show="<?= $panel_name ?>.isOpen" n-dirty-check=""
 	  name="<?= $panel_name ?>.propertiesForm" 
 	  ng-submit="<?= $panel_name ?>.save($event, {alsoClose:true})"
+	  n-focus-on-error=""
 	  action="<?= $action ?>" novalidate>
 	<?php if($this->config->item("csrf_protection")) : ?>
 	<input type="hidden" 
