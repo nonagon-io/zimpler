@@ -244,9 +244,11 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 				}
 				
 				if(method == "POST") {
-					
+
 					$scope.editingData = data.content;
 					$scope.editingData.headerTitle = data.content.title;
+
+					$scope.selectedItem = $scope.editingData;
 
 					$scope.refresh();
 
