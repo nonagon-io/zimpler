@@ -220,6 +220,8 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 	});
 
 	$scope.propertiesPanel.on("save", function(params, callback) {
+
+		$scope.propertiesPanel.propertiesForm.key.$error.duplicated = false;
 		
 		var action = $("form[name='propertiesPanel.propertiesForm']").attr("action");
 
@@ -232,6 +234,14 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 		submitForm($scope, $scope.propertiesPanel.propertiesForm, 
 			method, action, $scope.editingData).
 			success(function(data, status, headers, config) {
+
+				if(data.error) {
+
+					if(data.error == "content_key_exists")
+						$scope.propertiesPanel.propertiesForm.key.$error.duplicated = true;
+
+					return;
+				}
 				
 				if(method == "POST") {
 					

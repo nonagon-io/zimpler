@@ -37,12 +37,18 @@
 			   data-uk-tooltip="{pos:'right'}"
 			   ng-show="<?= $panel_name ?>.propertiesForm.key.$error.required && 
 			   			<?= $panel_name ?>.propertiesForm.$submitted"></i>
+			<i class="uk-icon-times-circle uk-text-danger" 
+			   title="The specified key is already exists"
+			   data-uk-tooltip="{pos:'right'}"
+			   ng-show="<?= $panel_name ?>.propertiesForm.key.$error.duplicated && 
+			   			<?= $panel_name ?>.propertiesForm.$submitted"></i>
 		</label>
 		<div class="uk-form-controls">
 			<input type="text" id="key" name="key" class="uk-width-1-1" 
 				   ng-model="editingData.key"
-				   ng-class="{'uk-form-danger': 
-				   		<?= $panel_name ?>.propertiesForm.key.$error.required && 
+				   ng-class="{'uk-form-danger': (
+				   		<?= $panel_name ?>.propertiesForm.key.$error.required ||
+				   		<?= $panel_name ?>.propertiesForm.key.$error.duplicated) && 
 				   		<?= $panel_name ?>.propertiesForm.$submitted}"
 				   placeholder="The unique key of content (e.g. why-us, home-highlight, 12345, etc.)"
 				   ng-readonly="currentStatus == 'published'"

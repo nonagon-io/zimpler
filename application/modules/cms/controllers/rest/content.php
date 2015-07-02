@@ -121,7 +121,21 @@ class Content extends REST_Controller {
 			);
 		}
 
-		$result = $this->content_model->add_content($content);
+		try
+		{
+			$result = $this->content_model->add_content($content);
+		}
+		catch(Exception $ex)
+		{
+			if($ex->getMessage() == 'content_key is already exists')
+			{
+				$this->response(array(
+					'error' => 'content_key_exists'
+				));
+
+				return;
+			}
+		}
 
 		$content = array(
 				
@@ -209,12 +223,35 @@ class Content extends REST_Controller {
 			);
 		}
 
-		$result = $this->content_model->update_content($content);
+		try
+		{
+			$result = $this->content_model->update_content($content);
+		}
+		catch(Exception $ex)
+		{
+			if($ex->getMessage() == 'content_key is already exists')
+			{
+				$this->response(array(
+					'error' => 'content_key_exists'
+				));
+
+				return;
+			}
+		}
 
 		$this->response(array(
 
 			'content' => Content::get_front_content($result)
 		));
+    }
+
+    function key_get()
+    {
+    	$key = $this->get('key');
+    	$content_id = $this->get('id');
+
+    	$result = $this->content_model->validate_key($key, $content_id);
+    	$this->response($result);
     }
     
     function list_get()

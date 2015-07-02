@@ -108,9 +108,21 @@ class Content_model extends CI_Model
 		$this->db->from('content');
 		return $this->db->count_all_results();
     }
+
+    public function validate_key($key, $content_id = NULL)
+    {
+    	$this->db->where('content_key', $key);
+
+    	if($content_id)
+    		$this->db->where('content_id <>', $content_id);
+
+    	$content = $this->db->get('content')->row();
+
+    	return $content == NULL;
+    }
     
 	public function get_list($culture, $keyword = NULL, 
-		$skip = 0, $take = 50, $order_by = 'title asc')
+		$skip = 0, $take = 50, $order_by = 'last_modified desc')
 	{
 		if($keyword)
 		{
@@ -302,6 +314,9 @@ class Content_model extends CI_Model
 	    if(!array_key_exists('content_type', $content))
 	    	throw new Exception('content_type must be specified');
 	    	
+		if(!$this->validate_key($content['content_key']))
+			throw new Exception('content_key is already exists');
+
 	    $this->db->flush_cache();
 	    	
 	    if(isset($content['content_html']))
@@ -372,7 +387,10 @@ class Content_model extends CI_Model
 
 	    if(!array_key_exists('title', $content))
 	    	throw new Exception('title must be specified');
-	    	
+
+		if(!$this->validate_key($content['content_key'], $content['content_id']))
+			throw new Exception('content_key is already exists');
+
 	    $this->db->flush_cache();
 	    	
 	    if(isset($content['content_html']))
