@@ -149,7 +149,7 @@ class Cms_admin extends Partial_Controller {
 
 		if($method == 'GET')
 		{
-			$culture = $this->input->get('culture');
+			$culture = $this->input->get('c');
 			if(!$culture) $culture = 'en-us';
 
 			$this->data['culture'] = $culture;

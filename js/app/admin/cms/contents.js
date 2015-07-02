@@ -1,5 +1,12 @@
 angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin-cms", "ngAnimate"])
 
+.config(['$locationProvider', function AppConfig($locationProvider) {
+
+    $locationProvider.html5Mode(true);
+    $locationProvider.hashPrefix('?');
+
+}])
+
 .controller("CmsContentController", 
 	function($scope, $rootScope, $locale, $location, $timeout, httpEx, 
 			 submitForm, propertiesPanel, cmsConfirmPublish, cmsPublish, 
@@ -11,7 +18,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 	$scope.currentUserId = null;
 	$scope.isRefreshing = false;
 	$scope.isKeywordActive = false;
-	$scope.currentCulture = $location.search().culture || "en-us";
+	$scope.currentCulture = $location.search().c || "en-us";
 	$scope.currentCultureFullName = $("#cultureSelection option:selected").html().trim();
 	$scope.fileManagerPopup = fileManagerPopup;
 
@@ -54,6 +61,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 		var page = $location.search()['p'];
 		var keyword = $location.search()['q'];
+		var culture = $location.search()['c'];
 		var pageSize = 20;
 
 		$scope.searchKeyword = keyword;
@@ -100,13 +108,13 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 	$scope.search = function() {
 
-		$location.search({ p: 0, q: $scope.searchKeyword });
+		$location.search({ p: 0, q: $scope.searchKeyword, c: $scope.currentCulture });
 	}
 
 	$scope.clearSearch = function() {
 
 		$scope.searchKeyword = "";
-		$scope.search();
+		$scope.search({ c: $scope.currentCulture });
 	}
 
 	$scope.select = function(item) {
@@ -191,6 +199,14 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 			"uk-width-1-1 uk-width-medium-2-3 uk-width-large-1-2");
 	}
 
+	$scope.persistPageParameterChanged = function() {
+
+		var query = $location.search();
+		query.c = $scope.currentCulture;
+
+		$location.search(query);
+	}
+
 	$scope.$on("$locationChangeSuccess", function() {
 
 		$scope.refresh();
@@ -253,7 +269,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 		$("#cultureSelection").val(data);
 		$scope.currentCulture = data;
-		$scope.refresh();
+		$scope.persistPageParameterChanged();
 
 		var params = {
 
@@ -291,7 +307,10 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 	$("#cultureSelection").on("change", function() {
 		
 		var selectedCulture = $("#cultureSelection").val();
-		$scope.currentCulture = selectedCulture;
-		$scope.refresh();
+
+		$scope.$apply(function() {
+			$scope.currentCulture = selectedCulture;
+			$scope.persistPageParameterChanged();
+		});
 	});
 });
