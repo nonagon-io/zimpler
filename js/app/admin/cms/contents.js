@@ -95,6 +95,13 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 					$scope.selectedItem = newSelectedItem;
 				}
 
+				UIkit.pagination($(".uk-pagination").get()[0], {
+
+					items: data.total,
+					itemsOnPage: pageSize,
+					currentPage: Math.floor(data.from / params.take) + 1
+				});
+
 			});
 	}
 
@@ -230,7 +237,9 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 					
 					$scope.editingData = data.content;
 					$scope.editingData.headerTitle = data.content.title;
-					
+
+					$scope.refresh();
+
 				} else {
 
 					$scope.selectedItem.headerTitle = data.content.title;
