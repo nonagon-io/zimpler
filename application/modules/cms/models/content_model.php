@@ -196,7 +196,7 @@ class Content_model extends CI_Model
 				   'd.culture = md.culture and ' .
 				   'd.revision = md.maxrev', 'left');
 
-		if($skip && $take)
+		if($skip != NULL && $take != NULL)
 			$query = $query->limit($take, $skip);
 
 		return $query;
