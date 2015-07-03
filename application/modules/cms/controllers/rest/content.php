@@ -253,6 +253,27 @@ class Content extends REST_Controller {
     	$result = $this->content_model->validate_key($key, $content_id);
     	$this->response($result);
     }
+
+    function rank_get()
+    {
+    	$content_id = $this->get('id');
+	    $culture = $this->get('culture');
+	    $order = $this->get('order');
+	    $order_dir = $this->get('dir');
+
+		switch($order)
+		{
+			case 'title': $order_by = 'title ' . $order_dir; break;
+			case 'group': $group = 'group ' . $order_dir; break;
+			case 'type': $order_by = 'content_type ' . $order_dir; break;
+			case 'modified': $order_by = 'a.last_modified ' . $order_dir; break;
+			case 'status': $order_by = 'status ' . $order_dir; break;
+			default: $order_by = 'a.last_modified desc';
+		}
+
+		$result = $this->content_model->get_rank($content_id, $culture, $order_by);
+		$this->response($result);
+    }
     
     function list_get()
     {
@@ -260,8 +281,20 @@ class Content extends REST_Controller {
 		$skip = $this->get('skip');
 		$take = $this->get('take');
 		$keyword = $this->get('keyword');
+		$order = $this->get('order');
+		$order_dir = $this->get('dir');
 
-	    $result = $this->content_model->get_list($culture, $keyword, $skip, $take);
+		switch($order)
+		{
+			case 'title': $order_by = 'title ' . $order_dir; break;
+			case 'group': $group = 'group ' . $order_dir; break;
+			case 'type': $order_by = 'content_type ' . $order_dir; break;
+			case 'modified': $order_by = 'a.last_modified ' . $order_dir; break;
+			case 'status': $order_by = 'status ' . $order_dir; break;
+			default: $order_by = 'a.last_modified desc';
+		}
+
+	    $result = $this->content_model->get_list($culture, $keyword, $order_by, $skip, $take);
 
 	    $content_items = from($result['items'])->select(function($content_item) {
 		    
@@ -439,7 +472,7 @@ class Content extends REST_Controller {
 	    $obj->type = $content_item->content_type;
 	    $obj->description = $content_item->description;
 	    $obj->modified = human_to_unix($content_item->last_modified);
-	    $obj->status = $content_item->status;
+	    $obj->status = $content_item->rev_status;
 
 	    return $obj;
     }

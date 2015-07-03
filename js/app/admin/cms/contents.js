@@ -22,6 +22,12 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 	$scope.currentCultureFullName = $("#cultureSelection option:selected").html().trim();
 	$scope.fileManagerPopup = fileManagerPopup;
 
+	$scope.pagination = null;
+	$scope.pageSize = 20;
+	$scope.currentPage = $location.search().p || 0;
+	$scope.order = null;
+	$scope.orderDir = "desc";
+
 	$scope.tinymceOptions = {
 
 		onChange: function(e) {
@@ -62,12 +68,13 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 		var page = $location.search()['p'];
 		var keyword = $location.search()['q'];
 		var culture = $location.search()['c'];
-		var pageSize = 20;
+		var pageSize = $scope.pageSize;
 
 		$scope.searchKeyword = keyword;
 		$scope.isKeywordActive = $scope.searchKeyword;
 
 		if(!page) page = 0;
+		$scope.currentPage = page;
 
 		var params = {
 
@@ -90,17 +97,28 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 					var newSelectedItem = _.filter($scope.list.items, function(item) {
 
 						return item.id == $scope.selectedItem.id;
+
 					})[0];
 
-					$scope.selectedItem = newSelectedItem;
+					//$scope.selectedItem = newSelectedItem;
 				}
 
-				UIkit.pagination($(".uk-pagination").get()[0], {
+				// Select the page
+				if(!$scope.pagination) {
 
-					items: data.total,
-					itemsOnPage: pageSize,
-					currentPage: Math.floor(data.from / params.take) + 1
-				});
+					$scope.pagination = UIkit.pagination($(".uk-pagination").get()[0], {
+
+						items: data.total,
+						itemsOnPage: pageSize,
+						currentPage: Math.floor(data.from / params.take) + 1
+					});
+
+				} else {
+
+					$scope.pagination.options.items = data.total;
+					$scope.pagination.options.currentPage = $scope.currentPage + 1;
+					$scope.pagination.init();
+				}
 
 			});
 	}
@@ -248,9 +266,35 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 					$scope.editingData = data.content;
 					$scope.editingData.headerTitle = data.content.title;
 
-					$scope.selectedItem = $scope.editingData;
+					// Move to the right page of added record.
+					var query = $location.search();
 
-					$scope.refresh();
+					var params = {
+
+						id: data.content.id,
+						culture: query.c || 'en-us',
+						order: query.o || 'modified',
+						dir: query.d || 'desc'
+					};
+
+					httpEx($scope, "GET", $scope.baseUrl + "cms/rest/content/rank", params).
+						success(function(data, status, headers, config) {
+
+							var rank = data;
+							var page = Math.floor(rank / $scope.pageSize);
+
+							if(page == $scope.currentPage) {
+								$scope.refresh();
+							} else {
+								$location.search({ 
+									p: page, 
+									q: $scope.searchKeyword, 
+									c: $scope.currentCulture 
+								});
+							}
+						});
+
+					$scope.selectedItem = $scope.editingData;
 
 				} else {
 

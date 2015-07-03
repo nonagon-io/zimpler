@@ -27,7 +27,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="n-list n-content-list" ng-init="refresh()">
+	<div class="n-list n-content-list">
 		<table class="n-table uk-table uk-table-striped">
 			<thead>
 				<tr>
