@@ -266,34 +266,6 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 					$scope.editingData = data.content;
 					$scope.editingData.headerTitle = data.content.title;
 
-					// Move to the right page of added record.
-					var query = $location.search();
-
-					var params = {
-
-						id: data.content.id,
-						culture: query.c || 'en-us',
-						order: query.o || 'modified',
-						dir: query.d || 'desc'
-					};
-
-					httpEx($scope, "GET", $scope.baseUrl + "cms/rest/content/rank", params).
-						success(function(data, status, headers, config) {
-
-							var rank = data;
-							var page = Math.floor(rank / $scope.pageSize);
-
-							if(page == $scope.currentPage) {
-								$scope.refresh();
-							} else {
-								$location.search({ 
-									p: page, 
-									q: $scope.searchKeyword, 
-									c: $scope.currentCulture 
-								});
-							}
-						});
-
 					$scope.selectedItem = $scope.editingData;
 
 				} else {
@@ -307,6 +279,35 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 					$scope.selectedItem.modified = data.content.modified;
 					$scope.selectedItem.status = data.content.status;
 				}
+
+				// Move to the right page of added record.
+				var query = $location.search();
+
+				var params = {
+
+					id: data.content.id,
+					culture: query.c || 'en-us',
+					order: query.o || 'modified',
+					dir: query.d || 'desc'
+				};
+
+				httpEx($scope, "GET", $scope.baseUrl + "cms/rest/content/rank", params).
+					success(function(data, status, headers, config) {
+
+						var rank = data;
+						var page = Math.floor(rank / $scope.pageSize);
+
+						if(page == $scope.currentPage) {
+							$scope.refresh();
+						} else {
+							$location.search({ 
+								p: page, 
+								q: $scope.searchKeyword, 
+								c: $scope.currentCulture 
+							});
+						}
+					});
+
 				
 				callback(true);
 			});
