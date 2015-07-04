@@ -10,7 +10,8 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 .controller("CmsContentController", 
 	function($scope, $rootScope, $locale, $location, $timeout, httpEx, 
 			 submitForm, propertiesPanel, cmsConfirmPublish, cmsPublish, 
-			 cmsNewRev, cmsConfirmDelRev, cmsDelRev, fileManagerPopup, checkFormDirty) {
+			 cmsNewRev, cmsConfirmDelRev, cmsDelRev, fileManagerPopup, 
+			 checkFormDirty, modal) {
 
 	$scope.list = null;
 	$scope.selectedItem = null;
@@ -244,6 +245,12 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 					fadeIn(200).fadeOut(200).
 					fadeIn(200).fadeOut(200).
 					fadeIn(200);
+
+				$timeout(function() {
+
+					$scope.lastEditedItem = null;
+
+				}, 3000);
 				
 			}, 100);
 		}
@@ -251,7 +258,6 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 	$scope.$on("$locationChangeSuccess", function() {
 
-		$scope.lastEditedItem = null;
 		$scope.refresh();
 	});
 
@@ -359,6 +365,35 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 			$scope.propertiesPanel.propertiesForm.$setUntouched();
 
 		}, 1);
+	});
+
+	$scope.propertiesPanel.on("delete", function() {
+
+		modal.show(
+			"Are you sure you want to delete this item?<br/>",
+			"Delete confirmation", {
+				
+				danger: true,
+				bgclose: true,
+				okTitle: "Yes",
+				cancelTitle: "No",
+				icon: "exclamation-circle"
+			})
+			.ok(function() {
+
+				$scope.propertiesPanel.close({force: true});
+
+				var params = {
+
+					id: $scope.editingData.id
+				};
+				
+				httpEx($scope, "DELETE", $scope.baseUrl + "cms/rest/content", params).
+					success(function(data, status, headers, config) {
+
+						$scope.refresh();
+					});
+			});
 	});
 
 	$scope.propertiesPanel.on("culture-changed", function(data) {

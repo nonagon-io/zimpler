@@ -55,18 +55,6 @@ class Content extends REST_Controller {
 		$this->response($this->get_front_content($result));
     }
 
-    function index_delete()
-    {
-    	$result = $this->content_model->delete_top_revision();
-
-	    $result = array(
-		    'rev' => $result->revision,
-		    'status' => $result->status
-		);
-
-    	$this->response($result);
-    }
-    
     function publish_post()
     {
 	    $result = $this->content_model->publish();
@@ -245,6 +233,12 @@ class Content extends REST_Controller {
 		));
     }
 
+    function index_delete()
+    {
+    	$content_id = $this->delete('id');
+    	$this->content_model->delete_content($content_id);
+    }
+
     function key_get()
     {
     	$key = $this->get('key');
@@ -305,105 +299,6 @@ class Content extends REST_Controller {
 
 	    $result['items'] = $content_items;
 	    $this->response($result);
-    }
-    
-    function item_get()
-    {
-	    $id = $this->get('id');
-	    $culture = $this->get('culture');
-	    
-	    $nav_item = $this->content_model->get_item($id, $culture);
-	    
-	    $this->response(Navigation::get_front_nav_item($nav_item));
-    }
-    
-    function item_post()
-    {
-	    $target = $this->post('target');
-	    $targetKey = $this->post('targetKey');
-	    $parent = $this->post('parent');
-	    
-	    switch($target)
-	    {
-		    case 'normal': 
-		    	$target = '_self';
-		    	break;
-		    	
-		    case 'new':
-		    	if($targetKey) $target = $targetKey;
-		    	else $target = '_blank';
-		    	break;
-	    }
-	    
-	    $nav_item = array(
-		    
-		    'parent_id' => $this->post('parent'),
-		    'title' => $this->post('key'),
-		    'url' => $this->post('url'),
-		    'target' => $target,
-		    'label' => array(
-			    
-				'culture' => $this->post('culture'),
-				'text' => $this->post('publicTitle')
-		    )
-		);
-		
-		$nav_item = $this->content_model->add_item($nav_item);
-		$nav_item = Navigation::get_front_nav_item($nav_item);
-	    
-	    $this->response($nav_item);
-    }
-    
-    function item_put()
-    {
-	    $id = $this->put('id');
-	    $target = $this->put('target');
-	    $targetKey = $this->put('targetKey');
-	    
-	    switch($target)
-	    {
-		    case 'normal': 
-		    	$target = '_self';
-		    	break;
-		    	
-		    case 'new':
-		    	if($targetKey) $target = $targetKey;
-		    	else $target = '_blank';
-		    	break;
-	    }
-	    
-	    $nav_item = array(
-		    
-		    'nav_item_id' => $id,
-		    'parent_id' => $this->post('parent'),
-		    'title' => $this->put('key'),
-		    'url' => $this->put('url'),
-		    'target' => $target,
-		    'label' => array(
-			    
-				'culture' => $this->put('culture'),
-				'text' => $this->put('publicTitle')
-		    )
-		);
-		
-		$nav_item = $this->content_model->update_item($nav_item);
-		$nav_item = Navigation::get_front_nav_item($nav_item);
-	    
-	    $this->response($nav_item);
-    }
-
-    function item_delete($nav_item_id)
-    {
-    	$nav_item = $this->content_model->delete_item($nav_item_id);
-    	$nav_item = array('id' => $nav_item->nav_item_id);
-
-    	$this->response($nav_item);
-    }
-    
-    function tree_post()
-    {
-	    $tree = json_decode($this->post("tree"));
-	    $this->content_model->update_tree($tree);
     }
     
     function publish_put($content_key, $culture)

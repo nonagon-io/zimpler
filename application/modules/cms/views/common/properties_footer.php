@@ -3,7 +3,7 @@
 		<?php if(isset($allow_delete) && $allow_delete) : ?>
 		<button type="button" class="uk-button uk-button-danger" 
 				ng-click="<?= $panel_name ?>.delete()"
-				ng-if="editingData.status != 'published'"
+				ng-if="editingData.id && editingData.status != 'published'"
 				style="width: auto">
 			<i class="uk-icon-trash"></i>
 		</button>

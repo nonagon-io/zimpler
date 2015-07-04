@@ -840,4 +840,22 @@ class Content_model extends CI_Model
 	    $this->db->where($content_table . '_id', $content_details->{$content_table . '_id'});
 	    $this->db->delete($content_table);
     }
+
+    public function delete_content($content_id)
+    {
+    	$this->db->flush_cache();
+
+    	$content = $this->db->get_where('content', array('content_id' => $content_id))->row();
+
+	    if(!$content)
+	    	throw new Exception('content with the given content_id does not exists');
+
+    	$this->db->from('content');
+    	$this->db->where('content_id', $content_id);
+    	$this->db->delete();
+
+    	$this->db->from('content_' . $content->content_type);
+    	$this->db->where('content_id', $content_id);
+    	$this->db->delete();
+    }
 }
