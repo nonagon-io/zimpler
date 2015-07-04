@@ -28,37 +28,41 @@
 		</div>
 	</div>
 	<div class="n-list n-content-list">
-		<table class="n-table uk-table uk-table-striped">
-			<thead>
-				<tr>
-					<th style="width: 20px" class="uk-text-center"><input type="checkbox" /></th>
-					<th>Title</th>
-					<th style="width: 100px">Group</th>
-					<th style="width: 100px">Type</th>
-					<th style="width: 200px">Modified</th>
-					<th style="width: 80px; text-align: center">Status</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="item in list.items"
-					ng-class="{'uk-active': selectedItem.id == item.id, 'n-selected': item.checked}">
-					<td class="uk-text-center">
-						<input type="checkbox" ng-model="item.checked" ng-disabled="selectedItem" />
-					</td>
-					<td ng-click="select(item)">
-						<div ng-bind="item.publicTitle || item.title"
-							 ng-class="{'uk-text-danger': !item.publicTitle}"></div>
-						<div ng-bind="item.description" class="uk-text-muted uk-text-small"></div>
-					</td>
-					<td ng-bind="item.group" ng-click="select(item)"></td>
-					<td ng-bind="item.type" ng-click="select(item)"></td>
-					<td ng-bind="item.modified * 1000 | date:'yyyy-MM-dd hh:mm:ss a'" ng-click="select(item)"></td>
-					<td ng-bind="item.status || 'n/a'" ng-click="select(item)"
-						ng-class="{'uk-text-muted': !item.status}" 
-						style="text-align: center; text-transform: capitalize"></td>
-				</tr>
-			</tbody>
-		</table>
+		<div id="list-container" class="n-abs-fit uk-overflow-container">
+			<table class="n-table uk-table uk-table-striped">
+				<thead>
+					<tr>
+						<th style="width: 20px" class="uk-text-center"><input type="checkbox" /></th>
+						<th>Title</th>
+						<th style="width: 100px">Group</th>
+						<th style="width: 100px">Type</th>
+						<th style="width: 200px">Modified</th>
+						<th style="width: 80px; text-align: center">Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="item in list.items"
+						ng-class="{'uk-active': selectedItem.id == item.id, 'n-selected': item.checked}"
+						n-scroll-if="item.id == lastEditedItem.id" scroll-container="#list-container"
+						n-item-loaded="activateItem($event, item)">
+						<td class="uk-text-center">
+							<input type="checkbox" ng-model="item.checked" ng-disabled="selectedItem" />
+						</td>
+						<td ng-click="select(item)">
+							<div ng-bind="item.publicTitle || item.title"
+								 ng-class="{'uk-text-danger': !item.publicTitle}"></div>
+							<div ng-bind="item.description" class="uk-text-muted uk-text-small"></div>
+						</td>
+						<td ng-bind="item.group" ng-click="select(item)"></td>
+						<td ng-bind="item.type" ng-click="select(item)"></td>
+						<td ng-bind="item.modified * 1000 | date:'yyyy-MM-dd hh:mm:ss a'" ng-click="select(item)"></td>
+						<td ng-bind="item.status || 'n/a'" ng-click="select(item)"
+							ng-class="{'uk-text-muted': !item.status}" 
+							style="text-align: center; text-transform: capitalize"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<div class="n-abs-fit uk-vertical-align uk-text-center n-progress-panel" ng-show="isRefreshing">
 			<div class="uk-vertical-align-middle">
 				<i class="uk-icon-spinner uk-icon-spin uk-icon-medium"></i>

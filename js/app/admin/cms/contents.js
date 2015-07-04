@@ -14,6 +14,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 	$scope.list = null;
 	$scope.selectedItem = null;
+	$scope.lastEditedItem = null;
 	$scope.propertiesPanel = propertiesPanel;
 	$scope.currentUserId = null;
 	$scope.isRefreshing = false;
@@ -65,9 +66,9 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 		$scope.isRefreshing = true;
 
-		var page = $scope.currentPage;
-		var keyword = $scope.searchKeyword;
-		var culture = $scope.currentCulture;
+		var page = $location.search()['p'];
+		var keyword = $location.search()['q'];
+		var culture = $location.search()['c'];
 		var pageSize = $scope.pageSize;
 
 		$scope.searchKeyword = keyword;
@@ -232,12 +233,25 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 		$location.search(query);
 	}
 
+	$scope.activateItem = function(e, item) {
+		
+		if($scope.lastEditedItem && item.id == $scope.lastEditedItem.id) {
+			
+			setTimeout(function() {
+				
+				$(e.target).
+					fadeIn(200).fadeOut(200).
+					fadeIn(200).fadeOut(200).
+					fadeIn(200).fadeOut(200).
+					fadeIn(200);
+				
+			}, 100);
+		}
+	};
+
 	$scope.$on("$locationChangeSuccess", function() {
 
-		$scope.currentPage = $location.search()['p'];
-		$scope.searchKeyword = $location.search()['q'];
-		$scope.currentCulture = $location.search()['c'];
-
+		$scope.lastEditedItem = null;
 		$scope.refresh();
 	});
 
@@ -283,6 +297,8 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 					$scope.selectedItem.modified = data.content.modified;
 					$scope.selectedItem.status = data.content.status;
 				}
+
+				$scope.lastEditedItem = $scope.selectedItem;
 
 				// Move to the right page of added record.
 				var query = $location.search();
@@ -333,7 +349,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 	});
 
 	$scope.propertiesPanel.on("closed", function() {
-		
+
 		$scope.editingData = null;
 		$scope.selectedItem = null;
 

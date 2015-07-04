@@ -100,6 +100,28 @@ angular.module("common", [])
 	}
 }])
 
+.directive('nScrollIf', function () {
+	return function (scope, element, attributes) {
+		setTimeout(function () {
+
+			if (scope.$eval(attributes.nScrollIf)) {
+
+				if(attributes.scrollContainer) {
+
+					var container = $(attributes.scrollContainer);
+					var elem = element[0];
+
+					var scrollTop = 
+						container.scrollTop() + $(elem).position().top - 
+						$(elem).height() - 36;
+
+					container.scrollTop(scrollTop);
+				}
+			}
+		}, 1);
+	}
+})
+
 .factory('httpEx', ['$http', '$sce', function($http, $sce) {
 	
 	return function($scope, method, url, data) {
