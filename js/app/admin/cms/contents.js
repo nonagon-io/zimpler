@@ -65,9 +65,9 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 		$scope.isRefreshing = true;
 
-		var page = $location.search()['p'];
-		var keyword = $location.search()['q'];
-		var culture = $location.search()['c'];
+		var page = $scope.currentPage;
+		var keyword = $scope.searchKeyword;
+		var culture = $scope.currentCulture;
 		var pageSize = $scope.pageSize;
 
 		$scope.searchKeyword = keyword;
@@ -234,6 +234,10 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 	$scope.$on("$locationChangeSuccess", function() {
 
+		$scope.currentPage = $location.search()['p'];
+		$scope.searchKeyword = $location.search()['q'];
+		$scope.currentCulture = $location.search()['c'];
+
 		$scope.refresh();
 	});
 
@@ -282,14 +286,29 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 				// Move to the right page of added record.
 				var query = $location.search();
+				var keywordFlag = false;
 
 				var params = {
 
 					id: data.content.id,
 					culture: query.c || 'en-us',
+					keyword: query.q || null,
 					order: query.o || 'modified',
 					dir: query.d || 'desc'
 				};
+
+				if(method == "POST") {
+
+					// Force remove keyword search if add new record.
+
+					if($scope.searchKeyword) {
+
+						$scope.searchKeyword = "";
+						keywordFlag = true;
+					}
+
+					params.keyword = null;
+				}
 
 				httpEx($scope, "GET", $scope.baseUrl + "cms/rest/content/rank", params).
 					success(function(data, status, headers, config) {
@@ -297,7 +316,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 						var rank = data;
 						var page = Math.floor(rank / $scope.pageSize);
 
-						if(page == $scope.currentPage) {
+						if(page == $scope.currentPage && !keywordFlag) {
 							$scope.refresh();
 						} else {
 							$location.search({ 

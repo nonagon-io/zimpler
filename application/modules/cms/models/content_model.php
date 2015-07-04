@@ -202,9 +202,9 @@ class Content_model extends CI_Model
 		return $query;
     }
 
-    public function get_rank($content_id, $culture, $order_by = 'a.last_modified desc')
+    public function get_rank($content_id, $culture, $keyword = NULL, $order_by = 'a.last_modified desc')
     {
-    	$query = $this->build_list_query($culture, NULL, $order_by, NULL, NULL);
+    	$query = $this->build_list_query($culture, $keyword, $order_by, NULL, NULL);
     	
     	$result = $query->get()->result();
     	$rank = 0;

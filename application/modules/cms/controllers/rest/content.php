@@ -258,6 +258,7 @@ class Content extends REST_Controller {
     {
     	$content_id = $this->get('id');
 	    $culture = $this->get('culture');
+	    $keyword = $this->get('keyword');
 	    $order = $this->get('order');
 	    $order_dir = $this->get('dir');
 
@@ -271,7 +272,7 @@ class Content extends REST_Controller {
 			default: $order_by = 'a.last_modified desc';
 		}
 
-		$result = $this->content_model->get_rank($content_id, $culture, $order_by);
+		$result = $this->content_model->get_rank($content_id, $culture, $keyword, $order_by);
 		$this->response($result);
     }
     
