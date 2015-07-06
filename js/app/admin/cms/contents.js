@@ -256,6 +256,27 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 		}
 	};
 
+	$scope.propertiesPanel.publishableCheck = function() {
+
+		var isValid = $scope.propertiesPanel.propertiesForm.$valid;
+
+		if($scope.editingData) {
+
+			if($scope.editingData.type == "html") {
+				isValid &= $scope.editingData.html != null;
+
+				if($scope.editingData.html) {
+
+					var striped = $scope.editingData.html.replace(/<\/?[^>]+(>|$)/g, "");
+					if(striped.trim() == "")
+						isValid = false;
+				}
+			}
+		}
+
+		return isValid;
+	}
+
 	$scope.$on("$locationChangeSuccess", function() {
 
 		$scope.refresh();
@@ -427,7 +448,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 					$scope.propertiesPanel.propertiesForm.$setUntouched();
 				}, 1);
 			});
-	});	
+	});
 
 	$(".uk-pagination").on("select.uk.pagination", function(e, pageIndex) {
 

@@ -20,6 +20,16 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 		scope: null,
 		observers: {},
 
+		publishable: function() {
+
+			return this.publishableCheck();
+		},
+
+		publishableCheck: function() {
+
+			return false;
+		},
+
 		dom: function(selector) {
 
 			return $(selector);

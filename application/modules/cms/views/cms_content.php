@@ -92,7 +92,8 @@
 		$data = array(
 			'panel_name' => 'propertiesPanel',
 			'action' => base_url('/cms/rest/content'),
-			'allow_delete' => TRUE);
+			'allow_delete' => TRUE,
+			'allow_publish' => TRUE);
 
 		$data['header'] = $this->load->view("cms/common/properties_header", $data, TRUE);
 		$data['body'] = $this->load->view("cms/properties/content_properties", $data, TRUE);
