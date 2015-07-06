@@ -282,6 +282,45 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 		$scope.refresh();
 	});
 
+	$scope.propertiesPanel.on("publish", function(params, callback) {
+
+		modal.show(
+			"Are you sure you want to publish this content?<br/>",
+			"Publish confirmation", {
+				
+				danger: false,
+				bgclose: true,
+				okTitle: "Yes",
+				cancelTitle: "No",
+				icon: "exclamation-circle"
+			})
+			.ok(function() {
+
+				var params = null;
+
+				if($scope.csrf) {
+					params = $scope.csrf;
+				} else {
+					params = {}
+				}
+
+				params.key = $scope.editingData.key;
+				params.culture = $scope.currentCulture;
+
+				httpEx($scope, "POST", $scope.baseUrl + "cms/rest/content/publish", params).
+					success(function(data, status, headers, config) {
+
+						if(data.error) {
+
+							return;
+						}
+
+						$scope.refresh();
+						callback(true);
+					});
+			});
+	});
+
 	$scope.propertiesPanel.on("save", function(params, callback) {
 
 		$scope.propertiesPanel.propertiesForm.key.$error.duplicated = false;
@@ -391,7 +430,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 	$scope.propertiesPanel.on("delete", function() {
 
 		modal.show(
-			"Are you sure you want to delete this item?<br/>",
+			"Are you sure you want to delete this content?<br/>",
 			"Delete confirmation", {
 				
 				danger: true,

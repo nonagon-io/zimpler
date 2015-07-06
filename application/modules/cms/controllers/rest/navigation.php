@@ -194,22 +194,7 @@ class Navigation extends REST_Controller {
 	    $tree = json_decode($this->post("tree"));
 	    $this->navigation_model->update_tree($tree);
     }
-    
-    function publish_put($content_key, $culture)
-    {
-		$this->content_model->publish($content_key, $culture);
-    }
-    
-    function revision_post($content_key, $culture)
-    {
-	    $this->content_model->create_new_revision($content_key, $culture);
-    }
-    
-    function revision_delete($content_key, $culture, $revision)
-    {
-	    $this->content_model->delete_revision($content_key, $culture, $revision);
-    }
-    
+        
     public static function get_front_nav_item($nav_item)
     {
 	    $nav_item = json_decode(json_encode($nav_item), FALSE);

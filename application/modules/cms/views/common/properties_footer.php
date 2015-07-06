@@ -8,19 +8,21 @@
 			<i class="uk-icon-trash"></i>
 		</button>
 		<?php endif ?>
+		<?php if(isset($allow_publish) && $allow_publish) : ?>
+		<span class="uk-margin-small-top uk-text-primary uk-display-inline-block" 
+			  ng-if="editingData.status == 'published'">
+			Published
+		</span>
+		<?php endif ?>
 	</div>
 	<div class="uk-width-4-5 uk-text-right">
 		<?php if(isset($allow_publish) && $allow_publish) : ?>
 		<button type="button" class="uk-button uk-button-primary" 
 				ng-if="editingData.status != 'published'"
 				ng-disabled="!<?= $panel_name ?>.publishable()"
-				ng-click="<?= $panel_name ?>.publish()">
+				ng-click="<?= $panel_name ?>.publish($event, { alsoClose: true })">
 			Publish
 		</button>
-		<span class="uk-margin-small-top uk-text-primary uk-display-inline-block" 
-			  ng-if="editingData.status == 'published'">
-			Published
-		</span>
 		<?php endif ?>
 		<?php if(isset($allow_publish) && $allow_publish) : ?>
 		<button type="button" class="uk-button uk-button-primary" 

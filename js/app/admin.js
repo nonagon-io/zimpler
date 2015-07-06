@@ -209,7 +209,28 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 					
 					$this.close();
 				}
+
+				if(result && option && option.doNext) {
+
+					option.doNext();
+				}
 			});
+		},
+
+		publish: function($event, option) {
+
+			var proceed = function() {
+
+				$this.fire("publish", null, function(result) {
+
+					if(result && option && option.alsoClose) {
+
+						$this.close();
+					}
+				});
+			};
+
+			this.save($event, { alsoClose: false, doNext: proceed });
 		},
 
 		delete: function() {

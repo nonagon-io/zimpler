@@ -55,12 +55,6 @@ class Content extends REST_Controller {
 		$this->response($this->get_front_content($result));
     }
 
-    function publish_post()
-    {
-	    $result = $this->content_model->publish();
-	    $this->response($result);
-    }
-    
     function index_post()
     {
 		$title = $this->post('title');
@@ -301,21 +295,14 @@ class Content extends REST_Controller {
 	    $this->response($result);
     }
     
-    function publish_put($content_key, $culture)
+    function publish_post()
     {
+    	$content_key = $this->post('key');
+    	$culture = $this->post('culture');
+
 		$this->content_model->publish($content_key, $culture);
     }
     
-    function revision_post($content_key, $culture)
-    {
-	    $this->content_model->create_new_revision($content_key, $culture);
-    }
-    
-    function revision_delete($content_key, $culture, $revision)
-    {
-	    $this->content_model->delete_revision($content_key, $culture, $revision);
-    }
-
     public static function get_front_content($content)
     {
     	$content = json_decode(json_encode($content), FALSE);
