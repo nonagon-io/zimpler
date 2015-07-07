@@ -322,20 +322,23 @@ class Content extends REST_Controller {
     		$obj->html = $content->content_html->html;
     		$obj->culture = $content->content_html->culture;
     		$obj->revision = $content->content_html->revision;
+    		$obj->published = $content->content_html->date_publish;
     		$obj->status = $content->content_html->status;
     	}
     	else if($content->content_type == 'label' && $content->content_label)
     	{
     		$obj->label = $content->content_label->label;
     		$obj->culture = $content->content_label->culture;
-    		$obj->revision = $content->content_html->revision;
+    		$obj->revision = $content->content_label->revision;
+    		$obj->published = $content->content_label->date_publish;
     		$obj->status = $content->content_label->status;
     	}
     	else if($content->content_type == 'list' && $content->content_list)
     	{
     		$obj->publicTitle = $content->content_list->title;
     		$obj->culture = $content->content_list->culture;
-    		$obj->revision = $content->content_html->revision;
+    		$obj->revision = $content->content_list->revision;
+    		$obj->published = $content->content_list->date_publish;
     		$obj->status = $content->content_list->status;
     	}
 

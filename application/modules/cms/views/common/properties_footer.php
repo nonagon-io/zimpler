@@ -1,18 +1,12 @@
-<div class="uk-grid uk-margin-small-top">
+<div class="uk-grid uk-grid-collapse uk-margin-small-top">
 	<div class="uk-width-1-5">
 		<?php if(isset($allow_delete) && $allow_delete) : ?>
 		<button type="button" class="uk-button uk-button-danger" 
 				ng-click="<?= $panel_name ?>.delete()"
-				ng-if="editingData.id && editingData.status != 'published'"
+				ng-if="editingData.id"
 				style="width: auto">
 			<i class="uk-icon-trash"></i>
 		</button>
-		<?php endif ?>
-		<?php if(isset($allow_publish) && $allow_publish) : ?>
-		<span class="uk-margin-small-top uk-text-primary uk-display-inline-block" 
-			  ng-if="editingData.status == 'published'">
-			Published
-		</span>
 		<?php endif ?>
 	</div>
 	<div class="uk-width-4-5 uk-text-right">
