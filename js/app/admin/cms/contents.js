@@ -150,32 +150,10 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 			$scope.isLoadingEditingData = true;
 
-			var params = {
+			var key = item.key;
+			var culture = $scope.currentCulture;
 
-				key: item.key,
-				culture: $scope.currentCulture
-			}
-
-			httpEx($scope, "GET", $scope.baseUrl + "cms/rest/content", params).
-				success(function(data, status, headers, config) {
-
-					if(!data.culture)
-						data.culture = $scope.currentCulture;
-
-					$scope.editingData = data;
-					$scope.editingData.headerTitle = data.title;
-
-					$timeout(function() {
-						$scope.propertiesPanel.propertiesForm.$setPristine();
-						$scope.propertiesPanel.propertiesForm.$setUntouched();
-					}, 1);
-
-					$scope.isLoadingEditingData = false;
-				}).
-				error(function(data, status, headers, config) {
-
-					$scope.isLoadingEditingData = false;
-				});
+			$scope.loadPropertiesData(key, culture);
 		}
 
 		var checkedItems = $.grep($scope.list.items, function(item, i) {
@@ -255,6 +233,39 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 			}, 100);
 		}
 	};
+
+	$scope.loadPropertiesData = function(key, culture) {
+
+		var params = {
+
+			key: key,
+			culture: culture
+		}
+
+		httpEx($scope, "GET", $scope.baseUrl + "cms/rest/content", params).
+			success(function(data, status, headers, config) {
+
+				if(!data.culture)
+					data.culture = $scope.currentCulture;
+
+				$scope.editingData = data;
+				$scope.editingData.headerTitle = data.title;
+
+				if(!$scope.editingData.revision)
+					$scope.editingData.revision = 1;
+
+				$timeout(function() {
+					$scope.propertiesPanel.propertiesForm.$setPristine();
+					$scope.propertiesPanel.propertiesForm.$setUntouched();
+				}, 1);
+
+				$scope.isLoadingEditingData = false;
+			}).
+			error(function(data, status, headers, config) {
+
+				$scope.isLoadingEditingData = false;
+			});
+	}
 
 	$scope.propertiesPanel.publishableCheck = function() {
 
@@ -467,26 +478,10 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 		$scope.currentCulture = data;
 		$scope.persistPageParameterChanged();
 
-		var params = {
+		var key = $scope.editingData.key;
+		var culture = $scope.editingData.culture;
 
-			key: $scope.editingData.key,
-			culture: $scope.editingData.culture
-		}
-
-		httpEx($scope, "GET", $scope.baseUrl + "cms/rest/content", params).
-			success(function(data, status, headers, config) {
-
-				if(!data.culture)
-					data.culture = $scope.editingData.culture;
-
-				$scope.editingData = data;
-				$scope.editingData.headerTitle = data.title;
-
-				$timeout(function() {
-					$scope.propertiesPanel.propertiesForm.$setPristine();
-					$scope.propertiesPanel.propertiesForm.$setUntouched();
-				}, 1);
-			});
+		$scope.loadPropertiesData(key, culture);
 	});
 
 	$(".uk-pagination").on("select.uk.pagination", function(e, pageIndex) {

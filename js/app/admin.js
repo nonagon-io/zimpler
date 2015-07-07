@@ -217,6 +217,17 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 			});
 		},
 
+		saveIfDirty: function($event, option) {
+
+			if($event)
+				$event.preventDefault();
+
+			if(!this.scope.propertiesPanel.propertiesForm.$dirty)
+				return;
+
+			this.save($event, option);
+		},
+
 		publish: function($event, option) {
 
 			var proceed = function() {

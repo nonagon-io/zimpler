@@ -205,9 +205,12 @@ class Content extends REST_Controller {
 			);
 		}
 
+		$result = null;
+
 		try
 		{
-			$result = $this->content_model->update_content($content);
+			$result = (object)$this->content_model->update_content($content);
+
 		}
 		catch(Exception $ex)
 		{

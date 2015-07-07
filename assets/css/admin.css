@@ -517,6 +517,11 @@ body {
 	z-index: 1000;
 }
 
+.n-list .n-progress-panel {
+
+	z-index: 0;
+}
+
 .gmnoprint img {
 
     max-width: none; 
