@@ -200,7 +200,7 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 			}
 			
 			var $this = this;
-			this.fire("save", null, function(result) {
+			this.fire("save", { event: $event }, function(result) {
 
 				$this.scope.propertiesPanel.propertiesForm.$setUntouched();
 				$this.scope.propertiesPanel.propertiesForm.$setPristine();

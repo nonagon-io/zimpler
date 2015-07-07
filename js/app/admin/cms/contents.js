@@ -334,95 +334,126 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 	$scope.propertiesPanel.on("save", function(params, callback) {
 
-		$scope.propertiesPanel.propertiesForm.key.$error.duplicated = false;
-		
-		var action = $("form[name='propertiesPanel.propertiesForm']").attr("action");
+		var proceed = function() {
 
-		var method = "POST";
-		if($scope.editingData.id) {
+			$scope.propertiesPanel.propertiesForm.key.$error.duplicated = false;
 			
-			method = "PUT";
-		}
-		
-		submitForm($scope, $scope.propertiesPanel.propertiesForm, 
-			method, action, $scope.editingData).
-			success(function(data, status, headers, config) {
+			var action = $("form[name='propertiesPanel.propertiesForm']").attr("action");
 
-				if(data.error) {
-
-					if(data.error == "content_key_exists")
-						$scope.propertiesPanel.propertiesForm.key.$error.duplicated = true;
-
-					return;
-				}
+			var method = "POST";
+			if($scope.editingData.id) {
 				
-				if(method == "POST") {
+				method = "PUT";
+			}
+			
+			submitForm($scope, $scope.propertiesPanel.propertiesForm, 
+				method, action, $scope.editingData).
+				success(function(data, status, headers, config) {
 
-					$scope.editingData = data.content;
-					$scope.editingData.headerTitle = data.content.title;
+					if(data.error) {
 
-					$scope.selectedItem = $scope.editingData;
+						if(data.error == "content_key_exists")
+							$scope.propertiesPanel.propertiesForm.key.$error.duplicated = true;
 
-				} else {
+						return;
+					}
+					
+					if(method == "POST") {
 
-					$scope.selectedItem.headerTitle = data.content.title;
+						$scope.editingData = data.content;
+						$scope.editingData.headerTitle = data.content.title;
 
-					$scope.selectedItem.publicTitle = data.content.publicTitle;
-					$scope.selectedItem.group = data.content.group;
-					$scope.selectedItem.description = data.content.description;
-					$scope.selectedItem.type = data.content.type;
-					$scope.selectedItem.modified = data.content.modified;
-					$scope.selectedItem.status = data.content.status;
-				}
+						$scope.selectedItem = $scope.editingData;
 
-				$scope.lastEditedItem = $scope.selectedItem;
+					} else {
 
-				// Move to the right page of added record.
-				var query = $location.search();
-				var keywordFlag = false;
+						$scope.selectedItem.headerTitle = data.content.title;
 
-				var params = {
-
-					id: data.content.id,
-					culture: query.c || 'en-us',
-					keyword: query.q || null,
-					order: query.o || 'modified',
-					dir: query.d || 'desc'
-				};
-
-				if(method == "POST") {
-
-					// Force remove keyword search if add new record.
-
-					if($scope.searchKeyword) {
-
-						$scope.searchKeyword = "";
-						keywordFlag = true;
+						$scope.selectedItem.publicTitle = data.content.publicTitle;
+						$scope.selectedItem.group = data.content.group;
+						$scope.selectedItem.description = data.content.description;
+						$scope.selectedItem.type = data.content.type;
+						$scope.selectedItem.modified = data.content.modified;
+						$scope.selectedItem.status = data.content.status;
 					}
 
-					params.keyword = null;
-				}
+					$scope.lastEditedItem = $scope.selectedItem;
 
-				httpEx($scope, "GET", $scope.baseUrl + "cms/rest/content/rank", params).
-					success(function(data, status, headers, config) {
+					// Move to the right page of added record.
+					var query = $location.search();
+					var keywordFlag = false;
 
-						var rank = data;
-						var page = Math.floor(rank / $scope.pageSize);
+					var params = {
 
-						if(page == $scope.currentPage && !keywordFlag) {
-							$scope.refresh();
-						} else {
-							$location.search({ 
-								p: page, 
-								q: $scope.searchKeyword, 
-								c: $scope.currentCulture 
-							});
+						id: data.content.id,
+						culture: query.c || 'en-us',
+						keyword: query.q || null,
+						order: query.o || 'modified',
+						dir: query.d || 'desc'
+					};
+
+					if(method == "POST") {
+
+						// Force remove keyword search if add new record.
+
+						if($scope.searchKeyword) {
+
+							$scope.searchKeyword = "";
+							keywordFlag = true;
 						}
-					});
 
-				
-				callback(true);
-			});
+						params.keyword = null;
+					}
+
+					httpEx($scope, "GET", $scope.baseUrl + "cms/rest/content/rank", params).
+						success(function(data, status, headers, config) {
+
+							var rank = data;
+							var page = Math.floor(rank / $scope.pageSize);
+
+							if(page == $scope.currentPage && !keywordFlag) {
+								$scope.refresh();
+							} else {
+								$location.search({ 
+									p: page, 
+									q: $scope.searchKeyword, 
+									c: $scope.currentCulture 
+								});
+							}
+						});
+
+					
+					callback(true);
+				});
+		}
+
+		if(!$scope.editingData.id) {
+
+			modal.show(
+				"Please make sure the Key is correct " + 
+				"because you are not allowed to change it after the first save. Are you sure you want to proceed?",
+				"Attention", {
+					
+					danger: true,
+					bgclose: true,
+					okTitle: "Yes",
+					cancelTitle: "No",
+					icon: "exclamation-circle"
+				})
+				.ok(function() {
+
+					proceed();
+				});
+
+			if(params.event) {
+
+				$(params.event.target).blur();
+			}
+
+		} else {
+
+			proceed();
+		}
 	});
 
 	$scope.propertiesPanel.on("closed", function() {

@@ -1,31 +1,5 @@
 <div ng-show="!isLoadingEditingData">
 	<div class="uk-form-row">
-		<label class="uk-form-label" for="title">
-			Private Title
-			<i class="uk-icon-button uk-icon-question" 
-			   title="The private title will help you find the content in the future. Plus
-			   		  it will be the default title in case the title of the certain language
-			   		  is missing."
-			   data-uk-tooltip></i>
-			<i class="uk-icon-times-circle uk-text-danger" 
-			   title="Private Title is required"
-			   data-uk-tooltip="{pos:'right'}"
-			   ng-show="<?= $panel_name ?>.propertiesForm.title.$error.required && 
-			   			<?= $panel_name ?>.propertiesForm.$submitted"></i>
-		</label>
-		<div class="uk-form-controls">
-			<input type="text" id="title" name="title" class="uk-width-1-1" 
-				   ng-model="editingData.title"
-				   ng-class="{'uk-form-danger': 
-				   		<?= $panel_name ?>.propertiesForm.title.$error.required && 
-				   		<?= $panel_name ?>.propertiesForm.$submitted}"
-				   placeholder="The private title of the content"
-				   ng-readonly="currentStatus == 'published'"
-				   maxlength="150"
-				   required/>
-		</div>
-	</div>
-	<div class="uk-form-row">
 		<label class="uk-form-label" for="key">
 			Key
 			<i class="uk-icon-button uk-icon-question" 
@@ -51,8 +25,33 @@
 				   		<?= $panel_name ?>.propertiesForm.key.$error.duplicated) && 
 				   		<?= $panel_name ?>.propertiesForm.$submitted}"
 				   placeholder="The unique key of content (e.g. why-us, home-highlight, 12345, etc.)"
-				   ng-readonly="currentStatus == 'published'"
+				   ng-readonly="editingData.id"
 				   maxlength="50"
+				   required/>
+		</div>
+	</div>
+	<div class="uk-form-row">
+		<label class="uk-form-label" for="title">
+			Private Title
+			<i class="uk-icon-button uk-icon-question" 
+			   title="The private title will help you find the content in the future. Plus
+			   		  it will be the default title in case the title of the certain language
+			   		  is missing."
+			   data-uk-tooltip></i>
+			<i class="uk-icon-times-circle uk-text-danger" 
+			   title="Private Title is required"
+			   data-uk-tooltip="{pos:'right'}"
+			   ng-show="<?= $panel_name ?>.propertiesForm.title.$error.required && 
+			   			<?= $panel_name ?>.propertiesForm.$submitted"></i>
+		</label>
+		<div class="uk-form-controls">
+			<input type="text" id="title" name="title" class="uk-width-1-1" 
+				   ng-model="editingData.title"
+				   ng-class="{'uk-form-danger': 
+				   		<?= $panel_name ?>.propertiesForm.title.$error.required && 
+				   		<?= $panel_name ?>.propertiesForm.$submitted}"
+				   placeholder="The private title of the content"
+				   maxlength="150"
 				   required/>
 		</div>
 	</div>
@@ -63,7 +62,7 @@
 		<div class="uk-form-controls">
 			<select id="type=" name="type" class="uk-width-1-1"
 					ng-model="editingData.type"
-					ng-disabled="currentStatus == 'published'">
+					ng-disabled="editingData.id">
 				<option value="html">Composition</option>
 				<option value="label">Label</option>
 				<option value="list">List</option>
@@ -85,6 +84,7 @@
 				<input type="text" id="publicTitle" name="publicTitle" class="uk-width-1-1" 
 					   ng-model="editingData.publicTitle"
 					   placeholder="The title of content in the selected language"
+					   ng-readonly="editingData.status == 'published'"
 					   ng-class="{'uk-form-danger': 
 					   		<?= $panel_name ?>.propertiesForm.publicTitle.$error.required && 
 					   		<?= $panel_name ?>.propertiesForm.$submitted}"
@@ -96,7 +96,9 @@
 				Content - {{currentCultureFullName}}
 			</label>
 			<div class="uk-form-controls">
-				<textarea name="html" ui-tinymce="tinymceOptions" ng-model="editingData.html"></textarea>
+				<textarea name="html" ui-tinymce="tinymceOptions" 
+						  ng-model="editingData.html"
+						  ng-disabled="editingData.status == 'published'"></textarea>
 			</div>
 		</div>
 	</div>
@@ -127,7 +129,6 @@
 			<input type="text" id="group" name="group" class="uk-width-1-1" 
 				   ng-model="editingData.group"
 				   placeholder="The group of the content (optional)"
-				   ng-readonly="currentStatus == 'published'"
 				   maxlength="80" />
 		</div>
 	</div>

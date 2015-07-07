@@ -10,7 +10,7 @@
 		</div>
 		<select class="n-culture-selection uk-align-right uk-vertical-align-middle" ng-model="editingData.culture"
 				ng-disabled="!(<?= $panel_name ?>.propertiesForm.$valid)"
-				ng-click="<?= $panel_name ?>.saveIfDirty()"
+				ng-click="<?= $panel_name ?>.saveIfDirty($event)"
 				ng-change="<?= $panel_name ?>.fire('culture-changed', editingData.culture)">
 			<?php foreach($enabled_languages as $code) : ?>
 			<option value="<?= $code ?>">

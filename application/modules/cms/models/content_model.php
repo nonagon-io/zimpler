@@ -608,7 +608,7 @@ class Content_model extends CI_Model
 		    
 			// If the content_html with the given content_id and culture already published, just skip.
 			if($existing_content_html['status'] == 'published')
-				throw new Exception('content is already published, please create new revision');
+				return $existing_content_html;
 				
 			$existing_content_html['last_modified'] = date('Y-m-d H:i:s', now());
 			$existing_content_html['html'] = $content_html['html'];
@@ -777,7 +777,7 @@ class Content_model extends CI_Model
 			'culture' => $culture,
 			'revision' => $revision
 	    ))->row();
-	    
+
 	    if(!$content_details)
 	    	throw new Exception('content with the given content_key and culture does not exists');
 	    

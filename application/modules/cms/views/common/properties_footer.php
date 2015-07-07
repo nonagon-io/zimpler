@@ -38,7 +38,7 @@
 			<i class="uk-icon-trash"></i>
 		</button>
 		<?php endif ?>
-		<button type="submit" class="uk-button uk-button-success" ng-if="editingData.status != 'published'">
+		<button type="submit" class="uk-button uk-button-success">
 			Save <span ng-show="<?= $panel_name ?>.propertiesForm.$dirty">*</span>
 		</button>
 		<button type="button" class="uk-button" ng-click="<?= $panel_name ?>.close()">
