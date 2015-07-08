@@ -259,6 +259,9 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 					$scope.propertiesPanel.propertiesForm.$setUntouched();
 				}, 1);
 
+				$scope.propertiesPanel.isHeaderExpanded = 
+					($scope.editingData.status == "published");
+
 				$scope.isLoadingEditingData = false;
 			}).
 			error(function(data, status, headers, config) {

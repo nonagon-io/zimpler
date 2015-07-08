@@ -21,7 +21,7 @@
 		</select>
 	</div>
 	<?php if(isset($allow_publish) && $allow_publish) : ?>
-	<div class="uk-text-center uk-width-1-1" style="margin-top: -7px">
+	<div class="uk-text-center uk-width-1-1">
 		<span class="uk-margin-small-top uk-text-primary uk-text-small uk-display-inline-block" 
 			  ng-if="editingData.status == 'published'">
 			Published {{ editingData.published | date }}
