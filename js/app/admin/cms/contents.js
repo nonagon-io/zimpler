@@ -7,11 +7,11 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 }])
 
-.controller("CmsContentController", 
-	function($scope, $rootScope, $locale, $location, $timeout, httpEx, 
-			 submitForm, propertiesPanel, cmsConfirmPublish, cmsPublish, 
-			 cmsNewRev, cmsConfirmDelRev, cmsDelRev, fileManagerPopup, 
-			 checkFormDirty, modal) {
+.controller("CmsContentController", [
+	"$scope", "$locale", "$location", "$timeout", "httpEx",
+	"submitForm", "cmsPropertiesPanel", "fileManagerPopup", "checkFormDirty", "modal",
+	function($scope, $locale, $location, $timeout, httpEx, 
+			 submitForm, propertiesPanel, fileManagerPopup, checkFormDirty, modal) {
 
 	$scope.list = null;
 	$scope.selectedItem = null;
@@ -278,8 +278,8 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 				if($scope.editingData.html) {
 
-					var striped = $scope.editingData.html.replace(/<\/?[^>]+(>|$)/g, "");
-					if(striped.trim() == "")
+					var striped = $scope.editingData.html.replace(/<\/?[^>]+(>|$)/g, "").trim();
+					if(striped == "" || striped == "&nbsp;")
 						isValid = false;
 				}
 			}
@@ -296,14 +296,14 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 	$scope.propertiesPanel.on("publish", function(params, callback) {
 
 		modal.show(
-			"Are you sure you want to publish this content?<br/>",
-			"Publish confirmation", {
+			"You are about to publish this content world wild. " +
+			"Please make sure everything correct before proceed. " +
+			"Are you sure you want to continue?", "Publish Confirmation", {
 				
 				danger: false,
 				bgclose: true,
 				okTitle: "Yes",
-				cancelTitle: "No",
-				icon: "exclamation-circle"
+				icon: "info-circle"
 			})
 			.ok(function() {
 
@@ -535,4 +535,4 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 			$scope.persistPageParameterChanged();
 		});
 	});
-});
+}]);

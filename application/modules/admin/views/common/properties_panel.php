@@ -9,11 +9,14 @@
 		   name="<?php echo $this->security->get_csrf_token_name(); ?>" 
 		   value="<?php echo $this->security->get_csrf_hash();?>" />
 	<?php endif ?>
-	<div class="n-header" ng-class="{'n-drop-shadow': <?= $panel_name ?>.scrollTop > 0}">
+	<div class="n-header" 
+		 ng-class="{'n-drop-shadow': <?= $panel_name ?>.scrollTop > 0, 
+		 			'n-expanded': <?= $panel_name ?>.isHeaderExpanded}">
 		<?= $header ?>
 		<div class="n-bottom-border" ng-hide="<?= $panel_name ?>.scrollTop > 0"></div>
 	</div>
-	<div class="n-body uk-form-stacked">
+	<div class="n-body uk-form-stacked"
+		 ng-class="{'n-expanded': <?= $panel_name ?>.isHeaderExpanded}">
 		<?= $body ?>
 	</div>
 	<div class="n-footer">

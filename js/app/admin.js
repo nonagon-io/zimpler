@@ -19,16 +19,7 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 		widthClasses: "uk-width-1-1 uk-width-medium-2-3 uk-width-large-6-10",
 		scope: null,
 		observers: {},
-
-		publishable: function() {
-
-			return this.publishableCheck();
-		},
-
-		publishableCheck: function() {
-
-			return false;
-		},
+		isHeaderExpanded: false,
 
 		dom: function(selector) {
 
@@ -222,26 +213,15 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 			if($event)
 				$event.preventDefault();
 
-			if(!this.scope.propertiesPanel.propertiesForm.$dirty)
+			if(!this.scope.propertiesPanel.propertiesForm.$dirty) {
+
+				if(option && option.doNext)
+					option.doNext();
+
 				return;
+			}
 
 			this.save($event, option);
-		},
-
-		publish: function($event, option) {
-
-			var proceed = function() {
-
-				$this.fire("publish", null, function(result) {
-
-					if(result && option && option.alsoClose) {
-
-						$this.close();
-					}
-				});
-			};
-
-			this.save($event, { alsoClose: false, doNext: proceed });
 		},
 
 		delete: function() {
