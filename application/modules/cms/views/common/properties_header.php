@@ -24,7 +24,11 @@
 	<div class="uk-text-center uk-width-1-1">
 		<span class="uk-margin-small-top uk-text-primary uk-text-small uk-display-inline-block" 
 			  ng-if="editingData.status == 'published'">
-			Published {{ editingData.published | date }}
+			Published {{ editingData.published | date :'yyyy-MM-dd hh:mm:ss a'}}
+		</span>
+		<span class="uk-margin-small-top uk-text-muted uk-text-small uk-display-inline-block" 
+			  ng-if="editingData.status == 'draft'">
+			Drafted {{ editingData.modified | date :'yyyy-MM-dd hh:mm:ss a'}}
 		</span>
 	</div>
 	<?php endif ?>

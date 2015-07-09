@@ -153,16 +153,23 @@ class Content_model extends CI_Model
 			->select(
 				"CASE ".
 				"	WHEN a.content_type = 'html' THEN b.culture ".
-				"	WHEN a.content_type = 'label' THEN b.culture ".
-				"	WHEN a.content_type = 'list' THEN b.culture ".
+				"	WHEN a.content_type = 'label' THEN c.culture ".
+				"	WHEN a.content_type = 'list' THEN d.culture ".
 				"END AS culture", FALSE)
 
 			->select(
 				"CASE ".
 				"	WHEN a.content_type = 'html' THEN b.status ".
-				"	WHEN a.content_type = 'label' THEN b.status ".
-				"	WHEN a.content_type = 'list' THEN b.status ".
+				"	WHEN a.content_type = 'label' THEN c.status ".
+				"	WHEN a.content_type = 'list' THEN d.status ".
 				"END AS rev_status", FALSE)
+
+			->select(
+				"CASE ".
+				"	WHEN a.content_type = 'html' THEN b.revision ".
+				"	WHEN a.content_type = 'label' THEN c.revision ".
+				"	WHEN a.content_type = 'list' THEN d.revision ".
+				"END AS revision", FALSE)
 
 			->from('content a')
 

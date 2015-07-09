@@ -305,6 +305,23 @@ class Content extends REST_Controller {
 
 		$this->content_model->publish($content_key, $culture);
     }
+
+    function rev_post()
+    {
+    	$content_key = $this->post('key');
+    	$culture = $this->post('culture');
+
+    	$this->content_model->create_new_revision($content_key, $culture);
+    }
+
+    function rev_delete()
+    {
+    	$content_key = $this->delete('key');
+    	$culture = $this->delete('culture');
+    	$revision = $this->delete('revision');
+
+    	$this->content_model->delete_revision($content_key, $culture, $revision);
+    }
     
     public static function get_front_content($content)
     {
@@ -322,7 +339,7 @@ class Content extends REST_Controller {
     		$obj->html = $content->content_html->html;
     		$obj->culture = $content->content_html->culture;
     		$obj->revision = $content->content_html->revision;
-    		$obj->published = $content->content_html->date_publish;
+    		$obj->published = human_to_unix($content->content_html->date_publish) * 1000;
     		$obj->status = $content->content_html->status;
     	}
     	else if($content->content_type == 'label' && $content->content_label)
@@ -330,7 +347,7 @@ class Content extends REST_Controller {
     		$obj->label = $content->content_label->label;
     		$obj->culture = $content->content_label->culture;
     		$obj->revision = $content->content_label->revision;
-    		$obj->published = $content->content_label->date_publish;
+    		$obj->published = human_to_unix($content->content_label->date_publish) * 1000;
     		$obj->status = $content->content_label->status;
     	}
     	else if($content->content_type == 'list' && $content->content_list)
@@ -338,14 +355,14 @@ class Content extends REST_Controller {
     		$obj->publicTitle = $content->content_list->title;
     		$obj->culture = $content->content_list->culture;
     		$obj->revision = $content->content_list->revision;
-    		$obj->published = $content->content_list->date_publish;
+    		$obj->published = human_to_unix($content->content_list->date_publish) * 1000;
     		$obj->status = $content->content_list->status;
     	}
 
 	    $obj->group = $content->group;
 	    $obj->type = $content->content_type;
 	    $obj->description = $content->description;
-	    $obj->modified = human_to_unix($content->last_modified);
+	    $obj->modified = human_to_unix($content->last_modified) * 1000;
 
     	return $obj;
     }
@@ -363,7 +380,8 @@ class Content extends REST_Controller {
 	    $obj->group = $content_item->group;
 	    $obj->type = $content_item->content_type;
 	    $obj->description = $content_item->description;
-	    $obj->modified = human_to_unix($content_item->last_modified);
+	    $obj->revision = $content_item->revision;
+	    $obj->modified = human_to_unix($content_item->last_modified) * 1000;
 	    $obj->status = $content_item->rev_status;
 
 	    return $obj;

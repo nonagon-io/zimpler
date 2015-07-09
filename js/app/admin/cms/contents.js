@@ -8,9 +8,9 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 }])
 
 .controller("CmsContentController", [
-	"$scope", "$locale", "$location", "$timeout", "httpEx",
+	"$scope", "$locale", "$location", "$timeout", "httpEx", "requestParams",
 	"submitForm", "cmsPropertiesPanel", "fileManagerPopup", "checkFormDirty", "modal",
-	function($scope, $locale, $location, $timeout, httpEx, 
+	function($scope, $locale, $location, $timeout, httpEx, requestParams,
 			 submitForm, propertiesPanel, fileManagerPopup, checkFormDirty, modal) {
 
 	$scope.list = null;
@@ -236,6 +236,8 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 	$scope.loadPropertiesData = function(key, culture) {
 
+		$scope.propertiesPanel.isCommandsHidden = true;
+
 		var params = {
 
 			key: key,
@@ -260,9 +262,11 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 				}, 1);
 
 				$scope.propertiesPanel.isHeaderExpanded = 
-					($scope.editingData.status == "published");
+					($scope.editingData.status == "published" || 
+					 $scope.editingData.status == "draft");
 
 				$scope.isLoadingEditingData = false;
+				$scope.propertiesPanel.isCommandsHidden = false;
 			}).
 			error(function(data, status, headers, config) {
 
@@ -310,16 +314,11 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 			})
 			.ok(function() {
 
-				var params = null;
+				var params = requestParams.create($scope, {
 
-				if($scope.csrf) {
-					params = $scope.csrf;
-				} else {
-					params = {}
-				}
-
-				params.key = $scope.editingData.key;
-				params.culture = $scope.currentCulture;
+					key: $scope.editingData.key,
+					culture: $scope.currentCulture
+				});
 
 				httpEx($scope, "POST", $scope.baseUrl + "cms/rest/content/publish", params).
 					success(function(data, status, headers, config) {
@@ -459,6 +458,35 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 		}
 	});
 
+	$scope.propertiesPanel.on("new-revision", function(params, callback) {
+
+		modal.show(
+			"Are you sure you want to create new revision for this content?<br/>",
+			"Confirmation", {
+				
+				danger: false,
+				bgclose: true,
+				okTitle: "Yes",
+				cancelTitle: "No",
+				icon: "info-circle"
+			})
+			.ok(function() {
+
+				var params = requestParams.create($scope, {
+
+					key: $scope.editingData.key,
+					culture: $scope.editingData.culture
+				});
+				
+				httpEx($scope, "POST", $scope.baseUrl + "cms/rest/content/rev", params).
+					success(function(data, status, headers, config) {
+
+						$scope.refresh();
+						$scope.loadPropertiesData(params.key, params.culture);
+					});
+			});
+	});
+
 	$scope.propertiesPanel.on("closed", function() {
 
 		$scope.editingData = null;
@@ -488,15 +516,45 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 				$scope.propertiesPanel.close({force: true});
 
-				var params = {
+				var params = requestParams.create($scope, {
 
 					id: $scope.editingData.id
-				};
+				});
 				
 				httpEx($scope, "DELETE", $scope.baseUrl + "cms/rest/content", params).
 					success(function(data, status, headers, config) {
 
 						$scope.refresh();
+					});
+			});
+	});
+
+	$scope.propertiesPanel.on("delete-rev", function() {
+
+		modal.show(
+			"Are you sure you want to delete the latest draft?<br/>",
+			"Confirmation", {
+				
+				danger: true,
+				bgclose: true,
+				okTitle: "Yes",
+				cancelTitle: "No",
+				icon: "exclamation-circle"
+			})
+			.ok(function() {
+
+				var params = requestParams.create($scope, {
+
+					key: $scope.editingData.key,
+					culture: $scope.editingData.culture,
+					revision: $scope.editingData.revision
+				});
+				
+				httpEx($scope, "DELETE", $scope.baseUrl + "cms/rest/content/rev", params).
+					success(function(data, status, headers, config) {
+
+						$scope.refresh();
+						$scope.loadPropertiesData(params.key, params.culture);
 					});
 			});
 	});

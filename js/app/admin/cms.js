@@ -27,6 +27,16 @@ angular.module("admin-cms", ['generic-modal', 'admin'])
 		$this.saveIfDirty($event, { alsoClose: false, doNext: proceed });
     };
 
+    $this.newRevision = function() {
+
+    	$this.fire("new-revision", null);
+    }
+
+    $this.deleteRev = function() {
+
+    	$this.fire("delete-rev", null);
+    }
+
     return $this;
 
 }]);

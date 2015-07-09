@@ -5,6 +5,30 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 	return [];
 })
 
+.factory("requestParams", function() {
+
+	return {
+
+		create: function($scope, givenParams) {
+
+			var params = null;
+
+			if($scope.csrf) {
+				params = $scope.csrf;
+			} else {
+				params = {};
+			}
+
+			for(var n in givenParams) {
+
+				params[n] = givenParams[n];
+			}
+
+			return params;
+		}
+	};
+})
+
 .factory("propertiesPanel", 
 	['$http', '$timeout', '$sce', '$window', 'checkFormDirty',
 	function($http, $timeout, $sce, $window, checkFormDirty) {
@@ -19,6 +43,7 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 		widthClasses: "uk-width-1-1 uk-width-medium-2-3 uk-width-large-6-10",
 		scope: null,
 		observers: {},
+		isCommandsHidden: false,
 		isHeaderExpanded: false,
 
 		dom: function(selector) {
