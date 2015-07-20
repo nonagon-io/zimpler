@@ -24,7 +24,7 @@ class Content_model extends CI_Model
 	    {
 		    $this->dbforge->add_field('content_id		int				NOT NULL	AUTO_INCREMENT');
 		    $this->dbforge->add_field('content_key 		varchar(50)		NOT NULL');
-		    $this->dbforge->add_field('name 			varchar(150)	NOT NULL');
+		    $this->dbforge->add_field('title 			varchar(150)	NOT NULL');
 		    $this->dbforge->add_field('`group` 			varchar(80)		NULL 		default null');
 		    $this->dbforge->add_field('description 		varchar(250)	NULL 		default null');
 		    $this->dbforge->add_field('content_type 	varchar(15)		NOT NULL');
