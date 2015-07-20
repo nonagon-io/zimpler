@@ -14,7 +14,9 @@ JavaScript and CSS (See Gruntfile.js for more details).
 3. Execute "npm install grunt --save-dev"
 4. Execute "npm install grunt-contrib-uglify --save-dev"
 5. Execute "npm install grunt-contrib-cssmin --save-dev"
-6. Execute "grunt uglify"
-7. Execute "grunt cssmin"
+6. Execute "npm install grunt-contrib-copy --save-dev"
+7. Execute "grunt uglify"
+8. Execute "grunt cssmin"
+9. Execute "grunt copy"
 
 **This project is under development**
