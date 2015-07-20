@@ -4,6 +4,7 @@ angular.module("admin-cms", ['generic-modal', 'admin'])
 	['propertiesPanel', function(propertiesPanel) {
 
     var $this = $.extend(true, {}, propertiesPanel);
+    $this.isHeaderExpanded = true;
 
 	$this.publishable = function() {
 
