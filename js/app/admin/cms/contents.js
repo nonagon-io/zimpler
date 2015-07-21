@@ -13,6 +13,8 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 	function($scope, $locale, $location, $timeout, httpEx, requestParams,
 			 submitForm, propertiesPanel, fileManagerPopup, checkFormDirty, modal) {
 
+	var headerCheckBox = null;
+
 	$scope.list = null;
 	$scope.selectedItem = null;
 	$scope.lastEditedItem = null;
@@ -23,6 +25,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 	$scope.currentCulture = $location.search().c || "en-us";
 	$scope.currentCultureFullName = $("#cultureSelection option:selected").html().trim();
 	$scope.fileManagerPopup = fileManagerPopup;
+	$scope.isCheckActivated = false;
 
 	$scope.pagination = null;
 	$scope.pageSize = 20;
@@ -61,6 +64,66 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 		plugins: 'advlist autolink link image lists charmap',
 		skin: 'lightgray',
 		theme : 'modern'
+	};
+
+	$scope.isAnyItemChecked = function() {
+
+		if(!$scope.list || !$scope.list.items) return false;
+
+		var checkedItems = $.grep($scope.list.items, function(item, i) {
+			
+			return item.checked;
+		});
+
+		return checkedItems.length > 0;
+	};
+
+	$scope.isAllItemsChecked = function() {
+
+		if(!$scope.list || !$scope.list.items) return false;
+
+		var checkedItems = $.grep($scope.list.items, function(item, i) {
+			
+			return item.checked;
+		});
+
+		return checkedItems.length == $scope.list.items.length;
+	};
+
+	$scope.checkAllItems = function() {
+
+		if(!$scope.list || !$scope.list.items) return;
+
+		for(var i=0; i<$scope.list.items.length; i++) {
+
+			$scope.list.items[i].checked = true;
+		}
+
+		$scope.itemCheckStateChanged();
+	};
+
+	$scope.uncheckAllItems = function() {
+
+		if(!$scope.list || !$scope.list.items) return;
+
+		for(var i=0; i<$scope.list.items.length; i++) {
+
+			$scope.list.items[i].checked = false;
+		}
+
+		$scope.itemCheckStateChanged();
+	};
+
+	$scope.itemCheckStateChanged = function() {
+
+		var isAllChecked = $scope.isAllItemsChecked();
+
+		var isAnyChecked = $scope.isAnyItemChecked();
+		$scope.isCheckActivated = isAnyChecked;
+
+		if(headerCheckBox) {
+			headerCheckBox.prop("checked", isAllChecked);
+		}
 	};
 
 	$scope.refresh = function() {
@@ -156,12 +219,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 			$scope.loadPropertiesData(key, culture);
 		}
 
-		var checkedItems = $.grep($scope.list.items, function(item, i) {
-			
-			return item.checked;
-		});
-		
-		if(checkedItems.length > 0) return;
+		if($scope.isAnyItemChecked()) return;
 		
 		if($scope.propertiesPanel.isOpen) {
 			
@@ -594,6 +652,21 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 		$scope.$apply(function() {
 			$scope.currentCulture = selectedCulture;
 			$scope.persistPageParameterChanged();
+		});
+	});
+
+	$(function() {
+		
+		headerCheckBox = $(".freeze-header").find("input[type=checkbox]");
+		headerCheckBox.on("change", function() {
+
+			$scope.$apply(function() {
+				if(headerCheckBox.is(':checked')) {
+					$scope.checkAllItems();
+				} else {
+					$scope.uncheckAllItems();
+				}
+			});
 		});
 	});
 }]);

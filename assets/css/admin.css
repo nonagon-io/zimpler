@@ -113,7 +113,18 @@ body {
 	-webkit-overflow-scrolling: touch;
 }
 
-.n-view-host .n-body .n-list tr.uk-active {
+.n-view-host .n-body .n-list tbody.n-check-activated tr {
+
+	cursor: default;
+}
+
+.n-view-host .n-body .n-list tbody:not(.n-check-activated) tr:hover {
+
+	background: #e1f0f7;
+	cursor: pointer;
+}
+
+.n-view-host .n-body .n-list tbody:not(.n-check-activated) tr.uk-active {
 	
 	background: #35B3EE;
 	color: white;
@@ -425,7 +436,7 @@ body {
 	padding: 10px;
 	
 	overflow: auto;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px
 	
     -webkit-transition: bottom 0.3s ease-in-out;
     -moz-transition: bottom 0.3s ease-in-out;

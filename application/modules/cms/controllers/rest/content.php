@@ -367,7 +367,7 @@ class Content extends REST_Controller {
 
     	switch($content_type)
     	{
-    		case 'html': $display_type = 'Composition'; break;
+    		case 'html': $display_type = 'Composite'; break;
     		case 'label': $display_type = 'Label'; break;
     	}
 

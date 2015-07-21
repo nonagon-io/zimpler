@@ -294,7 +294,9 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 	}
 })
 
-.controller('AdminController', function($scope, $locale, $interval, $http, keydownHandlers, fileManager, fileManagerPopup) {
+.controller('AdminController', 
+	["$scope", "$locale", "$interval", "$http", "$compile", "keydownHandlers", "fileManager", "fileManagerPopup",
+	function($scope, $locale, $interval, $http, $compile, keydownHandlers, fileManager, fileManagerPopup) {
 	
 	var mainContentBody = $(".n-body .n-content");
 
@@ -319,7 +321,7 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 	
 	$(function() {
 		
-		$("table").freezeHeader(); 
+		$("table").freezeHeader();
 	});
 
 	$(function() {
@@ -369,4 +371,4 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 		});
 
 	}, 180000);
-});
+}]);

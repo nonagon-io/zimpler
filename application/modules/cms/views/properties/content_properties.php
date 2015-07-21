@@ -63,7 +63,7 @@
 			<select id="type=" name="type" class="uk-width-1-1"
 					ng-model="editingData.type"
 					ng-disabled="editingData.id">
-				<option value="html">Composition</option>
+				<option value="html">Composite</option>
 				<option value="label">Label</option>
 				<!-- <option value="list">List</option> -->
 			</select>

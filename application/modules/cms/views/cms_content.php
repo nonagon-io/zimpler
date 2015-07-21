@@ -32,7 +32,9 @@
 			<table class="n-table uk-table uk-table-striped">
 				<thead>
 					<tr>
-						<th style="width: 20px" class="uk-text-center"><input type="checkbox" /></th>
+						<th style="width: 20px" class="uk-text-center">
+							<input type="checkbox" />
+						</th>
 						<th>Title</th>
 						<th style="width: 100px">Group</th>
 						<th style="width: 90px">Type</th>
@@ -41,13 +43,15 @@
 						<th style="width: 80px; text-align: center">Status</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody ng-class="{'n-check-activated': isCheckActivated}">
 					<tr ng-repeat="item in list.items"
 						ng-class="{'uk-active': selectedItem.id == item.id, 'n-selected': item.checked}"
 						n-scroll-if="item.id == lastEditedItem.id" scroll-container="#list-container"
 						n-item-loaded="activateItem($event, item)">
 						<td class="uk-text-center">
-							<input type="checkbox" ng-model="item.checked" ng-disabled="selectedItem" />
+							<input type="checkbox" ng-model="item.checked" 
+								   ng-change="itemCheckStateChanged()" 
+								   ng-disabled="selectedItem" />
 						</td>
 						<td ng-click="select(item)">
 							<div ng-bind="item.publicTitle || item.title"

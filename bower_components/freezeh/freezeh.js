@@ -4,7 +4,7 @@ $(function() {
 		if(!this.offset()) return;
 		
 		var header = 
-			$("<table class='" + this.attr("class") + "'><thead>" + 
+			$("<table class='freeze-header " + this.attr("class") + "'><thead>" + 
 				this.find("thead").html() + "</thead></table>");
 				
 		$(header).css({
@@ -39,5 +39,7 @@ $(function() {
 		});
 		
 		arrangeSize();
+
+		return header;
 	}
 });
