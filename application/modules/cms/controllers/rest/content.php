@@ -70,7 +70,8 @@ class Content extends REST_Controller {
 			'content_key' => $key,
 			'content_type' => $type,
 			'group' => $group,
-			'description' => $description
+			'description' => $description,
+			'author' => $this->ion_auth->get_user_id()
 		);
 
 		if($type == 'html')
@@ -92,13 +93,6 @@ class Content extends REST_Controller {
 			$content['content_label'] = array(
 
 				'label' => $label,
-				'culture' => $culture
-			);
-		}
-		else if($type == 'list')
-		{
-			$content['content_list'] = array(
-
 				'culture' => $culture
 			);
 		}
@@ -141,12 +135,6 @@ class Content extends REST_Controller {
 			$content['culture'] = $result['content_label']['culture'];
 			$content['label'] = $result['content_label']['label'];
 			$content['status'] = $result['content_label']['status'];
-		}
-		else if($content['type'] == 'list')
-		{
-			$content['culture'] = $result['content_list']['culture'];
-			$content['list'] = $result['content_list']['list'];
-			$content['status'] = $result['content_list']['status'];
 		}
 
 		$this->response(array(
@@ -194,13 +182,6 @@ class Content extends REST_Controller {
 			$content['content_label'] = array(
 
 				'label' => $label,
-				'culture' => $culture
-			);
-		}
-		else if($type == 'list')
-		{
-			$content['content_list'] = array(
-
 				'culture' => $culture
 			);
 		}
@@ -350,14 +331,6 @@ class Content extends REST_Controller {
     		$obj->published = human_to_unix($content->content_label->date_publish) * 1000;
     		$obj->status = $content->content_label->status;
     	}
-    	else if($content->content_type == 'list' && $content->content_list)
-    	{
-    		$obj->publicTitle = $content->content_list->title;
-    		$obj->culture = $content->content_list->culture;
-    		$obj->revision = $content->content_list->revision;
-    		$obj->published = human_to_unix($content->content_list->date_publish) * 1000;
-    		$obj->status = $content->content_list->status;
-    	}
 
 	    $obj->group = $content->group;
 	    $obj->type = $content->content_type;
@@ -396,8 +369,6 @@ class Content extends REST_Controller {
     	{
     		case 'html': $display_type = 'Composition'; break;
     		case 'label': $display_type = 'Label'; break;
-    		case 'list': $display_type = 'List'; break;
-    		case 'table': $display_type = 'Table'; break;
     	}
 
     	return $display_type;

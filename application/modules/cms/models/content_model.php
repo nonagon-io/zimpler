@@ -84,40 +84,6 @@ class Content_model extends CI_Model
 			$this->dbforge->add_key('content_html_id', TRUE);
 			$this->dbforge->create_table('content_html', TRUE);
 		}
-
-		// content_list table.
-	    if(!$this->db->table_exists('content_list'))
-	    {
-			$this->dbforge->add_field('content_list_id	int				NOT NULL	AUTO_INCREMENT');
-			$this->dbforge->add_field('content_id		int				NOT NULL');
-			$this->dbforge->add_field('culture			varchar(5)		NOT NULL 	default \'en-us\'');
-			$this->dbforge->add_field('revision			int				NOT NULL');
-			$this->dbforge->add_field('title			varchar(80)		NOT NULL');
-			$this->dbforge->add_field('headers			varchar(1000)	NOT NULL');
-			$this->dbforge->add_field('max_items		int				NOT NULL');
-		    $this->dbforge->add_field('date_created 	datetime		NOT NULL');
-		    $this->dbforge->add_field('last_modified 	datetime		NOT NULL');
-		    $this->dbforge->add_field('date_publish 	datetime		NULL 		default null');
-			$this->dbforge->add_field('status			varchar(15)		NOT NULL');
-			$this->dbforge->add_key('content_list_id', TRUE);
-			$this->dbforge->create_table('content_list', TRUE);
-		}
-		
-		// content_list_item table.
-	    if(!$this->db->table_exists('content_list_item'))
-	    {
-			$this->dbforge->add_field('content_list_item_id	int			NOT NULL	AUTO_INCREMENT');
-			$this->dbforge->add_field('content_id		int				NOT NULL');
-			$this->dbforge->add_field('culture			varchar(5)		NOT NULL');
-			$this->dbforge->add_field('data				varchar(5000)	NOT NULL');
-			$this->dbforge->add_field('order_no			int				NOT NULL 	default 0');
-		    $this->dbforge->add_field('date_created 	datetime		NOT NULL');
-		    $this->dbforge->add_field('last_modified 	datetime		NOT NULL');
-		    $this->dbforge->add_field('date_publish 	datetime		NULL 		default null');
-			$this->dbforge->add_field('status			varchar(15)		NOT NULL');
-			$this->dbforge->add_key('content_list_item_id', TRUE);
-			$this->dbforge->create_table('content_list_item', TRUE);
-		}
     }
 
     public function get_total_contents()
@@ -164,28 +130,24 @@ class Content_model extends CI_Model
 				"CASE ".
 				"	WHEN a.content_type = 'html' THEN b.title ".
 				"	WHEN a.content_type = 'label' THEN c.label ".
-				"	WHEN a.content_type = 'list' THEN d.title ".
 				"END AS public_title", FALSE)
 
 			->select(
 				"CASE ".
 				"	WHEN a.content_type = 'html' THEN b.culture ".
 				"	WHEN a.content_type = 'label' THEN c.culture ".
-				"	WHEN a.content_type = 'list' THEN d.culture ".
 				"END AS culture", FALSE)
 
 			->select(
 				"CASE ".
 				"	WHEN a.content_type = 'html' THEN b.status ".
 				"	WHEN a.content_type = 'label' THEN c.status ".
-				"	WHEN a.content_type = 'list' THEN d.status ".
 				"END AS rev_status", FALSE)
 
 			->select(
 				"CASE ".
 				"	WHEN a.content_type = 'html' THEN b.revision ".
 				"	WHEN a.content_type = 'label' THEN c.revision ".
-				"	WHEN a.content_type = 'list' THEN d.revision ".
 				"END AS revision", FALSE)
 
 			->from('content a')
@@ -208,17 +170,7 @@ class Content_model extends CI_Model
 			->join('content_label c', 
 				   'c.content_id = mc.content_id and ' .
 				   'c.culture = mc.culture and ' .
-				   'c.revision = mc.maxrev', 'left')
-
-			->join('(select content_id, culture, max(revision) as maxrev ' .
-				   'from content_list where culture = ' . 
-				    $this->db->escape($culture) . ' group by content_id, culture) as md',
-				   'md.content_id = a.content_id', 'left')
-
-			->join('content_list d', 
-				   'd.content_id = md.content_id and ' .
-				   'd.culture = md.culture and ' .
-				   'd.revision = md.maxrev', 'left');
+				   'c.revision = mc.maxrev', 'left');
 
 		if($skip != NULL && $take != NULL)
 			$query = $query->limit($take, $skip);
@@ -324,6 +276,9 @@ class Content_model extends CI_Model
 
 	    if(!array_key_exists('content_type', $content))
 	    	throw new Exception('content_type must be specified');
+
+	    if(!array_key_exists('author', $content))
+	    	throw new Exception('author must be specified');
 	    	
 		if(!$this->validate_key($content['content_key']))
 			throw new Exception('content_key is already exists');
@@ -334,18 +289,12 @@ class Content_model extends CI_Model
 	    {
 	    	$content_html = $content['content_html'];
 	    	unset($content['content_html']);
-	    }	    	
+	    }
 
 	    if(isset($content['content_label']))
 	    {
 		    $content_label = $content['content_label'];
 		    unset($content['content_label']);
-		}
-
-	    if(isset($content['content_list']))
-	    {
-		    $content_list = $content['content_list'];
-		    unset($content['content_list']);
 		}
 
 		if(!$content['group'])
@@ -372,10 +321,6 @@ class Content_model extends CI_Model
 		    case 'html': 
 		    	$content_details = $this->add_html_content($content_id, $content_html); 
 		    	$content['content_html'] = $content_details;
-		    	break;
-		    case 'list': 
-		    	$content_details = $this->add_list_content($content_id, $content_list); 
-		    	$content['content_list'] = $content_details;
 		    	break;
 
 		    default: throw new Exception('Unsupported content_type'); break;
@@ -416,12 +361,6 @@ class Content_model extends CI_Model
 		    unset($content['content_label']);
 		}
 
-	    if(isset($content['content_list']))
-	    {
-		    $content_list = $content['content_list'];
-		    unset($content['content_list']);
-		}
-	    	
 	    $content_id = $content['content_id'];
 	    	
 	    // Check if content exists.
@@ -450,10 +389,6 @@ class Content_model extends CI_Model
 		    case 'html': 
 		    	$content_details = $this->update_html_content($content_id, $content_html); 
 		    	$content['content_html'] = $content_details;
-		    	break;
-		    case 'list': 
-		    	$content_details = $this->update_list_content($content_id, $content_list); 
-		    	$content['content_list'] = $content_details;
 		    	break;
 
 		    default: throw new Exception('Unsupported content_type'); break;
