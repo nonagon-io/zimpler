@@ -35,7 +35,7 @@
 						<th style="width: 20px" class="uk-text-center"><input type="checkbox" /></th>
 						<th>Title</th>
 						<th style="width: 100px">Group</th>
-						<th style="width: 70px">Type</th>
+						<th style="width: 90px">Type</th>
 						<th style="width: 30px">Rev.</th>
 						<th style="width: 200px">Modified</th>
 						<th style="width: 80px; text-align: center">Status</th>
@@ -55,7 +55,7 @@
 							<div ng-bind="item.description" class="uk-text-muted uk-text-small"></div>
 						</td>
 						<td ng-bind="item.group" ng-click="select(item)"></td>
-						<td ng-bind="item.type" ng-click="select(item)"></td>
+						<td ng-bind="item.displayType" ng-click="select(item)"></td>
 						<td ng-bind="item.revision" ng-click="select(item)"></td>
 						<td ng-bind="item.modified | date:'yyyy-MM-dd hh:mm:ss a'" ng-click="select(item)"></td>
 						<td ng-bind="item.status || 'n/a'" ng-click="select(item)"

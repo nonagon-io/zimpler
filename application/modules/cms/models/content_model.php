@@ -28,13 +28,30 @@ class Content_model extends CI_Model
 		    $this->dbforge->add_field('`group` 			varchar(80)		NULL 		default null');
 		    $this->dbforge->add_field('description 		varchar(250)	NULL 		default null');
 		    $this->dbforge->add_field('content_type 	varchar(15)		NOT NULL');
+		    $this->dbforge->add_field('author			int 			NOT NULL');
 		    $this->dbforge->add_field('date_created 	datetime		NOT NULL');
 		    $this->dbforge->add_field('last_modified 	datetime		NOT NULL');
 		    $this->dbforge->add_field('status 			varchar(15)		NOT NULL');
 		    $this->dbforge->add_key('content_id', TRUE);
 			$this->dbforge->create_table('content', TRUE);
 		}
-		
+
+		// content_track table.
+		if(!$this->db->table_exists('content_track'))
+		{
+			$this->dbforge->add_field('content_id 		int 			NOT NULL');
+			$this->dbforge->add_field('revision 		int 			NOT NULL');
+			$this->dbforge->add_field('created_by 		int 			NOT NULL');
+			$this->dbforge->add_field('last_modified_by	int 			NOT NULL');
+			$this->dbforge->add_field('published_by		int 			NULL 		default null');
+			$this->dbforge->add_field('approved_by		int 			NULL 		default null');
+			$this->dbforge->add_field('rejected_by		int 			NULL 		default null');
+			$this->dbforge->add_field('commit_note		text 			NULL 		default null');
+			$this->dbforge->add_key('content_id', TRUE);
+			$this->dbforge->add_key('revision', TRUE);
+			$this->dbforge->create_table('content_track', TRUE);
+		}
+
 		// content_label table.
 	    if(!$this->db->table_exists('content_label'))
 	    {
@@ -319,16 +336,16 @@ class Content_model extends CI_Model
 	    	unset($content['content_html']);
 	    }	    	
 
+	    if(isset($content['content_label']))
+	    {
+		    $content_label = $content['content_label'];
+		    unset($content['content_label']);
+		}
+
 	    if(isset($content['content_list']))
 	    {
 		    $content_list = $content['content_list'];
 		    unset($content['content_list']);
-		}
-
-	    if(isset($content['content_label']))
-	    {
-		    $content_list = $content['content_label'];
-		    unset($content['content_label']);
 		}
 
 		if(!$content['group'])
@@ -393,16 +410,16 @@ class Content_model extends CI_Model
 	    	unset($content['content_html']);
 	    }	    	
 
+	    if(isset($content['content_label']))
+	    {
+		    $content_label = $content['content_label'];
+		    unset($content['content_label']);
+		}
+
 	    if(isset($content['content_list']))
 	    {
 		    $content_list = $content['content_list'];
 		    unset($content['content_list']);
-		}
-
-	    if(isset($content['content_label']))
-	    {
-		    $content_list = $content['content_label'];
-		    unset($content['content_label']);
 		}
 	    	
 	    $content_id = $content['content_id'];
@@ -507,24 +524,27 @@ class Content_model extends CI_Model
 	    // Get the latest content revision.
 	    $this->db->select_max('revision', 'latest_revision');
 	    $query = $this->db->get_where('content_label', 
-	    	array('content_id' => $content_id, 'culture' => $content_html['culture']));
+	    	array('content_id' => $content_id, 'culture' => $content_label['culture']));
 	    	
 	    if(!$query->row()->latest_revision)
 	    {
 		    // New culture entry.
-		    return add_label_content($content_id, $content_html);
+		    return $this->add_label_content($content_id, $content_label);
 		}
 	    else
 	    {
 		    $latest_revision = $query->row()->latest_revision;
 		    
 		    $query = $this->db->get_where('content_label',
-		    	array('content_id' => $content_id, 'culture' => $culture, 'revision' => $latest_revision));
+		    	array('content_id' => $content_id, 
+		    		'culture' => $content_label['culture'], 
+		    		'revision' => $latest_revision));
 		    	
 		    $existing_content_label = $query->row();
+		    $existing_content_label = json_decode(json_encode($existing_content_label), true);
 		    
 			// If the content_label with the given content_id and culture already published, do not allow update.
-			if($existing_content_label->status == 'published')
+			if($existing_content_label['status'] == 'published')
 				throw new Exception('content is already published, please create new revision');
 				
 			$existing_content_label['last_modified'] = date('Y-m-d H:i:s', now());
@@ -630,141 +650,6 @@ class Content_model extends CI_Model
 		}
 
 		return $existing_content_html;	
-    }
-    
-    private function add_list_content($content_id, $content_list)
-    {
-	    if(!$content_list)
-	    	throw new Exception('content_list must be specified');
-	    
-	    if(!array_key_exists('title', $content_list))
-	    	throw new Exception('content_list::title must be specified');
-	    
-	    if(!array_key_exists('headers', $content_list))
-	    	throw new Exception('content_list::headers must be specified');
-	    	
-	    $this->db->flush_cache();
-
-	    $content_list['content_id'] = $content_id;
-	    $content_list['revision'] = 1;
-	    $content_list['date_created'] = date('Y-m-d H:i:s', now());
-	    $content_list['last_modified'] = date('Y-m-d H:i:s', now());
-	    $content_list['date_publish'] = null;
-	    $content_list['status'] = 'draft';
-	    
-	    $this->db->insert('content_list', $content_list);
-	    $content_list_id = $this->db->insert_id();
-	    
-	    // Add all items.
-	    if(array_key_exists('content_list_items', $content_list))
-	    {
-		    $content_list_items = $content_list['content_list_items'];
-		    foreach($content_list_items as $content_list_item)
-		    {
-			    $content_list_item['content_id'] = $content['content_id'];
-			    $content_list_item['content_list_id'] = $content_list_id;
-			    $content_list['date_created'] = date('Y-m-d H:i:s', now());
-			    $content_list['last_modified'] = date('Y-m-d H:i:s', now());
-			    $content_list['date_publish'] = null;
-			    $content_list['status'] = 'draft';
-			    
-			    $this->db->insert('content_list_item', $content_list_item);
-		    }
-	    }
-
-	    $content_list['content_list_id'] = $content_list_id;
-
-	    return $content_list;
-    }
-    
-    private function update_list_content($content_id, $content_list)
-    {
-	    if(!$content_list)
-	    	throw new Exception('content_list must be specified');
-	    	
-	    if(!array_key_exists('culture', $content_list))
-	    	throw new Exception('content_html::culture must be specified');
-	    	
-	    $this->db->flush_cache();
-	    
-	    // Get the latest content revision.
-	    $this->db->select_max('revision', 'latest_revision');
-	    $query = $this->db->get_where('content_list', 
-	    	array('content_id' => $content_id, 'culture' => $content_html['culture']));
-	    	
-	    if(!$query->row()->latest_revision)
-	    {
-		    // New culture entry.
-		    return add_list_content($content_id, $content_html);
-	    }
-	    else
-	    {
-		    $latest_revision = $query->row()->latest_revision;
-		    
-		    $query = $this->db->get_where('content_list',
-		    	array('content_id' => $content_id, 'culture' => $culture, 'revision' => $latest_revision));
-		    	
-		    $existing_content_list = $query->row();
-		    
-			// If the content_list with the given content_id and culture already published, do not allow update.
-			if($existing_content_list->status == 'published')
-				throw new Exception('content is already published, please create new revision');
-				
-			$existing_content_list['last_modified'] = date('Y-m-d H:i:s', now());
-			
-			if(!array_key_exists('title', $content_list))
-				$existing_content_list['title'] = $content_list['title'];
-	
-			if(!array_key_exists('headers', $content_list))
-				$existing_content_list['headers'] = $content_list['headers'];
-	
-			if(!array_key_exists('max_items', $content_list))
-				$existing_content_list['max_items'] = $content_list['max_items'];
-				
-			$content_list_id = $existing_content_list['content_list_id'];
-			
-			$this->db->where('content_list_id', $content_list_id);
-			$this->db->update('content_list', $existing_content_list);
-		}
-
-		return $existing_content_list;
-    }
-    
-    public function add_list_item($content_list_item)
-    {
-	    if(!$content_list_item)
-	    	throw new Exception('content_list_item parameter cannot be null');
-
-	    if(!array_key_exists('content_id', $content_list_item))
-	    	throw new Exception('content_id must be specified');
-
-	    if(!array_key_exists('culture', $content_list_item))
-	    	throw new Exception('culture must be specified');
-	    	
-	    $this->db->flush_cache();
-	    	
-	    $content_id = $content_list_item['content_id'];
-	    $culture = $content_list_item['culture'];
-	    
-	    // Check if content exists.
-	    $query = $this->db->get_where('content', array('content_id' => $content_id));
-	    	
-	    if($query->num_rows() == 0)
-		    throw new Exception('content with the given content_id does not exists');
-		    
-		// Check if content list with the given culture exists.
-		$query = $this->db->get_where('content_list', 
-			array('content_id' => $content_id, 'culture' => $culture));
-			
-		if($query->num_rows() == 0)
-			throw new Exception('content_list with the given culture does not exists');
-
-	    $content_list_item['date_created'] = date('Y-m-d H:i:s', now());
-	    $content_list_item['last_modified'] = date('Y-m-d H:i:s', now());
-	    $content_list_item['date_publish'] = null;
-	    $content_list_item['status'] = 'draft';
-
-		$this->db->insert('content_list_item', $content_list_item);
     }
     
     public function publish($content_key, $culture)

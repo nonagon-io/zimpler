@@ -379,11 +379,27 @@ class Content extends REST_Controller {
 	    $obj->publicTitle = $content_item->public_title;
 	    $obj->group = $content_item->group;
 	    $obj->type = $content_item->content_type;
+	    $obj->displayType = Content::get_display_type($content_item->content_type);
 	    $obj->description = $content_item->description;
 	    $obj->revision = $content_item->revision;
 	    $obj->modified = human_to_unix($content_item->last_modified) * 1000;
 	    $obj->status = $content_item->rev_status;
 
 	    return $obj;
+    }
+
+    private static function get_display_type($content_type)
+    {
+    	$display_type = 'label';
+
+    	switch($content_type)
+    	{
+    		case 'html': $display_type = 'Composition'; break;
+    		case 'label': $display_type = 'Label'; break;
+    		case 'list': $display_type = 'List'; break;
+    		case 'table': $display_type = 'Table'; break;
+    	}
+
+    	return $display_type;
     }
 }

@@ -65,7 +65,7 @@
 					ng-disabled="editingData.id">
 				<option value="html">Composition</option>
 				<option value="label">Label</option>
-				<option value="list">List</option>
+				<!-- <option value="list">List</option> -->
 			</select>
 		</div>
 	</div>
@@ -116,6 +116,9 @@
 				<input type="text" id="label" name="label" class="uk-width-1-1" 
 					   ng-model="editingData.label"
 					   placeholder="The label in the selected language"
+					   ng-class="{'uk-form-danger': 
+					   		<?= $panel_name ?>.propertiesForm.label.$error.required && 
+					   		<?= $panel_name ?>.propertiesForm.$submitted}"
 					   maxlength="80" ng-required="editingData.type == 'label'" />
 			</div>
 		</div>
