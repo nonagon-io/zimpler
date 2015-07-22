@@ -537,7 +537,7 @@ angular.module("admin-cms-designs", ["common", "generic-modal", "admin", "ngAnim
 				// Move it away from the adjacent cells if any of panel of 
 				// the same row has "fill" height factor.
 
-				$this = this;
+				var $this = this;
 
 				var isAnyFill = _(this.panels).any(function(panel) {
 

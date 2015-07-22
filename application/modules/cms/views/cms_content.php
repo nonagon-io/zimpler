@@ -43,14 +43,14 @@
 						<th style="width: 80px; text-align: center">Status</th>
 					</tr>
 				</thead>
-				<tbody ng-class="{'n-check-activated': isCheckActivated}">
+				<tbody ng-class="{'n-check-activated': checkableListManager.isCheckActivated}">
 					<tr ng-repeat="item in list.items"
 						ng-class="{'uk-active': selectedItem.id == item.id, 'n-selected': item.checked}"
 						n-scroll-if="item.id == lastEditedItem.id" scroll-container="#list-container"
 						n-item-loaded="activateItem($event, item)">
 						<td class="uk-text-center">
 							<input type="checkbox" ng-model="item.checked" 
-								   ng-change="itemCheckStateChanged()" 
+								   ng-change="checkableListManager.itemCheckStateChanged()" 
 								   ng-disabled="selectedItem" />
 						</td>
 						<td ng-click="select(item)">
@@ -76,7 +76,7 @@
 		</div>
 	</div>
 	<div class="n-controller">
-		<div class="uk-grid uk-grid-collapse">
+		<div class="uk-grid uk-grid-collapse" ng-hide="checkableListManager.isCheckActivated">
 			<div class="uk-width-1-4">
 				<div ng-cloak="" class="uk-margin-small-top">
 					Displaying from {{list.from}} to {{list.to}} of {{list.total}}
@@ -88,6 +88,25 @@
 			<div class="uk-width-1-4 uk-text-right">
 				<button type="button" class="uk-button uk-button-primary" ng-click="newItem()">
 					<i class="uk-icon-plus uk-icon-small"></i>
+				</button>
+			</div>
+		</div>
+		<div class="uk-grid uk-grid-collapse" ng-show="checkableListManager.isCheckActivated">
+			<div class="uk-width-1-4">
+				<div ng-cloak="" class="uk-margin-small-top">
+					<ng-pluralize count="checkableListManager.checkedItems.length"
+					    when="{'0': 'Nothing selected',
+					    	   'one': '1 item selected',
+					           'other': '{} items selected'}">
+					</ng-pluralize>
+				</div>
+			</div>
+			<div class="uk-width-3-4 uk-text-right">
+				<button type="button" class="uk-button uk-button-primary" ng-click="publishSelected()">
+					Publish
+				</button>
+				<button type="button" class="uk-button uk-button-danger" ng-click="deleteSelected()">
+					<i class="uk-icon-trash uk-icon-small"></i> Delete
 				</button>
 			</div>
 		</div>

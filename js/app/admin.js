@@ -103,7 +103,7 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 			this.propertiesBody.scrollTop(0);
 			this.scope = $scope;
 			
-			$this = this;
+			var $this = this;
 			
 			var bodyScroll = function() {
 				
@@ -159,11 +159,13 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 				bodyScroll();
 				
 			}, 1);
+
+			$this.fire("open");
 		},
 		
 		close: function(option) {
 			
-			$this = this;
+			var $this = this;
 
 			var performClose = function() {
 
@@ -293,6 +295,125 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 		}
 	}
 })
+
+.factory('checkableListManager', [function($location) {
+
+	var checkableListManager = {
+
+		scope: null,
+		isCheckActivated: false,
+		headerCheckBox: null,
+		checkedItems: [],
+
+		isAnyItemChecked: function() {
+
+			if(!this.scope.list || !this.scope.list.items) return false;
+
+			var checkedItems = $.grep(this.scope.list.items, function(item, i) {
+				
+				return item.checked;
+			});
+
+			return checkedItems.length > 0;
+		},
+
+		isAllItemsChecked: function() {
+
+			if(!this.scope.list || !this.scope.list.items) return false;
+
+			var checkedItems = $.grep(this.scope.list.items, function(item, i) {
+				
+				return item.checked;
+			});
+
+			return checkedItems.length == this.scope.list.items.length;
+		},
+
+		getCheckedItems: function() {
+
+			if(!this.scope.list || !this.scope.list.items) return [];
+
+			var items = [];
+			for(var i=0; i<this.scope.list.items.length; i++) {
+
+				if(this.scope.list.items[i].checked)
+					items.push(this.scope.list.items[i]);
+			}
+
+			return items;
+		},
+
+		checkAllItems: function() {
+
+			if(!this.scope.list || !this.scope.list.items) return;
+
+			for(var i=0; i<this.scope.list.items.length; i++) {
+
+				this.scope.list.items[i].checked = true;
+			}
+
+			this.itemCheckStateChanged();
+		},
+
+		uncheckAllItems: function() {
+
+			if(!this.scope.list || !this.scope.list.items) return;
+
+			for(var i=0; i<this.scope.list.items.length; i++) {
+
+				this.scope.list.items[i].checked = false;
+			}
+
+			this.itemCheckStateChanged();
+		},
+
+		itemCheckStateChanged: function() {
+
+			var isAllChecked = this.isAllItemsChecked();
+			var isAnyChecked = this.isAnyItemChecked();
+
+			this.checkedItems = this.getCheckedItems();
+			this.isCheckActivated = isAnyChecked;
+
+			if(this.headerCheckBox) {
+				this.headerCheckBox.prop("checked", isAllChecked);
+			}
+		},
+
+		initialize: function($scope) {
+
+			this.scope = $scope;
+			var $this = this;
+
+			$(function() {
+
+				$this.headerCheckBox = $(".freeze-header").find("input[type=checkbox]");
+				$this.headerCheckBox.on("change", function() {
+
+					$scope.$apply(function() {
+						if($this.headerCheckBox.is(':checked')) {
+							$this.checkAllItems();
+						} else {
+							$this.uncheckAllItems();
+						}
+					});
+				});
+			});
+
+			this.scope.propertiesPanel.on("open", function() {
+
+				$this.headerCheckBox.prop("disabled", true);
+			});
+
+			this.scope.propertiesPanel.on("close", function() {
+
+				$this.headerCheckBox.prop("disabled", false);
+			});
+		}
+	};
+
+	return checkableListManager;
+}])
 
 .controller('AdminController', 
 	["$scope", "$locale", "$interval", "$http", "$compile", "keydownHandlers", "fileManager", "fileManagerPopup",
