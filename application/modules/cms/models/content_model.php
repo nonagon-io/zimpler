@@ -84,7 +84,6 @@ class Content_model extends CI_Model
 			$this->db->or_where('b.title like', '%' . $this->db->escape_like_str($keyword) . '%');
 			$this->db->or_where('b.html like', '%' . $this->db->escape_like_str($keyword) . '%');
 			$this->db->or_where('c.label like', '%' . $this->db->escape_like_str($keyword) . '%');
-			$this->db->or_where('d.title like', '%' . $this->db->escape_like_str($keyword) . '%');
 			$this->db->or_where('group like', '%' . $this->db->escape_like_str($keyword) . '%');
 			$this->db->or_where('description like', '%' . $this->db->escape_like_str($keyword) . '%');
 			$this->db->or_where('content_type like', '%' . $this->db->escape_like_str($keyword) . '%');
@@ -417,6 +416,12 @@ class Content_model extends CI_Model
 	    $this->db->where($content_table . '_id', $content_details->{$content_table . '_id'});
 	    $this->db->update($content_table);
     }
+
+    public function publish_bulk($content_keys, $culture)
+    {
+    	foreach($content_keys as $key)
+    		$this->publish($key, $culture);
+    }
     
     public function create_new_revision($content_key, $culture)
     {
@@ -488,5 +493,11 @@ class Content_model extends CI_Model
     	$this->db->from('content_' . $content->content_type);
     	$this->db->where('content_id', $content_id);
     	$this->db->delete();
+    }
+
+    public function delete_content_bulk($content_ids)
+    {
+    	foreach($content_ids as $id)
+    		$this->delete_content($id);
     }
 }

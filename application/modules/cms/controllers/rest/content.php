@@ -213,8 +213,16 @@ class Content extends REST_Controller {
 
     function index_delete()
     {
-    	$content_id = $this->delete('id');
-    	$this->content_model->delete_content($content_id);
+    	if($this->delete('id'))
+    	{
+	    	$content_id = $this->delete('id');
+	    	$this->content_model->delete_content($content_id);
+	    }
+	    else if($this->delete('ids'))
+	    {
+	    	$content_ids = $this->delete('ids');
+	    	$this->content_model->delete_content_bulk($content_ids);
+	    }
     }
 
     function key_get()
@@ -281,10 +289,18 @@ class Content extends REST_Controller {
     
     function publish_post()
     {
-    	$content_key = $this->post('key');
     	$culture = $this->post('culture');
 
-		$this->content_model->publish($content_key, $culture);
+    	if($this->post('key'))
+    	{
+	    	$content_key = $this->post('key');
+			$this->content_model->publish($content_key, $culture);
+		}
+		else if($this->post('keys'))
+		{
+	    	$content_keys = $this->post('keys');
+			$this->content_model->publish_bulk($content_keys, $culture);
+		}
     }
 
     function rev_post()

@@ -69,6 +69,8 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 	$scope.refresh = function() {
 
+		checkableListManager.uncheckAllItems();
+
 		$scope.isRefreshing = true;
 
 		var page = $location.search()['p'];
@@ -270,6 +272,81 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 			error(function(data, status, headers, config) {
 
 				$scope.isLoadingEditingData = false;
+			});
+	}
+
+	$scope.areAllCheckedItemsPublishable = function() {
+
+		var items = $scope.checkableListManager.getCheckedItems();
+		return _.all(items, function(item) { return item.status == 'draft'; });
+	}
+
+	$scope.publishAllChecked = function() {
+
+		modal.show(
+			"You are about to publish all checked content in the selected language world wild. " +
+			"Please make sure everything correct before proceed. " +
+			"Are you sure you want to continue?", "Publish confirmation", {
+				
+				danger: false,
+				bgclose: true,
+				okTitle: "Yes",
+				icon: "info-circle"
+			})
+			.ok(function() {
+
+				var items = $scope.checkableListManager.getCheckedItems();
+				var keys = _.map(items, function(item) { return item.key; });
+
+				var params = requestParams.create($scope, {
+
+					keys: keys,
+					culture: $scope.currentCulture
+				});
+
+				httpEx($scope, "POST", $scope.baseUrl + "cms/rest/content/publish", params).
+					success(function(data, status, headers, config) {
+
+						if(data.error) {
+
+							return;
+						}
+
+						$scope.refresh();
+					});
+			});
+	}
+
+	$scope.deleteAllChecked = function() {
+
+		modal.show(
+			"Are you sure you want to delete all checked content?<br/>" +
+			"You are not able to undo this deletion. All of checked content will be permanently lost!",
+			"Delete confirmation", {
+				
+				danger: true,
+				bgclose: true,
+				okTitle: "Yes",
+				cancelTitle: "No",
+				icon: "exclamation-circle"
+			})
+			.ok(function() {
+
+				$scope.propertiesPanel.close({force: true});
+
+				var items = $scope.checkableListManager.getCheckedItems();
+				var ids = _.map(items, function(item) { return item.id; });
+
+				var params = requestParams.create($scope, {
+
+					ids: ids
+				});
+				
+				httpEx($scope, "DELETE", $scope.baseUrl + "cms/rest/content", params).
+					success(function(data, status, headers, config) {
+
+						$scope.refresh();
+					});
 			});
 	}
 

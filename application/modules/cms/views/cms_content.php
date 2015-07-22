@@ -102,10 +102,13 @@
 				</div>
 			</div>
 			<div class="uk-width-3-4 uk-text-right">
-				<button type="button" class="uk-button uk-button-primary" ng-click="publishSelected()">
+				<button type="button" class="uk-button uk-button-primary" 
+						ng-if="areAllCheckedItemsPublishable()"
+						ng-click="publishAllChecked()">
 					Publish
 				</button>
-				<button type="button" class="uk-button uk-button-danger" ng-click="deleteSelected()">
+				<button type="button" class="uk-button uk-button-danger" 
+						ng-click="deleteAllChecked()">
 					<i class="uk-icon-trash uk-icon-small"></i> Delete
 				</button>
 			</div>
