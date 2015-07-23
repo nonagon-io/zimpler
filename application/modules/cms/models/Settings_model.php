@@ -27,11 +27,13 @@ class Settings_model extends CI_Model
 		$data['languages'] = $this->language_model->get_list();
 		$data['enabled_languages'] = 
 			explode(',', $this->setting_model->get('cms_enabled_languages'));
+		$data['default_language'] =
+			$this->setting_model->get('cms_default_language');
 
 		return $data;
 	}
 
-	public function save_settings($languages)
+	public function save_settings($languages, $default_language)
 	{
 		$codes = array();
 
@@ -43,5 +45,6 @@ class Settings_model extends CI_Model
 
 		$enabled_languages = implode(',', $codes);
 		$this->setting_model->set('cms_enabled_languages', $enabled_languages);
+		$this->setting_model->set('cms_default_language', $default_language);
 	}
 }

@@ -1,3 +1,6 @@
+<script>
+	window.defaultLanguage = "<?= $this->setting_model->get('cms_default_language') ?>";
+</script>
 <div class="n-content n-abs-fit uk-form" ng-controller="CmsContentController">
 	<div class="n-options-header" 
 		 ng-class="{'n-drop-shadow': mainContentBodyScrollTop > 0}">

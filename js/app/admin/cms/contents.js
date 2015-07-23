@@ -23,7 +23,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 	$scope.propertiesPanel = propertiesPanel;
 	$scope.isRefreshing = false;
 	$scope.isKeywordActive = false;
-	$scope.currentCulture = $location.search().c || "en-us";
+	$scope.currentCulture = $location.search().c || window.defaultLanguage;
 	$scope.currentCultureFullName = $("#cultureSelection option:selected").html().trim();
 	$scope.fileManagerPopup = fileManagerPopup;
 	$scope.checkableListManager = checkableListManager;
@@ -464,7 +464,7 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 					var params = {
 
 						id: data.content.id,
-						culture: query.c || 'en-us',
+						culture: query.c || window.defaultLanguage,
 						keyword: query.q || null,
 						order: query.o || 'modified',
 						dir: query.d || 'desc'

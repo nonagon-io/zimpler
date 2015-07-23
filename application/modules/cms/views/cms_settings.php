@@ -7,10 +7,14 @@
 				uk-grid-width-small-1-2 uk-grid-width-medium-1-3 
 				uk-grid-width-xlarge-1-4"
 		 ng-init="editingData.languages = {
-			 <?php foreach($enabled_languages as $code) : ?>
-		 	'<?= $code ?>': { selected: true },
-			 <?php endforeach ?>
-		 };">
+				<?php foreach($enabled_languages as $code) : ?>
+				'<?= $code ?>': { selected: true },
+				<?php endforeach ?> };
+				<?php if($default_language) : ?>
+				editingData.defaultLanguage = '<?= $default_language ?>';
+				<?php else : ?>
+				editingData.defaultLanguage = null;
+				<?php endif ?>">
 		<?php foreach($languages as $code => $name) : ?>
 		<div>
 			<input type="checkbox" id="lang-<?= $code ?>" value="<?= $code ?>" 
@@ -27,6 +31,17 @@
 		<i class="uk-icon-times-circle uk-text-danger"></i>
 		At least one language must be selected
 	</div>
+	<hr/>
+	<div ng-if="editingData.defaultLanguage">
+		Default Language:
+		<select ng-model="editingData.defaultLanguage">
+			<?php foreach($languages as $code => $name) : ?>
+			<option value="<?= $code ?>" ng-if="editingData.languages['<?= $code ?>'].selected">
+				<?= $name ?>
+			</option>
+			<?php endforeach ?>
+		</select>
+	</div>
 </div>
 <script>
 	document.addEventListener("DOMContentLoaded", function(event) { 
@@ -38,17 +53,37 @@
 				var collectSelectedLanguages = function() {
 
 					var selectedLanguages = [];
+					var selectedLanguageList = [];
+					var selectedLanguageLookup = {};
 
 					for(var key in $scope.editingData.languages) {
 
 						var isSelected = $scope.editingData.languages[key].selected;
-						if(isSelected)
+						if(isSelected) {
 							selectedLanguages.push(key);
+
+							selectedLanguageList.push(key);
+							selectedLanguageLookup[key] = true;
+						}
 					}
 
 					$scope.editingData.selectedLanguages = selectedLanguages.join(',');
 
-					console.debug($scope.editingData.selectedLanguages);
+					var defaultLanguage = $scope.editingData.defaultLanguage;
+
+					// If defaultLanguage not specified:
+					if(!defaultLanguage) {
+						defaultLanguage = selectedLanguageList[0];
+					}
+
+					// If defaultLanguage not in selected item:
+					if(!selectedLanguageLookup[defaultLanguage]) {
+						defaultLanguage = selectedLanguageList[0];
+					}
+
+					console.debug(selectedLanguageLookup);
+
+					$scope.editingData.defaultLanguage = defaultLanguage;
 				}
 
 				$scope.cmsLanguagesChanged = function() {

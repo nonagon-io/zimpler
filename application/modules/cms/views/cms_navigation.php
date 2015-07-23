@@ -1,3 +1,6 @@
+<script>
+	window.defaultLanguage = "<?= $this->setting_model->get('cms_default_language') ?>";
+</script>
 <div class="n-abs-fit uk-form" ng-controller="CmsNavigationController"
 	 ng-init="restBaseUrl = '<?= base_url('/cms/rest/navigation') ?>'; refreshRev(); refreshItems();">
 	<div class="n-options-header" 

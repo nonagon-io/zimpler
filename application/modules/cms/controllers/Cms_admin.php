@@ -56,7 +56,7 @@ class Cms_admin extends Partial_Controller {
 		if($method == 'GET')
 		{
 			$culture = $this->input->get('culture');
-			if(!$culture) $culture = 'en-us';
+			if(!$culture) $culture = $this->setting_model->get('cms_default_language');
 			
 			if(!$this->siteinfo_model->is_any_entry())
 			{
@@ -108,10 +108,11 @@ class Cms_admin extends Partial_Controller {
 		
 		if($method == 'GET')
 		{
-			$nav = $this->navigation_model->get_hierarchy('en-us');
+			$default_language = $this->setting_model->get('cms_default_language');
+			$nav = $this->navigation_model->get_hierarchy($default_language);
 
 			$culture = $this->input->get('culture');
-			if(!$culture) $culture = 'en-us';
+			if(!$culture) $culture = $default_language;
 
 			$this->data['culture'] = $culture;
 			$this->data['nav'] = $nav;
@@ -150,7 +151,11 @@ class Cms_admin extends Partial_Controller {
 		if($method == 'GET')
 		{
 			$culture = $this->input->get('c');
-			if(!$culture) $culture = 'en-us';
+			if(!$culture)
+			{
+				$default_language = $this->setting_model->get('cms_default_language');
+				$culture = $default_language;
+			}
 
 			$this->data['culture'] = $culture;
 			$this->data['total_contents'] = $this->content_model->get_total_contents();
