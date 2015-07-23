@@ -10,10 +10,21 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 .controller("CmsContentController", [
 	"$scope", "$locale", "$location", "$timeout", "httpEx", "requestParams",
 	"submitForm", "cmsPropertiesPanel", "fileManagerPopup", "checkFormDirty", 
-	"checkableListManager", "modal",
+	"checkableListManager", "modal", "keydownHandlers",
 	function($scope, $locale, $location, $timeout, httpEx, requestParams,
 			 submitForm, propertiesPanel, fileManagerPopup, checkFormDirty, 
-			 checkableListManager, modal) {
+			 checkableListManager, modal, keydownHandlers) {
+
+	keydownHandlers.push(function($event) {
+
+		if($event.keyCode === 27) {
+
+			$scope.$apply(function() {
+
+				$scope.propertiesPanel.close();
+			});
+		}
+	});
 
 	var headerCheckBox = null;
 
