@@ -10,8 +10,8 @@ class Content_model extends CI_Model
         $this->load->helper('date');
         $this->initialize();
 
-        $this->load->model('content_manager_html', 'cm_html');
-        $this->load->model('content_manager_label', 'cm_label');
+        $this->load->model('cms/content_manager_html', 'cm_html');
+        $this->load->model('cms/content_manager_label', 'cm_label');
     }
     
     private function initialize()
