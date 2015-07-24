@@ -492,4 +492,22 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 		});
 
 	}, 180000);
+
+	$(window).on("focus", function() {
+
+		// Reload if session is no longer valid.
+
+		$http({
+			method: "GET", 
+			url: $scope.baseUrl + "admin/rest/checkin"
+		}).error(function(data, status, headers, config) {
+
+			if(status == 404) {
+
+				window.forceReload = true;
+				document.location.reload();
+			}
+		});
+
+	});
 }]);

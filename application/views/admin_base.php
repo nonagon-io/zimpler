@@ -72,11 +72,6 @@
 			'}';
 	  ?>">
 
-	<?php if($this->config->item("csrf_protection")) : ?>
-	<div ng-init=''>
-	</div>
-	<?php endif ?>
-
 	<?php $this->load->view("admin/header") ?>
 
 	<?php echo $content; ?>

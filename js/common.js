@@ -61,6 +61,12 @@ angular.module("common", [])
 				
 				if(!$(elem).hasClass("ng-dirty"))
 					return;
+
+				if(window.forceReload) {
+
+					window.forceReload = false;
+					return;
+				}
 				
 				var message = 
 					'If you leave this page now you are going to lose all unsaved changes.';
