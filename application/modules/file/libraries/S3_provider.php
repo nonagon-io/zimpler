@@ -201,6 +201,7 @@ class S3_Provider {
 
     public function delete_folder($path)
     {
+        $path = ltrim($path, '/');
         $this->client->deleteMatchingObjects($this->bucket, $path . '/');
     }
 
