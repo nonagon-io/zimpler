@@ -179,14 +179,16 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 				
 				$timeout(function() {
 					
-					$this.scope.$apply(function() {
+					if($this.scope) {
+						$this.scope.$apply(function() {
 
-						$this.scope.propertiesPanel.propertiesForm.$setPristine();
-						$this.scope = null;
+							$this.scope.propertiesPanel.propertiesForm.$setPristine();
+							$this.scope = null;
 
-						$this.fire("closed");
-					});
-					
+							$this.fire("closed");
+						});
+					}
+						
 				}, 300);
 			}
 
