@@ -356,7 +356,6 @@ class Content_model extends CI_Model
 		    	$content['content_label'] = $content_details;
 		    	break;
 		    case 'html': 
-		    	$this->load->model('content_manager_html', 'cm');
 		    	$content_details = $this->cm_html->update_content($content_id, $content_html); 
 		    	$content['content_html'] = $content_details;
 		    	break;
