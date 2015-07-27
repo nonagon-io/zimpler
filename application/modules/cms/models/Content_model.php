@@ -34,6 +34,7 @@ class Content_model extends CI_Model
 		    $this->dbforge->add_field('author			int 			NOT NULL');
 		    $this->dbforge->add_field('date_created 	datetime		NOT NULL');
 		    $this->dbforge->add_field('last_modified 	datetime		NOT NULL');
+		    $this->dbforge->add_field('is_special 		boolean 		NOT NULL 	default false');
 		    $this->dbforge->add_field('status 			varchar(15)		NOT NULL');
 		    $this->dbforge->add_key('content_id', TRUE);
 			$this->dbforge->create_table('content', TRUE);
@@ -78,15 +79,20 @@ class Content_model extends CI_Model
     {
     	$this->db->flush_cache();
 
+    	// Ignore showing special content.
+    	$this->db->where('a.is_special <>', 1);
+
 		if($keyword)
 		{
-			$this->db->where('a.title like', '%' . $this->db->escape_like_str($keyword) . '%');
-			$this->db->or_where('b.title like', '%' . $this->db->escape_like_str($keyword) . '%');
-			$this->db->or_where('b.html like', '%' . $this->db->escape_like_str($keyword) . '%');
-			$this->db->or_where('c.label like', '%' . $this->db->escape_like_str($keyword) . '%');
-			$this->db->or_where('group like', '%' . $this->db->escape_like_str($keyword) . '%');
-			$this->db->or_where('description like', '%' . $this->db->escape_like_str($keyword) . '%');
-			$this->db->or_where('content_type like', '%' . $this->db->escape_like_str($keyword) . '%');
+			$this->db->where('(' .
+				'a.title like \'%' . $this->db->escape_like_str($keyword) . '%\' OR ' .
+				'b.title like \'%' . $this->db->escape_like_str($keyword) . '%\' OR ' .
+				'b.html like \'%' . $this->db->escape_like_str($keyword) . '%\' OR ' .
+				'c.label like \'%' . $this->db->escape_like_str($keyword) . '%\' OR ' .
+				'`group` like \'%' . $this->db->escape_like_str($keyword) . '%\' OR ' .
+				'description like \'%' . $this->db->escape_like_str($keyword) . '%\' OR ' .
+				'content_type like \'%' . $this->db->escape_like_str($keyword) . '%\'' .
+			')');
 		}
 
 		$this->db->order_by($order_by);
