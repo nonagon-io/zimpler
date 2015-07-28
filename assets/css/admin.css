@@ -313,6 +313,14 @@ body {
 	border-bottom: 1px solid #efefef;
 }
 
+.n-properties-panel .n-header-title {
+
+	margin-top: 5px; 
+	overflow: hidden; 
+	text-overflow: ellipsis; 
+	white-space: nowrap;
+}
+
 .n-properties-panel > .n-body {
 
 	position: absolute;
