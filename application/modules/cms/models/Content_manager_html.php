@@ -108,6 +108,7 @@ class Content_manager_html extends CI_Model
 				return $existing_content_html;
 				
 			$existing_content_html['last_modified'] = date('Y-m-d H:i:s', now());
+			$existing_content_html['title'] = $content_html['title'];
 			$existing_content_html['html'] = $content_html['html'];
 			
 			if(array_key_exists('title', $content_html))
