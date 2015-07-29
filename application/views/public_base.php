@@ -8,6 +8,14 @@
 	<meta name="description" content="<?php echo $meta_description?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
+	<meta property="og:locale" content="<?php echo $meta_og_locale ?>" />
+	<meta property="og:type" content="<?php echo $meta_og_type ?>" />
+	<meta property="og:title" content="<?php echo $meta_og_title ?>" />
+	<meta property="og:description" content="<?php echo $meta_og_description ?>" />
+	<meta property="og:url" content="<?php echo $meta_og_url ?>" />
+	<meta property="og:image" content="<?php echo $meta_og_image ?>" />
+	<meta property="og:site_name" content="<?php echo $meta_og_site_name ?>" />
+
 	<title><?php echo $title?></title>
 	
 	<link rel="icon" type="image/png" href="<?php 
