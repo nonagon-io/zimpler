@@ -22,6 +22,11 @@
 $app_mode = getenv('APP_ENV');
 if(!$app_mode) $app_mode = 'development';
 
+if (defined('PHPUNIT_TEST'))
+{
+	$app_mode = 'testing';	
+}
+
 define('ENVIRONMENT', $app_mode);
 
 /*

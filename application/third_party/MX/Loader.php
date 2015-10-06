@@ -86,6 +86,14 @@ class MX_Loader extends CI_Loader
 	
 	/** Load a module config file **/
 	public function config($file = 'config', $use_sections = FALSE, $fail_gracefully = FALSE) {
+
+		// PHPUnit
+		if (defined('PHPUNIT_TEST'))
+		{
+			require_once dirname(__FILE__).'/Config.php';
+			CI::$APP->config = new MX_Config;
+		}
+
 		return CI::$APP->config->load($file, $use_sections, $fail_gracefully, $this->_module);
 	}
 
@@ -178,6 +186,13 @@ class MX_Loader extends CI_Loader
 
 	/** Load a module model **/
 	public function model($model, $object_name = NULL, $connect = FALSE) {
+
+		// PHPUnit
+		if (defined('PHPUNIT_TEST'))
+		{
+			require_once dirname(__FILE__).'/Lang.php';
+			CI::$APP->lang = new MX_Lang;
+		}
 		
 		if (is_array($model)) return $this->models($model);
 
