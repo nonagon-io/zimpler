@@ -25,7 +25,7 @@ class Siteinfo_model extends CI_Model
 		    $this->dbforge->add_field("site_info_id		int				NOT NULL	AUTO_INCREMENT");
 		    $this->dbforge->add_field("site_info_key 	varchar(50)		NOT NULL");
 		    $this->dbforge->add_field("site_info_value 	varchar(255)	NOT NULL");
-		    $this->dbforge->add_field("culture			varchar(5)	NOT NULL");
+		    $this->dbforge->add_field("culture			varchar(5)		NOT NULL");
 		    $this->dbforge->add_key("site_info_id", TRUE);
 			$this->dbforge->create_table("site_info", TRUE);
 		}
@@ -50,6 +50,9 @@ class Siteinfo_model extends CI_Model
     
     public function set($site_info_key, $site_info_value, $culture = "en-us")
     {
+    	if(!$culture)
+    		$culture = "en-us";
+
 		$data = $this->db->get_where("site_info", 
 			array("site_info_key" => $site_info_key, "culture" => $culture))->row();
 		
