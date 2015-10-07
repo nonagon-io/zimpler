@@ -168,8 +168,13 @@ class MX_Loader extends CI_Loader
 			
 			$this->_ci_classes[$class] = $_alias;
 		}
-		
-		return CI::$APP->$_alias;
+
+		if(isset(CI::$APP->$_alias))
+		{
+			return CI::$APP->$_alias;
+		}
+
+		return NULL;
     }
 
 	/** Load an array of libraries **/
