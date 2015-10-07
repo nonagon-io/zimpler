@@ -4,14 +4,6 @@
 
 global $CFG;
 
-// PHPUnit
-if (defined('PHPUNIT_TEST'))
-{
-	require_once dirname(__FILE__).'/Config.php';
-
-	$CFG = new MX_Config;
-}
-
 /* get module locations from config settings or use the default module location and offset */
 is_array(Modules::$locations = $CFG->item('modules_locations')) OR Modules::$locations = array(
 	APPPATH.'modules/' => '../modules/',
