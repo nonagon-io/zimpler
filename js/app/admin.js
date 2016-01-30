@@ -466,6 +466,7 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 		                 d.type.toUpperCase() === 'PASSWORD' || 
 		                 d.type.toUpperCase() === 'FILE' || 
 		                 d.type.toUpperCase() === 'EMAIL' || 
+		                 d.type.toUpperCase() === 'NUMBER' || 
 		                 d.type.toUpperCase() === 'SEARCH' || 
 		                 d.type.toUpperCase() === 'DATE' )
 		             ) || 
