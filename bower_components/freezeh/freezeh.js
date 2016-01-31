@@ -2,44 +2,54 @@ $(function() {
 	$.fn.freezeHeader = function() {
 		
 		if(!this.offset()) return;
-		
-		var header = 
-			$("<table class='freeze-header " + this.attr("class") + "'><thead>" + 
-				this.find("thead").html() + "</thead></table>");
-				
-		$(header).css({
-			"position": "fixed",
-			"margin-top": "0px",
-			"top": this.offset().top + "px",
-			"width": this.width() + "px"
-		});
-		
-		this.parent().append(header);
-		
-		var $this = this;
-		var arrangeSize = function() {
+
+		var elems = this;
+		elems.each(function(index, elem) {
+
+			if($(elem).hasClass("no-freezeh"))
+				return;
+
+			var header = 
+				$("<table class='freeze-header " + $(elem).attr("class") + "'><thead>" + 
+					$(elem).find("thead").html() + "</thead></table>");
+					
+			$(header).css({
+				"position": "fixed",
+				"margin-top": "0px",
+				"top": $(elem).offset().top + "px",
+				"width": $(elem).width() + "px"
+			});
 			
-			header.css({ "width": $this.width() + "px" });
+			$(elem).parent().append(header);
+			
+			var arrangeSize = function() {
+				
+				header.css({ "width": $(elem).width() + "px" });
 
-			var tableHeaders = $this.find("thead tr").children();
-			var fixedHeaders = header.find("thead tr").children();
+				var tableHeaders = $(elem).find("thead tr").children();
+				var fixedHeaders = header.find("thead tr").children();
 
-			var len = tableHeaders.length;
+				var len = tableHeaders.length;
 
-			for(var i=len - 1; i>=0; i--) {
+				for(var i=len - 1; i>=0; i--) {
 
-				var elem = tableHeaders[i];
-				$(fixedHeaders[i]).css({ "width": ($(elem).width() + 1) + "px" });
+					var elem = tableHeaders[i];
+					$(fixedHeaders[i]).css({ "width": ($(elem).width() + 1) + "px" });
+				}
 			}
-		}
-		
-		$(window).resize(function() {
+
+			$(elem).parent().on("scroll", function(e) {
+
+				var scrollLeft = $(e.target).scrollLeft();
+				$(header).css("margin-left", -scrollLeft + "px");
+			});
+			
+			$(window).resize(function() {
+				
+				arrangeSize();
+			});
 			
 			arrangeSize();
 		});
-		
-		arrangeSize();
-
-		return header;
 	}
 });
