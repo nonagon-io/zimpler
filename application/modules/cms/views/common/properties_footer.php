@@ -21,7 +21,7 @@
 	<div class="uk-width-4-5 uk-text-right">
 		<?php if(isset($allow_publish) && $allow_publish) : ?>
 		<button type="button" class="uk-button uk-button-primary" 
-				ng-if="editingData.status == 'draft'"
+				ng-if="editingData.status != 'published' && editingData.id"
 				ng-disabled="!<?= $panel_name ?>.publishable()"
 				ng-click="<?= $panel_name ?>.publish($event, { alsoClose: true })"
 				ng-hide="<?= $panel_name ?>.isCommandsHidden">
