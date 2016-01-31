@@ -200,11 +200,13 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 
 			} else {
 
-				checkFormDirty(this.scope.propertiesPanel.propertiesForm).confirm(function() {
+				if(this.scope) {
+					checkFormDirty(this.scope.propertiesPanel.propertiesForm).confirm(function() {
 
-					$this.scope.propertiesPanel.propertiesForm.$setUntouched();
-					performClose();
-				});
+						$this.scope.propertiesPanel.propertiesForm.$setUntouched();
+						performClose();
+					});
+				}
 			}
 		},
 		
