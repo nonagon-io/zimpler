@@ -6,7 +6,7 @@
 		</div>
 		<div class="n-modal-body">
 			<?php $this->load->view('file_manager', 
-				array('item_deletable' => FALSE, 'item_selectable' => TRUE)) ?>
+				array('item_deletable' => TRUE, 'item_selectable' => TRUE)) ?>
 		</div>
 		<div class="uk-modal-footer">
 			<div class="uk-grid uk-grid-collapse">
