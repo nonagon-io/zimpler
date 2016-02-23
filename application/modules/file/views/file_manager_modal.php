@@ -7,6 +7,22 @@
 		<div class="n-modal-body">
 			<?php $this->load->view('file_manager', 
 				array('item_deletable' => TRUE, 'item_selectable' => TRUE)) ?>
+			<div class="n-blocker ng-hide" ng-show="fileManager.scope.itemToDelete || fileManager.scope.isDeleting">
+				<div class="uk-panel uk-panel-box">
+					<i class="uk-icon-exclamation-circle uk-text-danger uk-icon-medium"></i>
+					Are you sure you want to delete this file?
+					<div class="uk-margin-top uk-text-right">
+						<button type="button" class="uk-button uk-margin-small-right" 
+								ng-click="fileManager.scope.itemToDelete = null">No</button>
+						<button type="button" class="uk-button uk-button-danger" 
+								ng-click="fileManager.scope.deleteProceed()"
+								ng-disabled="fileManager.scope.isDeleting">
+							<i class="uk-icon-spinner uk-icon-spin" ng-show="fileManager.scope.isDeleting"></i> 
+							Yes
+						</button>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="uk-modal-footer">
 			<div class="uk-grid uk-grid-collapse">

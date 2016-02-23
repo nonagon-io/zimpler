@@ -29,245 +29,247 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 	};
 })
 
-.factory("propertiesPanel", 
+.service("propertiesPanel", 
 	['$http', '$timeout', '$sce', '$window', 'checkFormDirty',
 	function($http, $timeout, $sce, $window, checkFormDirty) {
 	
-	return {
-		
-		isOpen: false,
-		scrollTop: 0,
-		scrollMaxReached: false,
-		panel: $(".n-properties-panel"),
-		propertiesBody: $(".n-properties-panel .n-body"),
-		widthClasses: "uk-width-1-1 uk-width-medium-2-3 uk-width-large-6-10",
-		scope: null,
-		observers: {},
-		isCommandsHidden: false,
-		isHeaderExpanded: false,
+	return function() { 
 
-		dom: function(selector) {
-
-			return $(selector);
-		},
-		
-		on: function(event, delegate) {
+		return {
 			
-			if(event) {
+			isOpen: false,
+			scrollTop: 0,
+			scrollMaxReached: false,
+			panel: $(".n-properties-panel"),
+			propertiesBody: $(".n-properties-panel .n-body"),
+			widthClasses: "uk-width-1-1 uk-width-medium-2-3 uk-width-large-6-10",
+			scope: null,
+			observers: {},
+			isCommandsHidden: false,
+			isHeaderExpanded: false,
+
+			dom: function(selector) {
+
+				return $(selector);
+			},
+			
+			on: function(event, delegate) {
+				
+				if(event) {
+					
+					if(!this.observers[event])
+						this.observers[event] = [];
+					
+					this.observers[event].push(delegate);
+				}
+			},
+			
+			off: function(event, delegate) {
+				
+				if(event && this.observers[event]) {
+					
+					var observers = this.observers[event];
+					var newObservers = [];
+					
+					for(var i=0; i<observers.length; i++) {
+						
+						if(observers[i] == delegate)
+							continue;
+							
+						newObservers.push(observers[i]);
+					}
+					
+					this.observers[event] = newObservers;
+				}
+			},
+			
+			fire: function(event, data, callback) {
 				
 				if(!this.observers[event])
 					this.observers[event] = [];
 				
-				this.observers[event].push(delegate);
-			}
-		},
-		
-		off: function(event, delegate) {
-			
-			if(event && this.observers[event]) {
-				
-				var observers = this.observers[event];
-				var newObservers = [];
-				
+				var observers = this.observers[event];	
 				for(var i=0; i<observers.length; i++) {
 					
-					if(observers[i] == delegate)
-						continue;
-						
-					newObservers.push(observers[i]);
+					var delegate = observers[i];
+					delegate(data, callback);
 				}
+			},
+			
+			open: function($scope, widthClasses) {
 				
-				this.observers[event] = newObservers;
-			}
-		},
-		
-		fire: function(event, data, callback) {
+				if(widthClasses)
+					this.widthClasses = widthClasses;
 			
-			if(!this.observers[event])
-				this.observers[event] = [];
-			
-			var observers = this.observers[event];	
-			for(var i=0; i<observers.length; i++) {
+				this.isOpen = true;
+				this.propertiesBody.scrollTop(0);
+				this.scope = $scope;
+
+				console.debug(this);
 				
-				var delegate = observers[i];
-				delegate(data, callback);
-			}
-		},
-		
-		open: function($scope, widthClasses) {
-			
-			if(widthClasses)
-				this.widthClasses = widthClasses;
-		
-			this.isOpen = true;
-			this.propertiesBody.scrollTop(0);
-			this.scope = $scope;
-			
-			var $this = this;
-			
-			var bodyScroll = function() {
+				var $this = this;
 				
-				if($this.scope) {
+				var bodyScroll = function() {
 					
-					$this.scope.$apply(function() {
+					if($this.scope) {
 						
-						var scrollBottom = 
-							$this.propertiesBody.scrollTop() + 
-							$this.propertiesBody.outerHeight();
+						$this.scope.$apply(function() {
+							
+							var scrollBottom = 
+								$this.propertiesBody.scrollTop() + 
+								$this.propertiesBody.outerHeight();
+							
+							$this.scrollTop = $this.propertiesBody.scrollTop();
+							$this.scrollMaxReached = scrollBottom >= $this.propertiesBody.prop("scrollHeight");
+						});
+					}
+				};
+				
+				this.bodyScroll = bodyScroll;
+				this.propertiesBody.on("scroll", bodyScroll);
+				
+				var resize = function() {
+					
+					if($this.scope) {
 						
-						$this.scrollTop = $this.propertiesBody.scrollTop();
-						$this.scrollMaxReached = scrollBottom >= $this.propertiesBody.prop("scrollHeight");
-					});
-				}
-			};
-			
-			this.bodyScroll = bodyScroll;
-			this.propertiesBody.on("scroll", bodyScroll);
-			
-			var resize = function() {
-				
-				if($this.scope) {
-					
-					$this.offsetLeft = $this.panel.offset().left;
-					$this.scope.$apply();
-				}
-			};
-			
-			this.resize = resize;
-			$($window).on("resize", resize);
-			
-			this.panel.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
-				function(e) {
-				
-					$this.offsetLeft = $this.panel.offset().left;
-					
-					if($this.scope)
+						$this.offsetLeft = $this.panel.offset().left;
 						$this.scope.$apply();
-				});
-			
-			$timeout(function() {
+					}
+				};
 				
-				$this.propertiesBody.find(':input:visible:enabled:first').focus();
-
-				$this.scope.propertiesPanel.propertiesForm.$setPristine();
-				$this.scope.propertiesPanel.propertiesForm.$setUntouched();
+				this.resize = resize;
+				$($window).on("resize", resize);
 				
-			}, 300);
-			
-			$timeout(function() {
-				
-				bodyScroll();
-				
-			}, 1);
-
-			$this.fire("open");
-		},
-		
-		close: function(option) {
-			
-			var $this = this;
-
-			var performClose = function() {
-
-				$this.offsetLeft = 0;
-				$this.isOpen = false;
-	
-				$this.propertiesBody.off("scroll", $this.bodyScroll);
-				$($window).off("resize", $this.resize);
-				
-				$this.fire("close");
+				this.panel.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',
+					function(e) {
+					
+						$this.offsetLeft = $this.panel.offset().left;
+						
+						if($this.scope)
+							$this.scope.$apply();
+					});
 				
 				$timeout(function() {
 					
-					if($this.scope) {
-						$this.scope.$apply(function() {
+					$this.propertiesBody.find(':input:visible:enabled:first').focus();
 
-							$this.scope.propertiesPanel.propertiesForm.$setPristine();
-							$this.scope = null;
-
-							$this.fire("closed");
-						});
-					}
-						
+					$this.propertiesForm.$setPristine();
+					$this.propertiesForm.$setUntouched();
+					
 				}, 300);
-			}
+				
+				$timeout(function() {
+					
+					bodyScroll();
+					
+				}, 1);
 
-			option = option || {};
+				$this.fire("open");
+			},
+			
+			close: function(option) {
+				
+				var $this = this;
 
-			if(option.force) {
+				var performClose = function() {
 
-				performClose();
+					$this.offsetLeft = 0;
+					$this.isOpen = false;
+		
+					$this.propertiesBody.off("scroll", $this.bodyScroll);
+					$($window).off("resize", $this.resize);
+					
+					$this.fire("close");
+					
+					$timeout(function() {
+						
+						if($this.scope) {
+							$this.scope.$apply(function() {
 
-			} else {
+								$this.propertiesForm.$setPristine();
+								$this.scope = null;
 
-				if(this.scope) {
-					checkFormDirty(this.scope.propertiesPanel.propertiesForm).confirm(function() {
+								$this.fire("closed");
+							});
+						}
+							
+					}, 300);
+				}
 
-						$this.scope.propertiesPanel.propertiesForm.$setUntouched();
+				option = option || {};
+
+				if(option.force) {
+
+					performClose();
+
+				} else {
+
+					checkFormDirty(this.propertiesForm).confirm(function() {
+
+						$this.propertiesForm.$setUntouched();
 						performClose();
 					});
 				}
-			}
-		},
-		
-		save: function($event, option) {
-
-			if($event)
-				$event.preventDefault();
-				
-			this.scope.propertiesPanel.propertiesForm.$setSubmitted();
+			},
 			
-			if(!this.scope.propertiesPanel.propertiesForm.$valid) {
-				return;
-			}
-			
-			var $this = this;
-			this.fire("save", { event: $event }, function(result) {
+			save: function($event, option) {
 
-				$this.scope.propertiesPanel.propertiesForm.$setUntouched();
-				$this.scope.propertiesPanel.propertiesForm.$setPristine();
+				if($event)
+					$event.preventDefault();
+					
+				this.propertiesForm.$setSubmitted();
 				
-				if(result && option && option.alsoClose) {
+				if(!this.propertiesForm.$valid) {
+					return;
+				}
+				
+				var $this = this;
+				this.fire("save", { event: $event }, function(result) {
+
+					$this.propertiesForm.$setUntouched();
+					$this.propertiesForm.$setPristine();
 					
-					$this.close();
+					if(result && option && option.alsoClose) {
+						
+						$this.close();
+					}
+
+					if(result && option && option.doNext) {
+
+						option.doNext();
+					}
+				});
+			},
+
+			saveIfDirty: function($event, option) {
+
+				if($event)
+					$event.preventDefault();
+
+				if(!this.propertiesForm.$dirty) {
+
+					if(option && option.doNext)
+						option.doNext();
+
+					return;
 				}
 
-				if(result && option && option.doNext) {
+				this.save($event, option);
+			},
 
-					option.doNext();
-				}
-			});
-		},
+			delete: function() {
 
-		saveIfDirty: function($event, option) {
+				var $this = this;
+				this.fire("delete", null, function(result) {
 
-			if($event)
-				$event.preventDefault();
-
-			if(!this.scope.propertiesPanel.propertiesForm.$dirty) {
-
-				if(option && option.doNext)
-					option.doNext();
-
-				return;
+					if(result) {
+						
+						$this.close();
+					}
+				});
 			}
-
-			this.save($event, option);
-		},
-
-		delete: function() {
-
-			var $this = this;
-			this.fire("delete", null, function(result) {
-
-				if(result) {
-					
-					$this.close();
-				}
-			});
-		}
+		};
 	};
-	
 }])
 
 .factory('fileManagerPopup', function(fileManager) {
@@ -279,6 +281,7 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 			var modal = UIkit.modal(".n-file-browser");
 			modal.show();
 
+			fileManager.setAsModal();
 			fileManager.updateLayout();
 
 			this._callback = callback;
@@ -300,123 +303,162 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 	}
 })
 
-.factory('checkableListManager', [function($location) {
+.service('checkableListManager', [function($location) {
 
-	var checkableListManager = {
+	return function() {
 
-		scope: null,
-		isCheckActivated: false,
-		headerCheckBox: null,
-		checkedItems: [],
+		var checkableListManager = {
 
-		isAnyItemChecked: function() {
+			listPath: null,
+			scope: null,
+			isCheckActivated: false,
+			headerCheckBox: null,
+			checkedItems: [],
 
-			if(!this.scope.list || !this.scope.list.items) return false;
+			resolveList: function() {
 
-			var checkedItems = $.grep(this.scope.list.items, function(item, i) {
-				
-				return item.checked;
-			});
+				if(this.listPath) {
 
-			return checkedItems.length > 0;
-		},
+					var items = this.listPath.split(".");
+					var list = this.scope;
 
-		isAllItemsChecked: function() {
+					for(var i=0; i<items.length; i++) {
 
-			if(!this.scope.list || !this.scope.list.items) return false;
+						list = list[items[i]];
+					}
 
-			var checkedItems = $.grep(this.scope.list.items, function(item, i) {
-				
-				return item.checked;
-			});
+					return list;
 
-			return checkedItems.length == this.scope.list.items.length;
-		},
+				} else  {
 
-		getCheckedItems: function() {
+					return this.scope.list;
+				}
+			},
 
-			if(!this.scope.list || !this.scope.list.items) return [];
+			isAnyItemChecked: function() {
 
-			var items = [];
-			for(var i=0; i<this.scope.list.items.length; i++) {
+				var list = this.resolveList();
 
-				if(this.scope.list.items[i].checked)
-					items.push(this.scope.list.items[i]);
-			}
+				if(!list || !list.items) return false;
 
-			return items;
-		},
+				var checkedItems = $.grep(list.items, function(item, i) {
+					
+					return item.checked;
+				});
 
-		checkAllItems: function() {
+				return checkedItems.length > 0;
+			},
 
-			if(!this.scope.list || !this.scope.list.items) return;
+			isAllItemsChecked: function() {
 
-			for(var i=0; i<this.scope.list.items.length; i++) {
+				var list = this.resolveList();
 
-				this.scope.list.items[i].checked = true;
-			}
+				if(!list || !list.items) return false;
 
-			this.itemCheckStateChanged();
-		},
+				var checkedItems = $.grep(list.items, function(item, i) {
+					
+					return item.checked;
+				});
 
-		uncheckAllItems: function() {
+				return checkedItems.length == list.items.length;
+			},
 
-			if(!this.scope.list || !this.scope.list.items) return;
+			getCheckedItems: function() {
 
-			for(var i=0; i<this.scope.list.items.length; i++) {
+				var list = this.resolveList();
 
-				this.scope.list.items[i].checked = false;
-			}
+				if(!list || !list.items) return [];
 
-			this.itemCheckStateChanged();
-		},
+				var items = [];
+				for(var i=0; i<list.items.length; i++) {
 
-		itemCheckStateChanged: function() {
+					if(list.items[i].checked)
+						items.push(list.items[i]);
+				}
 
-			var isAllChecked = this.isAllItemsChecked();
-			var isAnyChecked = this.isAnyItemChecked();
+				return items;
+			},
 
-			this.checkedItems = this.getCheckedItems();
-			this.isCheckActivated = isAnyChecked;
+			checkAllItems: function() {
 
-			if(this.headerCheckBox) {
-				this.headerCheckBox.prop("checked", isAllChecked);
-			}
-		},
+				var list = this.resolveList();
 
-		initialize: function($scope) {
+				if(!list || !list.items) return;
 
-			this.scope = $scope;
-			var $this = this;
+				for(var i=0; i<list.items.length; i++) {
 
-			$(function() {
+					list.items[i].checked = true;
+				}
 
-				$this.headerCheckBox = $(".freeze-header").find("input[type=checkbox]");
-				$this.headerCheckBox.on("change", function() {
+				this.itemCheckStateChanged();
+			},
 
-					$scope.$apply(function() {
-						if($this.headerCheckBox.is(':checked')) {
-							$this.checkAllItems();
-						} else {
-							$this.uncheckAllItems();
-						}
+			uncheckAllItems: function() {
+
+				var list = this.resolveList();
+
+				if(!list || !list.items) return;
+
+				for(var i=0; i<list.items.length; i++) {
+
+					list.items[i].checked = false;
+				}
+
+				this.itemCheckStateChanged();
+			},
+
+			itemCheckStateChanged: function() {
+
+				var isAllChecked = this.isAllItemsChecked();
+				var isAnyChecked = this.isAnyItemChecked();
+
+				this.checkedItems = this.getCheckedItems();
+				this.isCheckActivated = isAnyChecked;
+
+				if(this.headerCheckBox) {
+					this.headerCheckBox.prop("checked", isAllChecked);
+				}
+			},
+
+			initialize: function($scope, selector, propertiesPanel, list) {
+
+				this.scope = $scope;
+				this.listPath = list;
+
+				var $this = this;
+
+				$(function() {
+
+					$this.headerCheckBox = $(selector + " .freeze-header").find("input[type=checkbox]");
+					$this.headerCheckBox.on("change", function() {
+
+						$scope.$apply(function() {
+							if($this.headerCheckBox.is(':checked')) {
+								$this.checkAllItems();
+							} else {
+								$this.uncheckAllItems();
+							}
+						});
 					});
 				});
-			});
 
-			this.scope.propertiesPanel.on("open", function() {
+				if(propertiesPanel) {
 
-				$this.headerCheckBox.prop("disabled", true);
-			});
+					propertiesPanel.on("open", function() {
 
-			this.scope.propertiesPanel.on("close", function() {
+						$this.headerCheckBox.prop("disabled", true);
+					});
 
-				$this.headerCheckBox.prop("disabled", false);
-			});
-		}
-	};
+					propertiesPanel.on("close", function() {
 
-	return checkableListManager;
+						$this.headerCheckBox.prop("disabled", false);
+					});
+				}
+			}
+		};
+
+		return checkableListManager;
+	}
 }])
 
 .controller('AdminController', 
@@ -465,6 +507,7 @@ angular.module("admin", ['common', 'generic-modal', 'file-manager', 'ngAnimate',
 		        if ((d.tagName.toUpperCase() === 'INPUT' && (
 		        	
 		                 d.type.toUpperCase() === 'TEXT' ||
+		                 d.type.toUpperCase() === 'NUMBER' ||
 		                 d.type.toUpperCase() === 'PASSWORD' || 
 		                 d.type.toUpperCase() === 'FILE' || 
 		                 d.type.toUpperCase() === 'EMAIL' || 

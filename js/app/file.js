@@ -10,6 +10,12 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 
 			if(!this.scope) return;
 			this.scope.updateLayout();
+		},
+
+		setAsModal: function() {
+
+			if(!this.scope) return;
+			this.scope.isModalMode = true;
 		}
 	}
 
@@ -27,6 +33,8 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 	$scope.selectedItem = null;
 	$scope.upload = {};
 	$scope.initialized = false;
+	$scope.isModalMode = false;
+	$scope.itemToDelete = null;
 
 	$scope.viewMode = "tile";
 
@@ -179,6 +187,8 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 				path: $scope.path + '/' + folderItem.name
 			}
 
+			$scope.isDeleting = true;
+
 			httpEx($scope, "DELETE", $scope.baseUrl + 'file/rest/file/folder', params).
 				success(function(data, status, headers, config) {
 
@@ -187,24 +197,43 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 						});
 
 					$scope.updateLayout();
+					$scope.isDeleting = false;
+				}).
+				error(function(data, status, headers, config) {
+
+					$scope.isDeleting = false;
 				});
 		});
 	}
 
 	$scope.confirmDelete = function(item, proceed) {
 
-		modal.show(
-			"Are you sure you want to delete \"" + item.name + "\"?<br/>", 
-			"Confirm deletion", {
-				
-				danger: true,
-				bgclose: true,
-				icon: "exclamation-circle"
-			})
-			.ok(function() {
-				
+		if(!$scope.isModalMode) {
+
+			var message = "Are you sure you want to delete \"" + item.name + "\"?";
+
+			modal.show(
+				message + "<br/>", 
+				"Confirm deletion", {
+					
+					danger: true,
+					bgclose: true,
+					icon: "exclamation-circle"
+				})
+				.ok(function() {
+					
+					proceed();
+				});
+
+		} else {
+
+			$scope.itemToDelete = item;
+			$scope.deleteProceed = function() {
+
 				proceed();
-			});
+				$scope.itemToDelete = null;
+			};
+		}
 	}
 
 	$scope.drillDown = function(folder) {

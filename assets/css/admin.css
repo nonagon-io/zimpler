@@ -10,22 +10,19 @@ body {
 	font-size: 14px;
 }
 
+.n-side-menu {
+
+	position: relative;
+	z-index: 100;
+	width: 80px;
+}
+
 .n-menu-header {
 	
 	background: #292929;
 	padding: 15px;
 	color: white;
 	font-size: 14px;
-}
-
-.n-menu-header:before {
-	
-	content: "::";
-}
-
-.n-menu-header:after {
-	
-	content: "::";
 }
 
 .n-menu-panel {
@@ -45,7 +42,7 @@ body {
 .n-menu-panel .n-items {
 	
 	position: absolute;
-	top: 185px;
+	top: 165px;
 	bottom: 0px;
 	width: 100%;
 	overflow: auto;
@@ -53,10 +50,24 @@ body {
 	-webkit-overflow-scrolling: touch;
 }
 
+.n-menu-panel ul.n-items li {
+
+	margin-left: -5px;
+}
+
 .n-menu-panel ul li a > i {
 
 	display: inline-block;
 	width: 50px;
+}
+
+.n-main-view-panel {
+
+	position: absolute;
+	left: 80px;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
 }
 
 .n-view-host {
@@ -107,7 +118,7 @@ body {
 	right: 0px;
 	bottom: 50px;
 	background: white;
-	overflow-y: auto;
+	overflow: auto;
 	
 	border-bottom: 1px solid #ccc;
 	-webkit-overflow-scrolling: touch;
@@ -267,10 +278,10 @@ body {
 	
 	box-shadow: -10px 2px 50px -25px black !important;
 	
-    -webkit-transition: right 0.3s ease-in-out;
-    -moz-transition: right 0.3s ease-in-out;
-    -o-transition: right 0.3s ease-in-out;
-    transition: right 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
     
 	right: 0px;
 	
@@ -551,6 +562,12 @@ body {
 	z-index: 0;
 }
 
+.n-list table {
+
+	table-layout:fixed;
+	width: 100%;
+}
+
 .gmnoprint img {
 
     max-width: none; 
@@ -571,6 +588,50 @@ body {
 	position: relative;
 	height: 400px;
 	margin: -15px -20px;
+}
+
+.n-file-browser .uk-modal-dialog .n-modal-body .n-blocker.ng-hide {
+
+	display: block !important;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.n-file-browser .uk-modal-dialog .n-modal-body .n-blocker {
+
+	position: absolute; 
+	background: rgba(0,0,0,0.5);
+	top: 0px; 
+	left: 0px; 
+	right: 0px; 
+	bottom: 0px;
+	
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+
+.n-file-browser .uk-modal-dialog .n-modal-body .n-blocker.ng-hide .uk-panel {
+
+    -webkit-transform: translate(0px, 50px);
+    -moz-transform: translate(0px, 50px);
+    -o-transform: translate(0px, 50px);
+    transform: translate(0px, 50px);
+}
+
+.n-file-browser .uk-modal-dialog .n-modal-body .n-blocker .uk-panel {
+
+	position: absolute;
+	top: 100px;
+	left: 50%;
+	width: 400px;
+	margin-left: -200px;
+
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 
 .n-file-manager .n-commands-zone {
