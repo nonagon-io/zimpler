@@ -166,7 +166,10 @@
 								<i class="uk-icon-trash"></i>
 							</a>
 							<?php endif ?>
-							<img ng-src="{{item.url}}" />
+							<img ng-src="{{item.url}}" ng-if="item.isImage" />
+							<div class="uk-margin-bottom" ng-if="!item.isImage">
+								<i class="{{item.fileIcon}} uk-icon-large"></i>
+							</div>
 							<div class="uk-margin-small-top uk-text-small uk-text-primary uk-text-center">
 								<label>{{item.name}}</label>
 							</div>

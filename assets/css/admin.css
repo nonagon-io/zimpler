@@ -636,6 +636,11 @@ body {
 	max-height: 150px;
 }
 
+.n-file-item div .uk-icon-large {
+
+	font-size: 72px;
+}
+
 .n-file-item label, 
 .n-upload-item label,
 .n-folder-item label {

@@ -54,6 +54,45 @@ angular.module('file-manager', ['generic-modal', 'common', 'ngFileUpload', 'ngDr
 
 				$scope.files = _.filter(data, function(item) { 
 						return item.type == "file" && !item.name.endsWith("/"); 
+					}).map(function(file) {
+
+						var name = file.url.toLowerCase();
+						file.isImage = 
+								name.endsWith(".png") || 
+								name.endsWith(".jpg") ||
+								name.endsWith(".gif");
+
+						var fileIcon = "";
+
+						if(name.endsWith(".xls") || name.endsWith(".xlsx")) {
+							fileIcon = "uk-icon-file-excel-o";
+
+						} else if(name.endsWith(".doc") || name.endsWith(".docx")) {
+							fileIcon = "uk-icon-file-word-o";
+
+						} else if(name.endsWith(".pdf")) {
+							fileIcon = "uk-icon-file-pdf-o";
+
+						} else if(name.endsWith(".ppt") || name.endsWith(".pptx")) {
+							fileIcon = "uk-icon-file-powerpoint-o";
+
+						} else if(name.endsWith(".zip") || name.endsWith(".rar")) {
+							fileIcon = "uk-icon-file-archive-o";
+
+						} else if(name.endsWith(".mp3") || name.endsWith(".wav")) {
+							fileIcon = "uk-icon-file-audio-o";
+
+						} else if(name.endsWith(".mp4") || name.endsWith(".mov") || name.endsWith(".wmv")) {
+							fileIcon = "uk-icon-file-video-o";
+
+						} else {
+
+							fileIcon = "uk-icon-file-o";							
+						}
+
+						file.fileIcon = fileIcon;
+
+						return file;
 					});
 
 				$scope.folders = _.filter(data, function(item) { 
