@@ -129,13 +129,13 @@ angular.module("admin-cms-contents", ["common", "generic-modal", "admin", "admin
 
 						items: data.total,
 						itemsOnPage: pageSize,
-						currentPage: Math.floor(data.from / params.take) + 1
+						currentPage: Math.floor(data.from / params.take)
 					});
 
 				} else {
 
 					$scope.pagination.options.items = data.total;
-					$scope.pagination.options.currentPage = $scope.currentPage + 1;
+					$scope.pagination.options.currentPage = $scope.currentPage;
 					$scope.pagination.init();
 				}
 
